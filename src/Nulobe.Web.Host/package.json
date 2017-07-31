@@ -5,6 +5,7 @@
   "devDependencies": {
   },
   "scripts": {
-    "start": "cd ../Nulobe.Web && npm start"
+    "install": "cd ../Nulobe.Web && yarn install",
+    "start": "cd ../Nulobe.Web && yarn run start"
   }
 }
