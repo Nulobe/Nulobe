@@ -139,7 +139,7 @@ namespace Nulobe.Web.Host
                 }
                 .Select(kvp => $"{kvp.Key}: \"{kvp.Value}\"");
 
-            return "var VEGANFACTS_ENV = { " + string.Join(", ", environmentSettings) + " };";
+            return "var NULOBE_ENV = { " + string.Join(", ", environmentSettings) + " };";
         }
     }
 }

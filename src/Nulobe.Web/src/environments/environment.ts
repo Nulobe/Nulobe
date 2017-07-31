@@ -6,3 +6,12 @@
 export const environment = {
   production: false
 };
+
+export interface NulobeEnvironment {
+  ENVIRONMENT: string;
+  API_BASE_URL: string;
+  AUTH_CLIENT_ID: string;
+  AUTH_DOMAIN: string;
+}
+
+export const NULOBE_ENV: NulobeEnvironment = window["NULOBE_ENV"];
