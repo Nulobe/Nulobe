@@ -1,8 +1,8 @@
 $solutionDir = $args[0]
 $projectDir = $args[1]
 
-# $solutionDir = 'C:\Users\Michael\Source\Repos\VeganFacts'
-# $projectDir = 'C:\Users\Michael\Source\Repos\VeganFacts\src\VeganFacts'
+# $solutionDir = 'C:\Users\Michael\Source\Repos\Nulobe'
+# $projectDir = 'C:\Users\Michael\Source\Repos\Nulobe\src\Nulobe'
 
 Write-Output "Started copying appsetting files from solution configuration for $projectDir"
 
