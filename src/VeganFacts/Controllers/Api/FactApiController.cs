@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace VeganFacts.Controllers.Api
         }
 
         [HttpGet("")]
+        [Authorize]
         public async Task<IActionResult> List([FromQuery] FactQuery query)
             => Ok(await _factQueryService.QueryFactsAsync(query));
 
@@ -30,6 +32,7 @@ namespace VeganFacts.Controllers.Api
             => Ok(await _factService.GetFactAsync(id));
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] Fact fact)
         {
             var result = await _factService.CreateFactAsync(fact);
@@ -40,6 +43,7 @@ namespace VeganFacts.Controllers.Api
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> Update(string id, [FromBody] Fact fact)
             => Ok(await _factService.UpdateFactAsync(id, fact));
     }

@@ -11,6 +11,10 @@ using HtmlAgilityPack;
 using System.IO;
 using System.Net.Http;
 using Microsoft.Extensions.Configuration;
+using System.Net.Sockets;
+using System.Net;
+using Microsoft.Extensions.Options;
+using VeganFacts.Web.Common;
 
 namespace VeganFacts.Web.Host
 {
@@ -18,20 +22,15 @@ namespace VeganFacts.Web.Host
     {
         private readonly IConfigurationRoot _configuration;
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostingEnvironment hostingEnvironment)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddJsonFile($"appsettings.local.json", optional: true)
-                .AddEnvironmentVariables();
-
+            var builder = new ConfigurationBuilder().AddConfigurationSources<Startup>(hostingEnvironment);
             _configuration = builder.Build();
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.ConfigureAuth0(_configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,14 +51,27 @@ namespace VeganFacts.Web.Host
                     {
                         var isPageRequest = string.IsNullOrEmpty(Path.GetExtension(context.Request.Path));
 
-                        var proxyResponse = await client.GetAsync(new UriBuilder()
+                        HttpResponseMessage proxyResponse = null;
+                        try
                         {
-                            Scheme = "http",
-                            Host = "localhost",
-                            Port = 4200,
-                            Path = isPageRequest ? "/" : context.Request.Path.ToString(),
-                            Query = context.Request.Query.ToString()
-                        }.ToString());
+                            proxyResponse = await client.GetAsync(new UriBuilder()
+                            {
+                                Scheme = "http",
+                                Host = "localhost",
+                                Port = 4200,
+                                Path = isPageRequest ? "/" : context.Request.Path.ToString(),
+                                Query = context.Request.Query.ToString()
+                            }.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            var webException = ex.InnerException as WebException;
+                            if (webException != null && webException.Status == WebExceptionStatus.ConnectFailure)
+                            {
+                                context.Response.StatusCode = 404;
+                                return;
+                            }
+                        }
 
                         if (isPageRequest)
                         {
@@ -113,11 +125,17 @@ namespace VeganFacts.Web.Host
         
         private string GetEnvironmentSettingsJavascript(HttpContext context)
         {
+            var serviceProvider = context.RequestServices;
+            var hostingEnvironment = serviceProvider.GetRequiredService<IHostingEnvironment>();
+            var auth0Options = serviceProvider.GetRequiredService<IOptions<Auth0Options>>().Value;
+
             var environmentSettings =
                 new Dictionary<string, object>()
                 {
-                    { "Name", context.RequestServices.GetRequiredService<IHostingEnvironment>().EnvironmentName },
-                    { "ApiBaseUrl", _configuration["VeedealsApi:BaseUrl"] }
+                    { "ENVIRONMENT", serviceProvider.GetRequiredService<IHostingEnvironment>().EnvironmentName },
+                    { "API_BASE_URL", _configuration["VeganFacts:ApiBaseUrl"] },
+                    { "AUTH_CLIENT_ID", auth0Options.ClientId },
+                    { "AUTH_DOMAIN", auth0Options.Domain }
                 }
                 .Select(kvp => $"{kvp.Key}: \"{kvp.Value}\"");
 

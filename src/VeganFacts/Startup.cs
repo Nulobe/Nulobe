@@ -11,6 +11,7 @@ using VeganFacts.DocumentDb.Client;
 using VeganFacts.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using VeganFacts.Web.Common;
 
 namespace VeganFacts
 {
@@ -20,10 +21,7 @@ namespace VeganFacts
 
         public Startup(IHostingEnvironment hostingEnvironment)
         {
-            var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: false)
-                .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", optional: true);
-
+            var builder = new ConfigurationBuilder().AddConfigurationSources<Startup>(hostingEnvironment);
             _configuration = builder.Build();
         }
 
@@ -39,7 +37,8 @@ namespace VeganFacts
             services.AddTransient<IFactService, FactService>();
             services.AddTransient<IFactQueryService, FactService>();
 
-            services.Configure<FactServiceOptions>(_configuration.GetSection("FactService"));
+            services.ConfigureAuth0(_configuration);
+            services.Configure<FactServiceOptions>(_configuration.GetSection("VeganFacts:FactService"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,7 +47,8 @@ namespace VeganFacts
             IHostingEnvironment env,
             ILoggerFactory loggerFactory,
             IDocumentClientFactory documentClientFactory,
-            IOptions<FactServiceOptions> factServiceOptions)
+            IOptions<FactServiceOptions> factServiceOptions,
+            IOptions<Auth0Options> auth0Options)
         {
             loggerFactory.AddConsole();
 
@@ -61,6 +61,12 @@ namespace VeganFacts
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseJwtBearerAuthentication(new JwtBearerOptions()
+            {
+                Audience = auth0Options.Value.ClientId,
+                Authority = $"https://{auth0Options.Value.Domain}"
+            });
 
             app.UseMvc();
         }
