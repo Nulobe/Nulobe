@@ -30,6 +30,16 @@ namespace Nulobe.DocumentDb.Client
             return documentClient.CreateDocumentQuery<ResourceType>(documentCollectionUri, feedOptions);
         }
 
+        public static IQueryable<ResourceType> CreateDocumentQuery<ResourceType>(
+            this DocumentClient documentClient,
+            IDocumentDbCollectionSpec collectionSpec,
+            SqlQuerySpec sqlQuery,
+            FeedOptions feedOptions = null)
+        {
+            var documentCollectionUri = UriFactoryExtensions.CreateDocumentCollectionUri(collectionSpec);
+            return documentClient.CreateDocumentQuery<ResourceType>(documentCollectionUri, sqlQuery, feedOptions);
+        }
+
         public static async Task<TResourceType> ReadDocumentAsync<TResourceType>(
             this DocumentClient documentClient,
             IDocumentDbCollectionSpec collectionSpec,

@@ -29,7 +29,7 @@ namespace Nulobe.Runner
                 Fields = "text,usagecount",
                 OrderBy = "usagecount",
                 SearchPattern = "x"
-            });
+            }).Result;
         }
 
         private class MockHostingEnvironment : IHostingEnvironment

@@ -8,7 +8,7 @@ using Nulobe.Api.Services;
 
 namespace Nulobe.Controllers.Api
 {
-    [Route("api/facts")]
+    [Route("facts")]
     public class FactApiController : Controller
     {
         private readonly IFactService _factService;
