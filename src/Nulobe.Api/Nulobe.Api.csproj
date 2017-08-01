@@ -1,10 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project>
 
+  <Import Sdk="Microsoft.NET.Sdk.Web" Project="Sdk.props" />
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
-    <RuntimeIdentifier>win7-x86</RuntimeIdentifier>
-    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(SolutionDir)\Copy-Files.ps1" $(SolutionDir) $(MSBuildProjectDirectory)</PreBuildEvent>
+    <TargetFrameworks>net452</TargetFrameworks>
+    <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
     <UserSecretsId>Nulobe-4cafb89d-dd40-46a8-8482-cbbf8ba9f5c3</UserSecretsId>
+  </PropertyGroup>
+
+  <Import Sdk="Microsoft.NET.Sdk.Web" Project="Sdk.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(SolutionDir)\Copy-Files.ps1" $(SolutionDir) $(MSBuildProjectDirectory)</PreBuildEvent>
+    <PostBuildEvent>"$(NSwagExe)" webapi2swagger /assembly:"$(TargetPath)" /output:"$(ProjectDir)swagger.json" /defaultPropertyNameHandling:"CamelCase"</PostBuildEvent>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,6 +28,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.2" />
+    <PackageReference Include="NSwag.MSBuild" Version="11.3.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\util\Nulobe.DocumentDb.Client\Nulobe.DocumentDb.Client.csproj" />

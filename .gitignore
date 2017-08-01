@@ -304,3 +304,5 @@ $RECYCLE.BIN/
 
 appsettings.Shared.json
 appsettings.Shared.*.json
+src/Nulobe.Api/swagger.json
+src/Nulobe.Clients.Web/src/app/api/api.swagger.ts
