@@ -1,0 +1,21 @@
+@import '../../../assets/scss/mixins';
+
+.home {
+
+    .admin-button-container {
+        @include transition(opacity 0.2 ease);
+        position: absolute;
+        padding: 15px;
+        right: 0;
+        bottom: 0;
+        opacity: 0;
+
+        &:hover {
+            opacity: 1;
+        }
+
+        .admin-button {
+
+        }
+    }
+}

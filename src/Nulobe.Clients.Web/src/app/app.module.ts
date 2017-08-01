@@ -1,26 +1,36 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MdButtonModule, MdIconModule } from '@angular/material';
+
 import { AppRoutingModule } from './app-routing.module';
-
 import { AppComponent } from './app.component';
-
-import { AuthService } from './auth/auth.service';
+import { Auth0AuthService } from './auth/auth.service';
 import { AuthComponent } from './auth/auth.component';
-import { HomeComponent } from './home/home.component';
+import { AuthCallbackComponent } from './auth/auth-callback/auth-callback.component';
+
+import { AdminModule } from './pages/admin/admin.module';
+import { HomeModule } from './pages/home/home.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthComponent,
-    HomeComponent
+    AuthCallbackComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NoopAnimationsModule,
+    MdButtonModule,
+    MdIconModule,
+
+    AdminModule,
+    HomeModule
   ],
   providers: [
-    AuthService
+    Auth0AuthService
   ],
   bootstrap: [AppComponent]
 })

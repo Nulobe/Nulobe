@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Nulobe.Api.Services;
 
-namespace Nulobe.Controllers.Api
+namespace Nulobe.Api.Controllers
 {
     [Route("facts")]
     public class FactApiController : Controller
@@ -45,5 +45,13 @@ namespace Nulobe.Controllers.Api
         [Authorize]
         public async Task<IActionResult> Update(string id, [FromBody] Fact fact)
             => Ok(await _factService.UpdateFactAsync(id, fact));
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await _factService.DeleteFactAsync(id);
+            return NoContent();
+        }
     }
 }

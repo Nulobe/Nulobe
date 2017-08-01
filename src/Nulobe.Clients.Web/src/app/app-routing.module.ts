@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent } from './home/home.component';
 import { AuthComponent } from './auth/auth.component';
+import { AuthCallbackComponent } from './auth/auth-callback/auth-callback.component';
 
 const routes: Routes = [
   {
-    path: '',
-    component: HomeComponent,
-  },
-  {
     path: 'login',
     component: AuthComponent
+  },
+  {
+    path: 'callback',
+    component: AuthCallbackComponent
   }
 ];
 
