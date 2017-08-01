@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { FactApiClient } from '../../api/api.swagger';
+
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private factApiClient: FactApiClient
+  ) { }
 
   ngOnInit() {
+    this.factApiClient.create({
+      title: 'Test fact',
+      definition: 'Test definition',
+      sources: [],
+      tags: ['dairy', 'nutrition'],
+      credit: '@mushimas'
+    })
+    .subscribe((...args) => {
+    });
   }
 
 }

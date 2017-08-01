@@ -7,6 +7,7 @@ export interface IAuthService {
   onLoginCallback(): void;
   logout(): void;
   isAuthenticated(): boolean;
+  getIdToken(): string;
 }
 
 @Injectable()
@@ -51,5 +52,9 @@ export class Auth0AuthService implements IAuthService {
   isAuthenticated(): boolean {
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
     return new Date().getTime() < expiresAt;
+  }
+
+  getIdToken(): string {
+    return localStorage.getItem('id_token');
   }
 }

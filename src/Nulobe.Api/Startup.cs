@@ -57,6 +57,12 @@ namespace Nulobe.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder => builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin() // Can make this more secure
+                .AllowCredentials());
+
             app.UseJwtBearerAuthentication(new JwtBearerOptions()
             {
                 Audience = auth0Options.Value.ClientId,
