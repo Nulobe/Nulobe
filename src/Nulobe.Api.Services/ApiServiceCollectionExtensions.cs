@@ -19,8 +19,8 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddTransient<IFactService, FactService>();
             services.AddTransient<IFactQueryService, FactService>();
+            services.AddTransient<ITagQueryService, TagQueryService>();
 
-            services.ConfigureAuth0(configuration);
             services.Configure<FactServiceOptions>(configuration.GetSection("Nulobe:FactService"));
 
             return services;
