@@ -1,6 +1,6 @@
 <div class="home">
   <div class="admin-button-container" *ngIf="authService.isAuthenticated()">
-    <button md-icon-button class="admin-button" (click)="navigateToAdmin()">
+    <button md-fab class="admin-button" routerLink="admin">
       <md-icon>settings</md-icon>
     </button>
   </div>

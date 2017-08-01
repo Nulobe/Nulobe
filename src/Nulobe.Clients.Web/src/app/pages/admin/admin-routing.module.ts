@@ -1,5 +1,22 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { NgModule, Injectable } from '@angular/core';
+import { Routes, RouterModule, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
+
+
+import { Auth0AuthService } from '../../auth/auth.service';
+
+@Injectable()
+class CanActivateAdmin implements CanActivate {
+
+  constructor(
+    private authService: Auth0AuthService
+  ) { }
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean> {
+    return this.authService.isAuthenticated();
+  }
+}
+
 
 import { AdminComponent } from './admin.component';
 
@@ -7,11 +24,14 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
+    canActivate: [CanActivateAdmin]
   }
 ];
 
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [CanActivateAdmin]
 })
 export class AppRoutingModule { }

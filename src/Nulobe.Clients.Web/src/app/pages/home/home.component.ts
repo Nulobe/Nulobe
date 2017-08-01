@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 import { Auth0AuthService } from '../../auth/auth.service';
 
@@ -11,15 +10,10 @@ import { Auth0AuthService } from '../../auth/auth.service';
 export class HomeComponent implements OnInit {
 
   constructor(
-    private authService: Auth0AuthService,
-    private router: Router
+    private authService: Auth0AuthService
   ) { }
 
   ngOnInit() {
-  }
-
-  navigateToAdmin() {
-    this.router.navigate(['/admin']);
   }
 
 }
