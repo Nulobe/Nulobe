@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "name": "asp.net",
+  "private": true,
+  "devDependencies": {
+  },
+  "scripts": {
+    "install": "cd ../Nulobe.Clients.Web && yarn install",
+    "start": "cd ../Nulobe.Clients.Web && yarn run start"
+  }
+}
