@@ -30,9 +30,18 @@ export class TagSelectorComponent implements OnInit {
   }
 
   tagInput_getSuggestions = (text: string): Observable<string[]> =>
-    this.tagApiClient
-      .list(text, undefined, undefined)
-      .map(r => r.map(t => t.text));
+    text === '' ?
+      Observable.of([]) :
+      this.tagApiClient
+        .list(text, undefined, undefined)
+        .map(r => {
+          return r
+            .filter(x => {
+              let existing = this.tags.find(y => y.display.substring(1).toLowerCase() === x.text.toLowerCase());
+              return !existing;
+            })
+            .map(t => t.text)
+        });
 
   tagInput_addHash = (text: string | Tag): Observable<Tag> => {
     if (typeof(text) === 'object') {

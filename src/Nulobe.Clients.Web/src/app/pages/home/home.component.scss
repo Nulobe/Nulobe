@@ -4,18 +4,33 @@
     height: 1px;
     min-height: 100vh;
 
-    .content {
+    .content-container {
         @include flex-display();
-        @include flex-direction(column);
         @include justify-content(center);
         @include align-items(center);
         height: 100%;
 
-        .brand {
-            width: 100px;
-            height: 100px;
-            //background: url("assets/images/garlic.svg") no-repeat center;
-            background-size: contain;
+        .content {
+            @include flex-display();
+            @include flex-direction(column);
+            @include align-items(center);
+            margin-bottom: 200px;
+
+            .brand {
+                width: 100px;
+                height: 100px;
+                //background: url("assets/images/garlic.svg") no-repeat center;
+                background-size: contain;
+            }
+
+            app-tag-selector {
+                margin-top: 50px;
+                width: 500px;
+            }
+
+            button {
+                margin-top: 20px;
+            }
         }
     }
 

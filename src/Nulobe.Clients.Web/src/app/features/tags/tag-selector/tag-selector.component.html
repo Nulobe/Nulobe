@@ -2,12 +2,14 @@
   <tag-input
     [(ngModel)]="tags"
     [onAdding]="tagInput_addHash"
+    [onTextChangeDebounce]="0"
     (onAdd)="tagInput_updated()"
     (onRemove)="tagInput_updated()"
     (onFocus)="tagInput_isFocused = true"
     (onBlur)="tagInput_isFocused = false"
     (onTextChange)="tagInput_currentText = $event">
-    <tag-input-dropdown [autocompleteObservable]="tagInput_getSuggestions">
+    <tag-input-dropdown
+      [autocompleteObservable]="tagInput_getSuggestions">
     </tag-input-dropdown>
   </tag-input>
 </div>

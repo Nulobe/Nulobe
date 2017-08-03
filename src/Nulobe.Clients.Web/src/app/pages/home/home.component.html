@@ -1,18 +1,16 @@
 <div class="app-home">
-  <div class="content">
-    <div class="brand"></div>
-    <div class="brand-container">
-      <img
-        src="/assets/images/garlic.png"
-        width="100px" />
-    </div>
-    <div class="search-container">
+  <div class="content-container">
+    <div class="content">
+      <div class="brand-container">
+        <img
+          src="/assets/images/garlic.png"
+          width="100px" />
+      </div>
       <app-tag-selector
-        (onTagsUpdated)="updateTags($event)"
-        (onSubmit)="search()"></app-tag-selector>
-      <button type="submit">
-        Learn
-      </button>
+          (onTagsUpdated)="updateTags($event)"
+          (onSubmit)="search()">
+      </app-tag-selector>
+      <button md-button (click)="search()">Learn</button>
     </div>
   </div>
   <div class="admin-button-container" *ngIf="authService.isAuthenticated()">
