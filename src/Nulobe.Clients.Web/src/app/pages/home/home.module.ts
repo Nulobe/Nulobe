@@ -1,20 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 import { MdButtonModule, MdIconModule } from '@angular/material';
+import { TagInputModule } from 'ngx-chips';
 
 import { HomeRoutingModule } from './home-routing.module';
+import { TagsModule } from './../../features/tags/tags.module';
 
 import { HomeComponent } from './home.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    NoopAnimationsModule,
+
+    BrowserAnimationsModule,
+    FormsModule,
     MdButtonModule,
     MdIconModule,
-    HomeRoutingModule
+    TagInputModule,
+
+    HomeRoutingModule,
+    TagsModule
   ],
   declarations: [
     HomeComponent

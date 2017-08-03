@@ -1,4 +1,20 @@
-<div class="home">
+<div class="app-home">
+  <div class="content">
+    <div class="brand"></div>
+    <div class="brand-container">
+      <img
+        src="/assets/images/garlic.png"
+        width="100px" />
+    </div>
+    <div class="search-container">
+      <app-tag-selector
+        (onTagsUpdated)="updateTags($event)"
+        (onSubmit)="search()"></app-tag-selector>
+      <button type="submit">
+        Learn
+      </button>
+    </div>
+  </div>
   <div class="admin-button-container" *ngIf="authService.isAuthenticated()">
     <button md-fab class="admin-button" routerLink="admin">
       <md-icon>settings</md-icon>

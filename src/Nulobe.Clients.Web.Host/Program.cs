@@ -11,9 +11,10 @@ namespace Nulobe.Clients.Web.Host
     {
         public static void Main(string[] args)
         {
+            var directory = new DirectoryInfo(Directory.GetCurrentDirectory());
             var host = new WebHostBuilder()
                 .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseContentRoot(directory.FullName)
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .UseApplicationInsights()

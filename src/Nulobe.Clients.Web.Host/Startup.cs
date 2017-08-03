@@ -15,6 +15,7 @@ using System.Net.Sockets;
 using System.Net;
 using Microsoft.Extensions.Options;
 using Nulobe.Framework;
+using Microsoft.Extensions.FileProviders;
 
 namespace Nulobe.Clients.Web.Host
 {
@@ -45,37 +46,45 @@ namespace Nulobe.Clients.Web.Host
             {
                 app.UseDeveloperExceptionPage();
 
-                app.Run(async context =>
+                app.Use(async (context, next) =>
                 {
-                    using (var client = new HttpClient())
-                    {
-                        var isPageRequest = string.IsNullOrEmpty(Path.GetExtension(context.Request.Path));
+                    var isPageRequest = string.IsNullOrEmpty(Path.GetExtension(context.Request.Path));
 
+                    var scriptRequestExtensions = new string[] { ".js", ".js.map" };
+                    var isScriptRequest = scriptRequestExtensions.Any(e => context.Request.Path.Value.EndsWith(e, StringComparison.InvariantCultureIgnoreCase));
+
+                    var isRequestToAngularServer = isPageRequest || isScriptRequest;
+
+                    if (isRequestToAngularServer)
+                    {
+                        // Assume we are serving up index.html
                         HttpResponseMessage proxyResponse = null;
-                        try
+                        using (var client = new HttpClient())
                         {
-                            proxyResponse = await client.GetAsync(new UriBuilder()
+                            try
                             {
-                                Scheme = "http",
-                                Host = "localhost",
-                                Port = 4200,
-                                Path = isPageRequest ? "/" : context.Request.Path.ToString(),
-                                Query = context.Request.Query.ToString()
-                            }.ToString());
-                        }
-                        catch (Exception ex)
-                        {
-                            var webException = ex.InnerException as WebException;
-                            if (webException != null && webException.Status == WebExceptionStatus.ConnectFailure)
+                                proxyResponse = await client.GetAsync(new UriBuilder()
+                                {
+                                    Scheme = "http",
+                                    Host = "localhost",
+                                    Port = 4200,
+                                    Path = isPageRequest ? "/" : context.Request.Path.ToString(),
+                                    Query = context.Request.Query.ToString()
+                                }.ToString());
+                            }
+                            catch (Exception ex)
                             {
-                                context.Response.StatusCode = 404;
-                                return;
+                                var webException = ex.InnerException as WebException;
+                                if (webException != null && webException.Status == WebExceptionStatus.ConnectFailure)
+                                {
+                                    context.Response.StatusCode = 404;
+                                    return;
+                                }
                             }
                         }
 
                         if (isPageRequest)
                         {
-                            // Assume we are serving up index.html
                             context.Response.ContentType = "text/html";
 
                             var doc = new HtmlDocument();
@@ -91,9 +100,28 @@ namespace Nulobe.Clients.Web.Host
                         }
                         else
                         {
+                            foreach (var header in proxyResponse.Headers)
+                            {
+                                context.Response.Headers.AppendList(header.Key, header.Value.ToList());
+                            }
+
+                            context.Response.ContentType = proxyResponse.Content.Headers.ContentType.MediaType;
+
                             await context.Response.WriteAsync(await proxyResponse.Content.ReadAsStringAsync());
                         }
+                        
                     }
+                    else
+                    {
+                        await next();
+                    }
+                });
+
+                var currentDir = new DirectoryInfo(env.ContentRootPath);
+                var angularWebRootDir = Path.Combine(currentDir.Parent.FullName, "Nulobe.Clients.Web", "src");
+                app.UseStaticFiles(new StaticFileOptions()
+                {
+                    FileProvider = new PhysicalFileProvider(angularWebRootDir)
                 });
             }
             else
@@ -122,7 +150,7 @@ namespace Nulobe.Clients.Web.Host
                 });
             }
         }
-        
+
         private string GetEnvironmentSettingsJavascript(HttpContext context)
         {
             var serviceProvider = context.RequestServices;

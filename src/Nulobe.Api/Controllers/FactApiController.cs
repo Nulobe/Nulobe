@@ -23,15 +23,18 @@ namespace Nulobe.Api.Controllers
         }
 
         [HttpGet("")]
+        [ProducesResponseType(typeof(Fact[]), 200)]
         public async Task<IActionResult> List([FromQuery] FactQuery query)
             => Ok(await _factQueryService.QueryFactsAsync(query));
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Fact), 200)]
         public async Task<IActionResult> Get(string id)
             => Ok(await _factService.GetFactAsync(id));
 
         [HttpPost]
         [Authorize]
+        [ProducesResponseType(typeof(Fact), 201)]
         public async Task<IActionResult> Create([FromBody] Fact fact)
         {
             var result = await _factService.CreateFactAsync(fact);
@@ -43,11 +46,13 @@ namespace Nulobe.Api.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
+        [ProducesResponseType(typeof(Fact), 200)]
         public async Task<IActionResult> Update(string id, [FromBody] Fact fact)
             => Ok(await _factService.UpdateFactAsync(id, fact));
 
         [HttpDelete("{id}")]
         [Authorize]
+        [ProducesResponseType(204)]
         public async Task<IActionResult> Delete(string id)
         {
             await _factService.DeleteFactAsync(id);

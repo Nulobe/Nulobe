@@ -18,6 +18,8 @@ namespace Nulobe.Api.Controllers
             _tagQueryService = tagQueryService;
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(Tag[]), 200)]
         public async Task<IActionResult> List([FromQuery] TagQuery query)
             => Ok(await _tagQueryService.QueryTagsAsync(query));
     }

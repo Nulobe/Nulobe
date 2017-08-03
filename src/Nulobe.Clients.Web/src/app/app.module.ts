@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
 import { NgModule } from '@angular/core';
 
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdIconModule } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -12,9 +12,9 @@ import { AuthComponent } from './auth/auth.component';
 import { AuthCallbackComponent } from './auth/auth-callback/auth-callback.component';
 import { AuthHttp } from './auth/auth-http.service';
 
-import { ApiModule } from './api/api.module';
 import { AdminModule } from './pages/admin/admin.module';
 import { HomeModule } from './pages/home/home.module';
+import { ApiModule } from './features/api/api.module';
 
 import { NULOBE_ENV } from '../environments/environment';
 
@@ -32,12 +32,12 @@ export function httpFactory(xhrBackend: XHRBackend, requestOptions: RequestOptio
     BrowserModule,
     HttpModule,
 
-    NoopAnimationsModule,
+    BrowserAnimationsModule,
     MdButtonModule,
     MdIconModule,
 
     AppRoutingModule,
-    ApiModule.forRoot(NULOBE_ENV.API_BASE_URL),
+    ApiModule,
     AdminModule,
     HomeModule
   ],

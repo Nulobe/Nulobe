@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { FactApiClient } from '../../api/api.swagger';
+import { FactApiClient } from '../../features/api/api.swagger';
 
 @Component({
   selector: 'app-admin',

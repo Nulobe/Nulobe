@@ -9,11 +9,21 @@ import { Auth0AuthService } from '../../auth/auth.service';
 })
 export class HomeComponent implements OnInit {
 
+  private searchTags: string[] = [];
+
   constructor(
     private authService: Auth0AuthService
   ) { }
 
   ngOnInit() {
+  }
+
+  updateTags(tags: string[]) {
+    this.searchTags = tags;
+  }
+
+  search() {
+    alert('search requested!');
   }
 
 }

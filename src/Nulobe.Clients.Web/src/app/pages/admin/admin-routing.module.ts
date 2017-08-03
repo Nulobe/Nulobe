@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { Auth0AuthService } from '../../auth/auth.service';
 
 @Injectable()
-class CanActivateAdmin implements CanActivate {
+export class CanActivateAdmin implements CanActivate {
 
   constructor(
     private authService: Auth0AuthService
@@ -20,7 +20,7 @@ class CanActivateAdmin implements CanActivate {
 
 import { AdminComponent } from './admin.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
