@@ -6,11 +6,11 @@ import { AuthCallbackComponent } from './auth/auth-callback/auth-callback.compon
 
 const routes: Routes = [
   {
-    path: 'login',
+    path: 'LOBE/login',
     component: AuthComponent
   },
   {
-    path: 'callback',
+    path: 'LOBE/callback',
     component: AuthCallbackComponent
   }
 ];

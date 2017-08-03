@@ -18,7 +18,7 @@ export class Auth0AuthService implements IAuthService {
     domain: NULOBE_ENV.AUTH_DOMAIN,
     responseType: 'token id_token',
     audience: `https://${NULOBE_ENV.AUTH_DOMAIN}/userinfo`,
-    redirectUri: 'http://localhost:5001/callback', // TODO: Resolve from NULOBE_ENV
+    redirectUri: 'http://localhost:5001/LOBE/callback', // TODO: Resolve from NULOBE_ENV
     scope: 'openid'
   });
 

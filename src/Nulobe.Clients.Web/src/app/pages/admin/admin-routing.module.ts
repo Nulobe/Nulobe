@@ -22,7 +22,7 @@ import { AdminComponent } from './admin.component';
 
 export const routes: Routes = [
   {
-    path: 'admin',
+    path: 'LOBE/admin',
     component: AdminComponent,
     canActivate: [CanActivateAdmin]
   }

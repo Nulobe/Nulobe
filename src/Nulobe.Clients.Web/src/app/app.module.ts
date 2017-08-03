@@ -14,6 +14,8 @@ import { AuthHttp } from './auth/auth-http.service';
 
 import { AdminModule } from './pages/admin/admin.module';
 import { HomeModule } from './pages/home/home.module';
+import { ResultsModule } from './pages/results/results.module';
+
 import { ApiModule } from './features/api/api.module';
 
 import { NULOBE_ENV } from '../environments/environment';
@@ -37,9 +39,11 @@ export function httpFactory(xhrBackend: XHRBackend, requestOptions: RequestOptio
     MdIconModule,
 
     AppRoutingModule,
-    ApiModule,
     AdminModule,
-    HomeModule
+    HomeModule,
+    ResultsModule,
+
+    ApiModule
   ],
   providers: [
     Auth0AuthService,

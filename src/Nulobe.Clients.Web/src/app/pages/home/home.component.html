@@ -4,7 +4,8 @@
       <div class="brand-container">
         <img
           src="/assets/images/garlic.png"
-          width="100px" />
+          width="100px"
+          height="100px" />
       </div>
       <app-tag-selector
           (onTagsUpdated)="updateTags($event)"
@@ -14,7 +15,7 @@
     </div>
   </div>
   <div class="admin-button-container" *ngIf="authService.isAuthenticated()">
-    <button md-fab class="admin-button" routerLink="admin">
+    <button md-fab class="admin-button" routerLink="LOBE/admin">
       <md-icon>settings</md-icon>
     </button>
   </div>
