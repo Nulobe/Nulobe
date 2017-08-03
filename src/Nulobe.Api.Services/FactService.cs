@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Nulobe.DocumentDb.Client;
+using Microsoft.Azure.Documents;
 
 namespace Nulobe.Api.Services
 {
@@ -47,13 +48,32 @@ namespace Nulobe.Api.Services
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Fact>> QueryFactsAsync(FactQuery query)
+        public Task<IEnumerable<Fact>> QueryFactsAsync(FactQuery query)
         {
-            await Task.FromResult(0);
+            var tags = query.Tags
+                .Split(',')
+                .Select(t => t.Trim())
+                .Where(t => !string.IsNullOrEmpty(t));
+
+            var sqlQueryText = "SELECT * FROM Facts f";
+            if (tags.Any())
+            {
+                sqlQueryText += " WHERE ";
+                sqlQueryText += string.Join(" OR ", tags.Select((t, i) => $"ARRAY_CONTAINS(f.Tags, @tag{i})"));
+            }
+
+            var sqlParameters = new SqlParameterCollection(
+                tags.Select((t, i) => new SqlParameter($"@tag{i}", t)));
+
             using (var client = _documentClientFactory.Create(_factServiceOptions))
             {
-                return client.CreateDocumentQuery<Fact>(_factServiceOptions)
-                    .ToList();
+                var result = client.CreateDocumentQuery<Fact>(_factServiceOptions, new SqlQuerySpec()
+                {
+                    QueryText = sqlQueryText,
+                    Parameters = sqlParameters
+                }).ToList();
+
+                return Task.FromResult(result.AsEnumerable());
             }
         }
 

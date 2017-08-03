@@ -23,13 +23,20 @@ namespace Nulobe.Runner
             services.AddApiServices(configuration);
             var serviceProvider = services.BuildServiceProvider();
 
-            var tagQueryService = serviceProvider.GetRequiredService<ITagQueryService>();
-            var result = tagQueryService.QueryTagsAsync(new TagQuery()
+            //var tagQueryService = serviceProvider.GetRequiredService<ITagQueryService>();
+            //var result = tagQueryService.QueryTagsAsync(new TagQuery()
+            //{
+            //    Fields = "text,usagecount",
+            //    OrderBy = "usagecount",
+            //    SearchPattern = "x"
+            //}).Result;
+
+            var factQueryService = serviceProvider.GetRequiredService<IFactQueryService>();
+            var result = factQueryService.QueryFactsAsync(new FactQuery()
             {
-                Fields = "text,usagecount",
-                OrderBy = "usagecount",
-                SearchPattern = "x"
+                Tags = "dairy,nutrition"
             }).Result;
+
         }
 
         private class MockHostingEnvironment : IHostingEnvironment
