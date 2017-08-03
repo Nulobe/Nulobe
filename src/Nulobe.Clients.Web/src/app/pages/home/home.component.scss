@@ -37,9 +37,8 @@
     .admin-button-container {
         @include transition(opacity 0.2s ease);
         position: absolute;
-        padding: 15px;
-        right: 0;
-        bottom: 0;
+        right: 15px;
+        bottom: 15px;
         opacity: 0;
 
         &:hover {
