@@ -1,0 +1,49 @@
+@import "../../../assets/scss/mixins";
+
+@include keyframes(app-results-spinner-fade-out) {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@include keyframes(app-results-content-fade-in) {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.app-results {
+    position: relative;
+
+    .spinner-container {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        top: 0;
+
+        .spinner {
+            margin-top: 160px;
+
+            &.fade-out {
+                animation: app-results-spinner-fade-out 0.5s linear;
+                animation-fill-mode: forwards;
+            }
+        }
+    }
+
+    .content {
+        @include flex-display();
+        @include justify-content(center);
+        opacity: 0;
+
+        &.fade-in {
+            animation: app-results-content-fade-in 0.2s linear;
+            animation-fill-mode: forwards;
+            animation-delay: 0.25s;
+        }
+
+        .container {
+            margin-top: 100px;
+            max-width: 800px;
+        }
+    }
+    
+}
