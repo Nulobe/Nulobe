@@ -21,7 +21,7 @@ import { Http, Headers, ResponseContentType, Response } from '@angular/http';
 export const API_BASE_URL = new OpaqueToken('API_BASE_URL');
 
 export interface IFactApiClient {
-    list(): Observable<Fact[] | null>;
+    list(tags: string | undefined): Observable<Fact[] | null>;
     create(fact: Fact | undefined): Observable<Fact | null>;
     get(id: string): Observable<Fact | null>;
     update(id: string, fact: Fact | undefined): Observable<Fact | null>;
@@ -39,8 +39,10 @@ export class FactApiClient implements IFactApiClient {
         this.baseUrl = baseUrl ? baseUrl : "";
     }
 
-    list(): Observable<Fact[] | null> {
-        let url_ = this.baseUrl + "/facts";
+    list(tags: string | undefined): Observable<Fact[] | null> {
+        let url_ = this.baseUrl + "/facts?";
+        if (tags !== undefined)
+            url_ += "tags=" + encodeURIComponent("" + tags) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
