@@ -1,4 +1,5 @@
 @import "../../../assets/scss/mixins";
+@import "../../../assets/scss/variables";
 
 @include keyframes(app-results-spinner-fade-out) {
     0% { opacity: 1; }
@@ -42,7 +43,27 @@
 
         .container {
             margin-top: 100px;
-            max-width: 800px;
+            width: 800px;
+
+            .fact-list-container {
+                app-fact-list {
+                    //width: 600px;
+                }
+            }
+
+            .fact-list-end-container {
+                margin-top: 100px;
+
+                .fact-list-end {
+                    padding-left: 100px;
+                    padding-right: 100px;
+                    padding-bottom: 100px;
+
+                    .fact-list-end-rule {
+                        border-top: 1px solid $medium-lobe-color;
+                    }
+                }
+            }
         }
     }
     

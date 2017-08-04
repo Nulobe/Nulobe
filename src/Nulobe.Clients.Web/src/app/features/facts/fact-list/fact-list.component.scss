@@ -1,0 +1,44 @@
+@import "../../../../assets/scss/variables";
+
+:host {
+    .fact-container {
+        position: relative;
+        background-color: red;
+
+        .fact-controls-container {
+            position: absolute;
+            height: 100%;
+            width: 40px;
+            left: -40px;
+            top: 0;
+
+            .fact-controls {
+                padding-top: 10px;
+                display: none;
+
+                .fact-control {
+                    color: $medium-lobe-color;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: $primary-color;
+                    }
+                }
+            }
+
+            &:hover {
+                .fact-controls {
+                    display: block;
+                }
+            }
+        }
+
+        &:hover {
+            .fact-controls-container {
+                .fact-controls {
+                    display: block;
+                }   
+            }
+        }
+    }
+}

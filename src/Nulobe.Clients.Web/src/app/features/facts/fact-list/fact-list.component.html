@@ -1,0 +1,18 @@
+<div>
+  <div *ngFor="let fact of facts" class="fact-container">
+    <app-fact-list-item [fact]="fact"></app-fact-list-item>
+    <!--<a [routerLink]="factLinkResolver.resolve(fact)">
+      <app-fact-list-item [fact]="fact"></app-fact-list-item>
+    </a>-->
+    <div class="fact-controls-container">
+      <div class="fact-controls">
+        <div class="fact-control">
+          <md-icon>thumb_up</md-icon>
+        </div>
+        <div class="fact-control">
+          <md-icon>flag</md-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
