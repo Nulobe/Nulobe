@@ -5,7 +5,13 @@
     </div>
   </div>
   <div class="content" [class.fade-in]="!(loading$ | async)">
-    <div class="container">
+    <div class="container" *ngIf="!(loading$ | async)">
+      <div class="title">
+        <app-tag-list
+          [tags]="tags"
+          (onTagClick)="navigateToTag($event)"></app-tag-list>
+        <h1>Found {{ (facts$ | async).length }} nuerons</h1>
+      </div>
       <div class="fact-list-container">
         <app-fact-list
           [facts]="facts$ | async"

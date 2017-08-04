@@ -14,9 +14,11 @@ import { ResultsPathHelper } from './results-path.helper';
 export class ResultsComponent implements OnInit {
 
   private _loading: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  private _facts = new BehaviorSubject<Fact[]>([]);
 
-  private facts$: Observable<Fact[]>;
   private loading$: Observable<boolean> = this._loading.asObservable();
+  private facts$: Observable<Fact[]> = this._facts.asObservable();
+  private tags: string[] = [];
 
   constructor(
     private factApiClient: FactApiClient,
@@ -33,22 +35,25 @@ export class ResultsComponent implements OnInit {
       throw new Error('error parsing tags');
     }
 
-    this.loadFacts(tags);
+    this.tags = tags;
+    this.loadFacts();
   }
 
   navigateToTag(tag: string) {
     // Router doesn't refresh when ending up at same route, even when path changes
     this._loading.next(true);
-    this.router.navigate([tag])
-      .then(() => this.loadFacts([tag]));
+    this.tags = [tag];
+    this.router.navigate([tag]).then(() => this.loadFacts());
   }
 
-  private loadFacts(tags: string[]) {
-    this.facts$ = this.factApiClient.list(tags.join(','));
+  private loadFacts() {
+    let factsUpdated$ = this.factApiClient.list(this.tags.join(','));
+    
+    factsUpdated$.subscribe(facts => this._facts.next(facts));
 
     // Delay emitting loading = false intelligently:
     let delay = Observable.timer(500);
-    Observable.combineLatest([this.facts$, delay])
+    Observable.combineLatest([factsUpdated$, delay])
       .subscribe(() => this._loading.next(false));
   }
 }

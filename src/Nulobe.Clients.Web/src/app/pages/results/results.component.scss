@@ -42,8 +42,14 @@
         }
 
         .container {
-            margin-top: 100px;
+            margin-top: 50px;
             width: 800px;
+
+            .title {
+                @include flex-display();
+                @include flex-direction(column);
+                @include align-items(center);
+            }
 
             .fact-list-container {
                 app-fact-list {

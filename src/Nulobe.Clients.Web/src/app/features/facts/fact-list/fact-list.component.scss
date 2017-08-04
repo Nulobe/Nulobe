@@ -4,6 +4,10 @@
     .fact-container {
         position: relative;
 
+        &:not(:first-child) {
+            margin-top: 50px;
+        }
+
         .fact-controls-container {
             position: absolute;
             height: 100%;
