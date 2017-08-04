@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdIconModule } from '@angular/material';
 
+import { TagsModule } from '../tags/tags.module';
+
 import { FactListComponent } from './fact-list/fact-list.component';
 import { FactListItemComponent } from './fact-list-item/fact-list-item.component';
 
@@ -11,7 +13,8 @@ import { FactListItemComponent } from './fact-list-item/fact-list-item.component
   imports: [
     CommonModule,
     BrowserAnimationsModule,
-    MdIconModule
+    MdIconModule,
+    TagsModule
   ],
   declarations: [
     FactListComponent,

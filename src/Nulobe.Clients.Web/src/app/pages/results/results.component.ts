@@ -33,6 +33,17 @@ export class ResultsComponent implements OnInit {
       throw new Error('error parsing tags');
     }
 
+    this.loadFacts(tags);
+  }
+
+  navigateToTag(tag: string) {
+    // Router doesn't refresh when ending up at same route, even when path changes
+    this._loading.next(true);
+    this.router.navigate([tag])
+      .then(() => this.loadFacts([tag]));
+  }
+
+  private loadFacts(tags: string[]) {
     this.facts$ = this.factApiClient.list(tags.join(','));
 
     // Delay emitting loading = false intelligently:

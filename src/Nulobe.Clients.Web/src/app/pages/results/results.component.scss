@@ -16,7 +16,7 @@
 
     .spinner-container {
         position: absolute;
-        width: 100%;
+        width: calc(100% - 15px);
         left: 0;
         top: 0;
 

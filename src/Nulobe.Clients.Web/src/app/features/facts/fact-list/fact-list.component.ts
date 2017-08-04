@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Fact } from '../../api/api.swagger';
 
@@ -14,6 +14,7 @@ export interface FactLinkResolver {
 export class FactListComponent implements OnInit {
   @Input() facts: Fact[];
   @Input() factLinkResolver: FactLinkResolver;
+  @Output() onTagClick = new EventEmitter<string>()
 
   constructor() { }
 
@@ -25,4 +26,7 @@ export class FactListComponent implements OnInit {
     }
   }
 
+  tagClicked(tag: string) {
+    this.onTagClick.emit(tag);
+  }
 }

@@ -7,7 +7,9 @@
   <div class="content" [class.fade-in]="!(loading$ | async)">
     <div class="container">
       <div class="fact-list-container">
-        <app-fact-list [facts]="facts$ | async"></app-fact-list>
+        <app-fact-list
+          [facts]="facts$ | async"
+          (onTagClick)="navigateToTag($event)"></app-fact-list>
       </div>
       <div class="fact-list-end-container">
           <div class="fact-list-end">

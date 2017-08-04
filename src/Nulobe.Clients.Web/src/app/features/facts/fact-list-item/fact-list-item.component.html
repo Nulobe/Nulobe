@@ -4,6 +4,11 @@
     {{ fact.definition }}
   </div>
   <div class="sources">
-    
+
+  </div>
+  <div class="tags-list-container">
+    <app-tag-list
+      [tags]="fact.tags"
+      (onTagClick)="tagClicked($event)"></app-tag-list>
   </div>
 </div>

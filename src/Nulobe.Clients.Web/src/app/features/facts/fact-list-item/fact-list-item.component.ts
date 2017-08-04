@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Fact } from '../../api/api.swagger';
 
@@ -9,10 +9,15 @@ import { Fact } from '../../api/api.swagger';
 })
 export class FactListItemComponent implements OnInit {
   @Input() fact: Fact;
+  @Output() onTagClick = new EventEmitter<string>();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  tagClicked(tag: string) {
+    this.onTagClick.emit(tag);
   }
 
 }
