@@ -35,10 +35,16 @@ namespace Nulobe.Api.Quizlet
                 client.DefaultRequestHeaders.Add("Authorization", $"Basic {auth.Base64Encode()}");
                 
                 var response = await client.PostAsync(_options.TokenEndpoint, new FormUrlEncodedContent(tokenFormDictionary));
-                response.EnsureSuccessStatusCode();
-
                 var content = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<QuizletTokenResponse>(content);
+                if (response.IsSuccessStatusCode)
+                {
+                    return JsonConvert.DeserializeObject<QuizletTokenResponse>(content);
+                }
+                else
+                {
+                    var error = JsonConvert.DeserializeObject<QuizletTokenError>(content);
+                    throw new QuizletTokenRequestException(error);
+                }
             }
         }
     }

@@ -86,7 +86,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuizletApiServiceCollectionExtensions.cs" />
     <Compile Include="QuizletTokenClient.cs" />
+    <Compile Include="QuizletTokenError.cs" />
     <Compile Include="QuizletTokenRequest.cs" />
+    <Compile Include="QuizletTokenRequestException.cs" />
     <Compile Include="QuizletTokenResponse.cs" />
   </ItemGroup>
   <ItemGroup>

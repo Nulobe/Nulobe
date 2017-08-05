@@ -14,5 +14,8 @@ namespace Nulobe.Api.Quizlet
 
         [JsonProperty("user_id")]
         public string UserId { get; set; }
+
+        [JsonProperty("expires_in")]
+        public int ExpiresIn { get; set; }
     }
 }

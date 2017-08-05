@@ -259,6 +259,110 @@ export class FactApiClient implements IFactApiClient {
     }
 }
 
+export interface IQuizletApiClient {
+    token(request: QuizletTokenRequest | undefined): Observable<QuizletTokenResponse | null>;
+    createSet(): Observable<FileResponse | null>;
+}
+
+@Injectable()
+export class QuizletApiClient implements IQuizletApiClient {
+    private http: Http;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    token(request: QuizletTokenRequest | undefined): Observable<QuizletTokenResponse | null> {
+        let url_ = this.baseUrl + "/quizlet/token";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+        
+        let options_ = {
+            body: content_,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processToken(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processToken(response_);
+                } catch (e) {
+                    return <Observable<QuizletTokenResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<QuizletTokenResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processToken(response: Response): Observable<QuizletTokenResponse | null> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: QuizletTokenResponse | null = null;
+            result200 = _responseText === "" ? null : <QuizletTokenResponse>JSON.parse(_responseText, this.jsonParseReviver);
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText);
+        }
+        return Observable.of<QuizletTokenResponse | null>(<any>null);
+    }
+
+    createSet(): Observable<FileResponse | null> {
+        let url_ = this.baseUrl + "/quizlet/sets";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = {
+            method: "post",
+            responseType: ResponseContentType.Blob,
+            headers: new Headers({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processCreateSet(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processCreateSet(response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processCreateSet(response: Response): Observable<FileResponse | null> {
+        const status = response.status; 
+
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*)"?;/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return Observable.of({ fileName: fileName, data: response.blob(), status: status, headers: response.headers ? response.headers.toJSON() : {} });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(response.blob()).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText);
+            });
+        }
+        return Observable.of<FileResponse | null>(<any>null);
+    }
+}
+
 export interface ITagApiClient {
     list(searchPattern: string | undefined, fields: string | undefined, orderBy: string | undefined): Observable<Tag[] | null>;
 }
@@ -336,9 +440,27 @@ export interface Source {
     url?: string | undefined;
 }
 
+export interface QuizletTokenRequest {
+    code?: string | undefined;
+    redirectUri?: string | undefined;
+}
+
+export interface QuizletTokenResponse {
+    access_token?: string | undefined;
+    user_id?: string | undefined;
+    expires_in: number;
+}
+
 export interface Tag {
     text?: string | undefined;
     usageCount: number;
+}
+
+export interface FileResponse {
+    data: Blob;
+	status: number;
+    fileName?: string;
+	headers?: { [name: string]: any };
 }
 
 export class SwaggerException extends Error {

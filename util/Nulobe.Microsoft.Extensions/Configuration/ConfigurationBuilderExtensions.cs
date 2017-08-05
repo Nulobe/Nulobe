@@ -16,16 +16,14 @@ namespace Microsoft.Extensions.Configuration
         {
             builder
                 .AddJsonFile("appsettings.json", optional: false)
-                .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", optional: true);
+                .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", optional: true)
+                .AddJsonFile("appsettings.Shared.json", optional: false)
+                .AddJsonFile($"appsettings.Shared.{hostingEnvironment.EnvironmentName}.json", optional: true);
 
             if (hostingEnvironment.IsDevelopment())
             {
                 builder.AddUserSecrets<TMarker>();
             }
-
-            builder
-                .AddJsonFile("appsettings.Shared.json", optional: false)
-                .AddJsonFile($"appsettings.Shared.{hostingEnvironment.EnvironmentName}.json", optional: true);
 
             return builder;
         }

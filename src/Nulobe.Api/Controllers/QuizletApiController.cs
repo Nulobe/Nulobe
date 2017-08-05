@@ -22,7 +22,7 @@ namespace Nulobe.Api.Controllers
 
         [HttpPost("token")]
         [ProducesResponseType(typeof(QuizletTokenResponse), 200)]
-        public async Task<IActionResult> Token(QuizletTokenRequest request)
+        public async Task<IActionResult> Token([FromBody] QuizletTokenRequest request)
             => Ok(await _quizletTokenClient.GetTokenAsync(request));
 
         [Route("sets")]
