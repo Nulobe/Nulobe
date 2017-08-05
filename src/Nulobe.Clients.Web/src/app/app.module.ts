@@ -15,8 +15,6 @@ import { ResultsModule } from './pages/results/results.module';
 import { AuthModule } from './features/auth/auth.module';
 import { ApiModule } from './features/api/api.module';
 
-import { NULOBE_ENV } from '../environments/environment';
-
 // export function authHttpFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, authService: Auth0AuthService): Http {
 //   return new AuthHttp(xhrBackend, requestOptions, authService);
 // }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { FactApiClient, TagApiClient, QuizletApiClient, API_BASE_URL } from './api.swagger';
 
-import { NULOBE_ENV } from '../../../environments/environment';
+import { NULOBE_ENV_SETTINGS } from '../../../environments/environment';
 
 @NgModule({
   imports: [
@@ -15,7 +15,7 @@ import { NULOBE_ENV } from '../../../environments/environment';
     TagApiClient,
     QuizletApiClient,
     
-    <ValueProvider>{ provide: API_BASE_URL, useValue: NULOBE_ENV.API_BASE_URL }
+    <ValueProvider>{ provide: API_BASE_URL, useValue: NULOBE_ENV_SETTINGS.apiBaseUrl }
   ]
 })
 export class ApiModule {}

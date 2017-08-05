@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 
 import * as auth0 from 'auth0-js';
 
+import { NULOBE_ENV_SETTINGS } from '../../../../../environments/environment';
+
 import { AuthConfig } from './auth-config';
 import { AuthResult } from './auth-result';
 import { IAuthHandler } from './auth-handler';
@@ -82,7 +84,7 @@ export class AuthService implements IAuthService {
       domain: config.domain,
       responseType: config.responseType,
       audience: config.audience,
-      redirectUri: 'http://localhost:5001/LOBE/callback', // TODO: Resolve from NULOBE_ENV
+      redirectUri: `${NULOBE_ENV_SETTINGS.baseUrl}/LOBE/callback`,
       scope: config.scope,
       state
     })

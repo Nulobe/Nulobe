@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { UrlTree } from '@angular/router';
 
+import { NULOBE_ENV_SETTINGS } from '../../../../../../environments/environment';
+
 import { AuthConfig } from '../auth-config';
 import { AuthResult } from '../auth-result';
 import { IAuthHandler } from '../auth-handler';
@@ -25,8 +27,7 @@ export class QuizletAuthHandler implements IAuthHandler {
     return this.quizletApiClient
       .token({
         code: parsedUrl.queryParams['code'],
-        redirectUri: 'http://localhost:5001/LOBE/callback' // TODO: Resolve host from NULOBE_ENV
-      })
+        redirectUri: `${NULOBE_ENV_SETTINGS.baseUrl}/LOBE/callback`})
       .map(r => <AuthResult>{
         accessToken: r.access_token,
         expiresIn: r.expires_in,

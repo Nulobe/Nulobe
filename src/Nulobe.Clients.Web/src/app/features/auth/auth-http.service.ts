@@ -1,7 +1,7 @@
 import { Injectable, FactoryProvider } from "@angular/core";
 import { ConnectionBackend, RequestOptions, Request, RequestOptionsArgs, Response, Http, Headers, XHRBackend } from "@angular/http";
 import { Observable } from "rxjs/Rx";
-import { NULOBE_ENV } from '../../../environments/environment';
+import { NULOBE_ENV_SETTINGS } from '../../../environments/environment';
 import { Auth0AuthService } from './auth.service';
 
 export function authHttpFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, authService: Auth0AuthService): Http {
@@ -88,7 +88,7 @@ export class AuthHttp extends Http {
             options.headers = new Headers();
         }
 
-        if (url.startsWith(NULOBE_ENV.API_BASE_URL) && this.authService.isAuthenticated()) {
+        if (url.startsWith(NULOBE_ENV_SETTINGS.apiBaseUrl) && this.authService.isAuthenticated()) {
             options.headers.append(
                 'Authorization',
                 `Bearer ${this.authService.getIdToken()}`)

@@ -16,6 +16,7 @@ using System.Net;
 using Microsoft.Extensions.Options;
 using Nulobe.Framework;
 using Microsoft.Extensions.FileProviders;
+using Newtonsoft.Json;
 
 namespace Nulobe.Clients.Web.Host
 {
@@ -32,6 +33,7 @@ namespace Nulobe.Clients.Web.Host
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureAuth0(_configuration);
+            services.ConfigureQuizlet(_configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -156,18 +158,37 @@ namespace Nulobe.Clients.Web.Host
             var serviceProvider = context.RequestServices;
             var hostingEnvironment = serviceProvider.GetRequiredService<IHostingEnvironment>();
             var auth0Options = serviceProvider.GetRequiredService<IOptions<Auth0Options>>().Value;
+            var quizletOptions = serviceProvider.GetRequiredService<IOptions<QuizletOptions>>().Value;
 
-            var environmentSettings =
-                new Dictionary<string, object>()
+            var environmentSettings = new
+            {
+                baseUrl = _configuration["Nulobe:WebBaseUrl"],
+                apiBaseUrl = _configuration["Nulobe:ApiBaseUrl"],
+                auth = new
                 {
-                    { "ENVIRONMENT", serviceProvider.GetRequiredService<IHostingEnvironment>().EnvironmentName },
-                    { "API_BASE_URL", _configuration["Nulobe:ApiBaseUrl"] },
-                    { "AUTH_CLIENT_ID", auth0Options.ClientId },
-                    { "AUTH_DOMAIN", auth0Options.Domain }
+                    auth0 = GetPublicAuthOptions(auth0Options),
+                    quizlet = GetPublicAuthOptions(quizletOptions)
                 }
-                .Select(kvp => $"{kvp.Key}: \"{kvp.Value}\"");
+            };
 
-            return "var NULOBE_ENV = { " + string.Join(", ", environmentSettings) + " };";
+            var environmentName = hostingEnvironment.EnvironmentName;
+
+            var jsVariables = new Dictionary<string, string>()
+            {
+                { "NULOBE_ENV", $"\"{hostingEnvironment.EnvironmentName}\"" },
+                { "NULOBE_ENV_SETTINGS", JsonConvert.SerializeObject(environmentSettings) }
+            };
+
+            return string.Join(Environment.NewLine, jsVariables.Select(kvp => $"var {kvp.Key} = {kvp.Value};"));
+        }
+
+        private object GetPublicAuthOptions(IAuthOptions options)
+        {
+            return new
+            {
+                clientId = options.ClientId,
+                domain = options.Domain
+            };
         }
     }
 }

@@ -7,11 +7,21 @@ export const environment = {
   production: false
 };
 
-export interface NulobeEnvironment {
-  ENVIRONMENT: string;
-  API_BASE_URL: string;
-  AUTH_CLIENT_ID: string;
-  AUTH_DOMAIN: string;
+export interface AuthSettings {
+  clientId: string;
+  domain: string;
 }
 
-export const NULOBE_ENV: NulobeEnvironment = window["NULOBE_ENV"];
+export interface AuthSettingsCollection {
+  auth0: AuthSettings;
+  quizlet: AuthSettings;
+}
+
+export interface EnvironmentSettings {
+  baseUrl: string;
+  apiBaseUrl: string;
+  auth: AuthSettingsCollection;
+}
+
+export const NULOBE_ENV: string = window["NULOBE_ENV"];
+export const NULOBE_ENV_SETTINGS: EnvironmentSettings = window["NULOBE_ENV_SETTINGS"];
