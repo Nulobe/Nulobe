@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Nulobe.Api.Services;
+using Nulobe.Api.Core;
 using Nulobe.DocumentDb.Client;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ApiServiceCollectionExtensions
     {
-        public static IServiceCollection AddApiServices(
+        public static IServiceCollection AddCoreApiServices(
             this IServiceCollection services,
             IConfiguration configuration)
         {

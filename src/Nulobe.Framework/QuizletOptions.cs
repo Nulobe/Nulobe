@@ -13,5 +13,7 @@ namespace Nulobe.Framework
         public string ClientId { get; set; }
 
         public string ClientSecret { get; set; }
+
+        public Uri TokenEndpoint { get; set; }
     }
 }

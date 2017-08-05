@@ -15,11 +15,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Services\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
     <PackageReference Include="Microsoft.Azure.DocumentDB" Version="1.13.0" />
@@ -28,12 +29,14 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="NSwag.MSBuild" Version="11.3.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\util\Nulobe.DocumentDb.Client\Nulobe.DocumentDb.Client.csproj" />
     <ProjectReference Include="..\..\util\Nulobe.Microsoft.Extensions\Nulobe.Microsoft.Extensions.csproj" />
-    <ProjectReference Include="..\Nulobe.Api.Services\Nulobe.Api.Services.csproj" />
+    <ProjectReference Include="..\Nulobe.Api.Core\Nulobe.Api.Core.csproj" />
+    <ProjectReference Include="..\Nulobe.Api.Quizlet\Nulobe.Api.Quizlet.csproj" />
     <ProjectReference Include="..\Nulobe.Framework\Nulobe.Framework.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Nulobe.DocumentDb.Client;
-using Nulobe.Api.Services;
+using Nulobe.Api.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Nulobe.Framework;
@@ -34,7 +34,8 @@ namespace Nulobe.Api
             services.ConfigureAuth0(_configuration);
             services.ConfigureQuizlet(_configuration);
 
-            services.AddApiServices(_configuration);
+            services.AddCoreApiServices(_configuration);
+            services.AddQuizletApiServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,16 +68,15 @@ namespace Nulobe.Api
             app.MapWhen(
                 context =>
                 {
-                    var result = context.Request.Path.StartsWithSegments(new PathString("quizlet"), StringComparison.InvariantCultureIgnoreCase);
-                    return result;
+                    var skipAuthentication = context.Request.Path.StartsWithSegments(new PathString("/quizlet"), StringComparison.InvariantCultureIgnoreCase);
+                    return !skipAuthentication;
                 },
                 innerApp =>
                 {
                     innerApp.UseJwtBearerAuthentication(new JwtBearerOptions()
                     {
                         Audience = auth0Options.Value.ClientId,
-                        Authority = auth0Options.Value.GetAuthority(),
-                        AuthenticationScheme = "Auth0",
+                        Authority = auth0Options.Value.GetAuthority()
 
                     });
                 });

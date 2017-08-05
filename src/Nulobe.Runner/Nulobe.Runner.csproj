@@ -113,8 +113,8 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Extensions.Primitives.1.1.1\lib\netstandard1.0\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -169,9 +169,9 @@
       <Project>{1ed50f87-b739-4391-9ac4-3b1d7aa2ba7b}</Project>
       <Name>Nulobe.Microsoft.Extensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Nulobe.Api.Services\Nulobe.Api.Services.csproj">
+    <ProjectReference Include="..\Nulobe.Api.Core\Nulobe.Api.Core.csproj">
       <Project>{e4000c19-53a6-406d-9f8a-c6fcb19f76ba}</Project>
-      <Name>Nulobe.Api.Services</Name>
+      <Name>Nulobe.Api.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

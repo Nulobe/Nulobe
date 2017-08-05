@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Nulobe.Api.Services
+namespace Nulobe.Api.Core
 {
     public class TagQuery
     {

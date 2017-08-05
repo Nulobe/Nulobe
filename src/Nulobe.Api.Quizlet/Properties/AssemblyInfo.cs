@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Nulobe.Api.Services")]
+[assembly: AssemblyTitle("Nulobe.Api.Quizlet")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Nulobe.Api.Services")]
+[assembly: AssemblyProduct("Nulobe.Api.Quizlet")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("e4000c19-53a6-406d-9f8a-c6fcb19f76ba")]
+[assembly: Guid("95e7d1ba-51fc-4761-8302-4e7633c99aa9")]
 
 // Version information for an assembly consists of the following four values:
 //

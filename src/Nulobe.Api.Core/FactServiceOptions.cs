@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Nulobe.DocumentDb.Client;
 
-namespace Nulobe.Api.Services
+namespace Nulobe.Api.Core
 {
     public class FactServiceOptions : IDocumentDbConnectionSpec, IDocumentDbCollectionSpec
     {

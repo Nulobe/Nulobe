@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.DependencyInjection;
-using Nulobe.Api.Services;
+using Nulobe.Api.Core;
 
 namespace Nulobe.Runner
 {
@@ -20,7 +20,7 @@ namespace Nulobe.Runner
 
             var services = new ServiceCollection();
             services.AddOptions();
-            services.AddApiServices(configuration);
+            services.AddCoreApiServices(configuration);
             var serviceProvider = services.BuildServiceProvider();
 
             //var tagQueryService = serviceProvider.GetRequiredService<ITagQueryService>();
