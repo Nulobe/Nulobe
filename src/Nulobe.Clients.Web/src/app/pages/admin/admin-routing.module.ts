@@ -3,7 +3,7 @@ import { Routes, RouterModule, CanActivate, ActivatedRouteSnapshot, RouterStateS
 import { Observable } from 'rxjs';
 
 
-import { Auth0AuthService } from '../../auth/auth.service';
+import { Auth0AuthService } from '../../features/auth/auth.service';
 
 @Injectable()
 export class CanActivateAdmin implements CanActivate {

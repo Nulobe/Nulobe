@@ -32,6 +32,7 @@ namespace Nulobe.Api
             services.AddMvc();
 
             services.ConfigureAuth0(_configuration);
+            services.ConfigureQuizlet(_configuration);
 
             services.AddApiServices(_configuration);
         }
@@ -63,11 +64,22 @@ namespace Nulobe.Api
                 .AllowAnyOrigin() // Can make this more secure
                 .AllowCredentials());
 
-            app.UseJwtBearerAuthentication(new JwtBearerOptions()
-            {
-                Audience = auth0Options.Value.ClientId,
-                Authority = $"https://{auth0Options.Value.Domain}"
-            });
+            app.MapWhen(
+                context =>
+                {
+                    var result = context.Request.Path.StartsWithSegments(new PathString("quizlet"), StringComparison.InvariantCultureIgnoreCase);
+                    return result;
+                },
+                innerApp =>
+                {
+                    innerApp.UseJwtBearerAuthentication(new JwtBearerOptions()
+                    {
+                        Audience = auth0Options.Value.ClientId,
+                        Authority = auth0Options.Value.GetAuthority(),
+                        AuthenticationScheme = "Auth0",
+
+                    });
+                });
 
             app.UseMvc();
         }

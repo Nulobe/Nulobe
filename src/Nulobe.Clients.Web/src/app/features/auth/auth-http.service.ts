@@ -1,8 +1,18 @@
-import { Injectable } from "@angular/core";
+import { Injectable, FactoryProvider } from "@angular/core";
 import { ConnectionBackend, RequestOptions, Request, RequestOptionsArgs, Response, Http, Headers, XHRBackend } from "@angular/http";
 import { Observable } from "rxjs/Rx";
-import { NULOBE_ENV } from '../../environments/environment';
+import { NULOBE_ENV } from '../../../environments/environment';
 import { Auth0AuthService } from './auth.service';
+
+export function authHttpFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, authService: Auth0AuthService): Http {
+  return new AuthHttp(xhrBackend, requestOptions, authService);
+}
+
+export const authHttpProvider = <FactoryProvider>{
+    provide: Http,
+    useFactory: authHttpFactory,
+    deps: [XHRBackend, RequestOptions, Auth0AuthService]
+};
 
 @Injectable()
 export class AuthHttp extends Http {

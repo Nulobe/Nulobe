@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Auth0AuthService } from '../../auth/auth.service';
+import { Auth0AuthService } from '../../features/auth/auth.service';
 
 import { ResultsPathHelper } from '../results/results-path.helper';
 

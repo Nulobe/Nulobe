@@ -14,7 +14,14 @@ namespace Microsoft.Extensions.DependencyInjection
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            return services.Configure<Auth0Options>(configuration.GetSection("Nulobe:Auth0"));
+            return services.Configure<Auth0Options>(configuration.GetSection("Nulobe:Auth:Auth0"));
+        }
+
+        public static IServiceCollection ConfigureQuizlet(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            return services.Configure<QuizletOptions>(configuration.GetSection("Nulobe:Auth:Quizlet"));
         }
     }
 }

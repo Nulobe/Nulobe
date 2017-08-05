@@ -7,6 +7,7 @@ import { MdButtonModule, MdIconModule } from '@angular/material';
 import { TagInputModule } from 'ngx-chips';
 
 import { HomeRoutingModule } from './home-routing.module';
+import { AuthModule } from './../../features/auth/auth.module';
 import { TagsModule } from './../../features/tags/tags.module';
 
 import { HomeComponent } from './home.component';
@@ -22,6 +23,7 @@ import { HomeComponent } from './home.component';
     TagInputModule,
 
     HomeRoutingModule,
+    AuthModule,
     TagsModule
   ],
   declarations: [
