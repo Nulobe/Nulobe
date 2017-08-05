@@ -9,9 +9,11 @@
 
   <Import Sdk="Microsoft.NET.Sdk.Web" Project="Sdk.targets" />
   <PropertyGroup>
-    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(SolutionDir)\Copy-Files.ps1" $(SolutionDir) $(MSBuildProjectDirectory)</PreBuildEvent>
-    <PreBuildEvent>"$(NSwagExe)" swagger2tsclient /input:"$(ProjectDir)../Nulobe.Api/swagger.json" /output:"$(ProjectDir)../Nulobe.Clients.Web/src/app/features/api/api.swagger.ts" /className:"{controller}Client" /typescriptVersion:2.0 /template:"Angular" /promiseType:"Promise" /dateTimeType:"Date" /generateClientInterfaces:true /generateDtoTypes:true /typeStyle:"Interface"</PreBuildEvent>
+    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(ProjectDir)\Pre-Build.ps1" $(SolutionDir) $(ProjectDir) $(NSwagExe)</PreBuildEvent>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Pre-Build.ps1" />
+  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\" />

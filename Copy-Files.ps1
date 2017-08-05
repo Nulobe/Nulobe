@@ -6,7 +6,7 @@ $projectDir = $args[1]
 
 Write-Output "Started copying appsetting files from solution configuration for $projectDir"
 
-$solutionConfigDir = [io.path]::combine($solutionDir, 'config')
+$solutionConfigDir = [io.path]::Combine($solutionDir, 'config')
 $projectConfigDir = $projectDir
 
 $fileArgs = "$solutionConfigDir $projectConfigDir appsettings.*json"
