@@ -1,6 +1,5 @@
 export interface AuthResult {
-  accessToken: string;
-  userId?: string;
-  idToken?: string;
+  bearerToken: string;
   expiresIn: number;
+  [key: string]: any;
 }

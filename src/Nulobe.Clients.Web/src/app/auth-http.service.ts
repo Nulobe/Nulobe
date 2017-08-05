@@ -1,17 +1,18 @@
 import { Injectable, FactoryProvider } from "@angular/core";
 import { ConnectionBackend, RequestOptions, Request, RequestOptionsArgs, Response, Http, Headers, XHRBackend } from "@angular/http";
 import { Observable } from "rxjs/Rx";
-import { NULOBE_ENV_SETTINGS } from '../../../environments/environment';
-import { Auth0AuthService } from './auth.service';
 
-export function authHttpFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, authService: Auth0AuthService): Http {
+import { NULOBE_ENV_SETTINGS } from '../environments/environment';
+import { AuthService } from './features/auth';
+
+export function authHttpFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, authService: AuthService): Http {
   return new AuthHttp(xhrBackend, requestOptions, authService);
 }
 
 export const authHttpProvider = <FactoryProvider>{
     provide: Http,
     useFactory: authHttpFactory,
-    deps: [XHRBackend, RequestOptions, Auth0AuthService]
+    deps: [XHRBackend, RequestOptions, AuthService]
 };
 
 @Injectable()
@@ -20,7 +21,7 @@ export class AuthHttp extends Http {
     constructor(
         private backend: ConnectionBackend,
         private defaultOptions: RequestOptions,
-        private authService: Auth0AuthService
+        private authService: AuthService
     ) {
         super(backend, defaultOptions);
     }
@@ -88,12 +89,25 @@ export class AuthHttp extends Http {
             options.headers = new Headers();
         }
 
-        if (url.startsWith(NULOBE_ENV_SETTINGS.apiBaseUrl) && this.authService.isAuthenticated()) {
-            options.headers.append(
-                'Authorization',
-                `Bearer ${this.authService.getIdToken()}`)
+        let { apiBaseUrl } = NULOBE_ENV_SETTINGS;
+        if (url.startsWith(apiBaseUrl)) {
+            let apiPath = url.substring(apiBaseUrl.length);
+            let authorityName = this.getAuthorityName(apiPath);
+
+            let bearerToken = this.authService.getBearerToken(authorityName);
+            if (bearerToken) {
+                options.headers.append('Authorization', `Bearer ${bearerToken}`);
+            }
         }
 
         return options;
+    }
+
+    private getAuthorityName(apiPath: string): string {
+        let pathSegments = apiPath.split('/');
+        switch (pathSegments[1].toLowerCase()) {
+            case 'quizlet': return 'quizlet';
+            default: return null;
+        }
     }
 }

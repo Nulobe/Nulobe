@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Auth0AuthService } from '../../features/auth/auth.service';
+import { AuthService } from '../../features/auth';
 
 import { ResultsPathHelper } from '../results/results-path.helper';
 
@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   private searchTags: string[] = [];
 
   constructor(
-    private authService: Auth0AuthService,
+    private authService: AuthService,
     private router: Router
   ) { }
 

@@ -12,11 +12,13 @@
     <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(ProjectDir)\Pre-Build.ps1" $(SolutionDir) $(ProjectDir) $(NSwagExe)</PreBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Pre-Build.ps1" />
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="wwwroot\**" />
   </ItemGroup>
-
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <None Remove="Pre-Build.ps1" />
   </ItemGroup>
 
   <ItemGroup>

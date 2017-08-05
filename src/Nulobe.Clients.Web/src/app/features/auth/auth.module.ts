@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpModule } from '@angular/http';
+
+import { ApiModule } from '../api/api.module';
 
 import { AuthRoutingModule } from './auth-routing.module';
 
 import { AuthComponent } from './components/auth/auth.component';
 import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
-
-import { Auth0AuthService } from './auth.service';
-import { AuthHttp, authHttpProvider } from './auth-http.service';
 
 import { AuthService } from './services/auth/auth.service';
 import { QuizletAuthHandler } from './services/auth/handlers/quizlet-auth-handler';
@@ -15,6 +15,8 @@ import { QuizletAuthHandler } from './services/auth/handlers/quizlet-auth-handle
 @NgModule({
   imports: [
     CommonModule,
+    HttpModule,
+    ApiModule,
     AuthRoutingModule
   ],
   declarations: [
@@ -24,9 +26,6 @@ import { QuizletAuthHandler } from './services/auth/handlers/quizlet-auth-handle
   providers: [
     AuthService,
     QuizletAuthHandler,
-
-    Auth0AuthService,
-    authHttpProvider
   ]
 })
 export class AuthModule { }

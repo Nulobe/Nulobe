@@ -17,8 +17,8 @@ export class QuizletAuthHandler implements IAuthHandler {
   ) { }
     
   authConfig: AuthConfig = {
-    clientId: 'rYgrZDAwnj',
-    domain: 'quizlet.com',
+    clientId: NULOBE_ENV_SETTINGS.auth.quizlet.clientId,
+    domain: NULOBE_ENV_SETTINGS.auth.quizlet.domain,
     responseType: 'code',
     scope: 'write_set',
   };
@@ -29,10 +29,14 @@ export class QuizletAuthHandler implements IAuthHandler {
         code: parsedUrl.queryParams['code'],
         redirectUri: `${NULOBE_ENV_SETTINGS.baseUrl}/LOBE/callback`})
       .map(r => <AuthResult>{
-        accessToken: r.access_token,
+        bearerToken: r.access_token,
         expiresIn: r.expires_in,
         userId: r.user_id
       })
       .toPromise();
+  }
+
+  getBearerToken(authResult: AuthResult): string {
+    return authResult.accessToken;
   }
 }

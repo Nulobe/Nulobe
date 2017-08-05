@@ -4,7 +4,7 @@ import { AdminComponent } from './admin.component';
 
 import { AppRoutingModule } from './admin-routing.module';
 
-import { AuthModule } from '../../features/auth/auth.module';
+import { AuthModule } from '../../features/auth';
 
 @NgModule({
   imports: [

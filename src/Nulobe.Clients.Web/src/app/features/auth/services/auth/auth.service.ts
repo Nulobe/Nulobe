@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 
 import * as auth0 from 'auth0-js';
@@ -11,20 +11,25 @@ import { IAuthHandler } from './auth-handler';
 
 import { QuizletAuthHandler } from './handlers/quizlet-auth-handler';
 
+interface AuthLocalStorageItem {
+  expiresAt: number;
+  bearerToken: string,
+  authResult: AuthResult
+}
+
 export interface IAuthService {
   redirectToLogin(authorityName?: string);
   onLoginCallback();
   logout(authorityName?: string);
   isAuthenticated(authorityName?: string): boolean;
-  getIdToken(authorityName?: string): string;
+  getBearerToken(authorityName?: string): string;
 }
 
 @Injectable()
 export class AuthService implements IAuthService {
 
   constructor(
-    private router: Router,
-    private quizletAuthHandler: QuizletAuthHandler
+    private injector: Injector
   ) { }
 
   redirectToLogin(authorityName?: string) {
@@ -34,7 +39,8 @@ export class AuthService implements IAuthService {
   }
 
   onLoginCallback() {
-    let url = this.router.parseUrl(this.router.url);
+    let router = this.injector.get(Router);
+    let url = router.parseUrl(router.url);
     let params = url.queryParams;
     
     let state = params['state'];
@@ -47,17 +53,20 @@ export class AuthService implements IAuthService {
     let authHandler = this.getAuthHandler(authorityName);
     authHandler.handleCallback(url)
       .then(authResult => {
-
-        const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
-        this.setLocalStorageItem(authResult.accessToken, 'access_token', authorityName);
-        this.setLocalStorageItem(authResult.idToken, 'id_token', authorityName);
-        this.setLocalStorageItem(expiresAt, 'expires_at', authorityName);
+        this.setAuthLocalStorageItem({
+          expiresAt: (authResult.expiresIn * 1000) + new Date().getTime(),
+          bearerToken: authResult.bearerToken,
+          authResult
+        }, authorityName);
 
         let redirectToUrl = this.getLocalStorageItem('previousUrl');
         if (!redirectToUrl) {
           redirectToUrl = '';
         }
-        this.router.navigateByUrl(redirectToUrl);
+        
+        let router = this.injector.get(Router);
+        // router.navigateByUrl(redirectToUrl);
+        router.navigate(['']);
       });
   }
 
@@ -66,18 +75,21 @@ export class AuthService implements IAuthService {
   }
 
   isAuthenticated(authorityName?: string): boolean {
-    const expiresAt = JSON.parse(this.getLocalStorageItem(authorityName, 'expires_at'));
-    return new Date().getTime() < expiresAt;
+    let authInfo = this.getAuthLocalStorageItem(authorityName);
+    return authInfo ? new Date().getTime() < authInfo.expiresAt : false;
   }
 
-  getIdToken(authorityName?: string): string {
-    return this.getLocalStorageItem(authorityName, 'id_token');
+  getBearerToken(authorityName?: string): string {
+    let authInfo = this.getAuthLocalStorageItem(authorityName);
+    return authInfo ? authInfo.bearerToken : null;
   }
 
   private createAuth0(authorityName: string, config: AuthConfig) {
     let state = `${authorityName}-${new Date().getTime()}`;
     localStorage.setItem('auth:state', state);
-    localStorage.setItem('auth:previousUrl', this.router.url);
+
+    let router = this.injector.get(Router);
+    localStorage.setItem('auth:previousUrl', router.url);
 
     return new auth0.WebAuth({
       clientID: config.clientId,
@@ -92,21 +104,30 @@ export class AuthService implements IAuthService {
 
   private getAuthHandler(authorityName: string): IAuthHandler {
     switch (authorityName.toLowerCase()) {
-      case 'quizlet': return this.quizletAuthHandler;
+      case 'quizlet': return this.injector.get(QuizletAuthHandler);
       default: throw new Error("Not implemented.");
     }
   }
 
-  private setLocalStorageItem(item: any, property: string, authorityName?: string) {
-    return localStorage.setItem(this.getLocalStorageKey(property, authorityName), item);
+  private setAuthLocalStorageItem(authInfo: AuthLocalStorageItem, authorityName?: string) {
+    this.setLocalStorageItem(JSON.stringify(authInfo), authorityName);
   }
 
-  private getLocalStorageItem(property: string, authorityName?: string): any {
-    return localStorage.getItem(this.getLocalStorageKey(property, authorityName));
+  private getAuthLocalStorageItem(authorityName?: string): AuthLocalStorageItem {
+    let json = this.getLocalStorageItem(authorityName);
+    return json ? JSON.parse(json) : null;
   }
 
-  private getLocalStorageKey(property: string, authorityName?: string): string {
-    return `auth:${this.getAuthorityName(authorityName)}:${property}`;
+  private setLocalStorageItem(item: any, authorityName?: string) {
+    return localStorage.setItem(this.getLocalStorageKey(authorityName), item);
+  }
+
+  private getLocalStorageItem(authorityName?: string): any {
+    return localStorage.getItem(this.getLocalStorageKey(authorityName));
+  }
+
+  private getLocalStorageKey(authorityName?: string): string {
+    return `auth:${this.getAuthorityName(authorityName)}`;
   }
 
   private getAuthorityName(authorityName?: string): string {

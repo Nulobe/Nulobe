@@ -2,14 +2,13 @@ import { NgModule, Injectable } from '@angular/core';
 import { Routes, RouterModule, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 
-
-import { Auth0AuthService } from '../../features/auth/auth.service';
+import { AuthService } from '../../features/auth';
 
 @Injectable()
 export class CanActivateAdmin implements CanActivate {
 
   constructor(
-    private authService: Auth0AuthService
+    private authService: AuthService
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean> {

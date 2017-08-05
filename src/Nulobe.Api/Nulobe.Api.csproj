@@ -13,10 +13,11 @@
     <PostBuildEvent>"$(NSwagExe)" webapi2swagger /assembly:"$(TargetPath)" /output:"$(ProjectDir)swagger.json" /defaultPropertyNameHandling:"CamelCase"</PostBuildEvent>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
-
   <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="wwwroot\" />
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="wwwroot\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
