@@ -30,8 +30,10 @@ namespace Nulobe.Api.Quizlet
 
             using (var quizletClient = _quizletClientFactory.Create())
             {
+                var title = string.Join(" ", query.Tags.Split(',').Select(t => $"#{t}")) + " by nulobe";
                 return await quizletClient.CreateSetAsync(new QuizletSet()
                 {
+                    Title = title,
                     Terms = result.Select(f => new QuizletTerm()
                     {
                         Name = f.Title,

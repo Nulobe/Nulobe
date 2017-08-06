@@ -14,15 +14,21 @@ namespace Nulobe.Api.Quizlet
             this QuizletClient client,
             QuizletSet set)
         {
-            var formDictionary = Enumerable.Empty<KeyValuePair<string, string>>()
-                .Concat(set.Terms.Select((t, i) => new KeyValuePair<string, string>($"term[{i}]", t.Name)))
-                .Concat(set.Terms.Select((t, i) => new KeyValuePair<string, string>($"definition[{i}]", t.Definition)))
-                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            var formData = Enumerable.Empty<KeyValuePair<string, string>>()
+                .Concat(new KeyValuePair<string, string>[]
+                {
+                    new KeyValuePair<string, string>("title", set.Title),
+                    new KeyValuePair<string, string>("lang_terms", "en"),
+                    new KeyValuePair<string, string>("lang_definitions", "en")
+                })
+                .Concat(set.Terms.Select(t => new KeyValuePair<string, string>($"terms[]", t.Name)))
+                .Concat(set.Terms.Select(t => new KeyValuePair<string, string>($"definitions[]", t.Definition)));
 
-            var result = await client.PostAsync<QuizletSetResult>("/sets", new FormUrlEncodedContent(formDictionary));
+            var result = await client.PostAsync<QuizletSetResult>("/sets", new FormUrlEncodedContent(formData));
             return new QuizletSet()
             {
                 Id = result.Id,
+                Title = set.Title,
                 Url = result.Url,
                 Terms = set.Terms
             };

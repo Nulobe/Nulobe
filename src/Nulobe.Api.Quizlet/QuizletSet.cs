@@ -11,6 +11,8 @@ namespace Nulobe.Api.Quizlet
     {
         public int Id { get; set; }
 
+        public string Title { get; set; }
+
         public Uri Url { get; set; }
 
         public IEnumerable<QuizletTerm> Terms { get; set; }

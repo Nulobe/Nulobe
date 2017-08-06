@@ -94,9 +94,9 @@
     <Compile Include="QuizletSetService.cs" />
     <Compile Include="QuizletTerm.cs" />
     <Compile Include="QuizletTokenService.cs" />
-    <Compile Include="QuizletTokenError.cs" />
+    <Compile Include="QuizletError.cs" />
     <Compile Include="QuizletTokenRequest.cs" />
-    <Compile Include="QuizletTokenRequestException.cs" />
+    <Compile Include="QuizletException.cs" />
     <Compile Include="QuizletTokenResponse.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -42,8 +42,8 @@ namespace Nulobe.Api.Quizlet
                 }
                 else
                 {
-                    var error = JsonConvert.DeserializeObject<QuizletTokenError>(content);
-                    throw new QuizletTokenRequestException(error);
+                    var error = JsonConvert.DeserializeObject<QuizletError>(content);
+                    throw new QuizletException(error);
                 }
             }
         }

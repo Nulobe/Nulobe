@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Nulobe.Api.Quizlet
 {
-    public class QuizletTokenError
+    public class QuizletError
     {
         [JsonProperty("error")]
         public string Error { get; set; }

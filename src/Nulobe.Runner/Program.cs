@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.DependencyInjection;
 using Nulobe.Api.Core;
+using Nulobe.Framework;
+using Nulobe.Api.Quizlet;
 
 namespace Nulobe.Runner
 {
@@ -21,24 +23,22 @@ namespace Nulobe.Runner
             var services = new ServiceCollection();
             services.AddOptions();
             services.AddCoreApiServices(configuration);
+            services.AddQuizletApiServices();
+            services.ConfigureQuizlet(configuration);
+            services.AddTransient<IAccessTokenAccessor, StubbedAccessTokenAccessor>();
             var serviceProvider = services.BuildServiceProvider();
 
-            //var tagQueryService = serviceProvider.GetRequiredService<ITagQueryService>();
-            //var result = tagQueryService.QueryTagsAsync(new TagQuery()
-            //{
-            //    Fields = "text,usagecount",
-            //    OrderBy = "usagecount",
-            //    SearchPattern = "x"
-            //}).Result;
-
-            var quizletBearer = "J4W8PQjEy9US7ejpTaX4V43dKcdp3sG99EnpFrb6";
-
-            var factQueryService = serviceProvider.GetRequiredService<IFactQueryService>();
-            var result = factQueryService.QueryFactsAsync(new FactQuery()
+            var quizletSetService = serviceProvider.GetRequiredService<IQuizletSetService>();
+            var result = quizletSetService.CreateSetAsync(new FactQuery()
             {
                 Tags = "dairy,nutrition"
             }).Result;
 
+        }
+
+        private class StubbedAccessTokenAccessor : IAccessTokenAccessor
+        {
+            public string AccessToken => "J4W8PQjEy9US7ejpTaX4V43dKcdp3sG99EnpFrb6";
         }
 
         private class MockHostingEnvironment : IHostingEnvironment
