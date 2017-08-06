@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Nulobe.Api.Quizlet
 {
-    public class QuizletTokenClient : IQuizletTokenClient
+    public class QuizletTokenService : IQuizletTokenService
     {
         private readonly QuizletOptions _options;
 
-        public QuizletTokenClient(
+        public QuizletTokenService(
             IOptions<QuizletOptions> options)
         {
             _options = options.Value;

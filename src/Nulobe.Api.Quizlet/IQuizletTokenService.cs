@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Nulobe.Api.Quizlet
 {
-    public interface IQuizletTokenClient
+    public interface IQuizletTokenService
     {
         Task<QuizletTokenResponse> GetTokenAsync(QuizletTokenRequest request);
     }

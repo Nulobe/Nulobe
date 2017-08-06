@@ -261,7 +261,7 @@ export class FactApiClient implements IFactApiClient {
 
 export interface IQuizletApiClient {
     token(request: QuizletTokenRequest | undefined): Observable<QuizletTokenResponse | null>;
-    createSet(): Observable<FileResponse | null>;
+    createSet(query: FactQuery | undefined): Observable<QuizletSet | null>;
 }
 
 @Injectable()
@@ -319,13 +319,15 @@ export class QuizletApiClient implements IQuizletApiClient {
         return Observable.of<QuizletTokenResponse | null>(<any>null);
     }
 
-    createSet(): Observable<FileResponse | null> {
+    createSet(query: FactQuery | undefined): Observable<QuizletSet | null> {
         let url_ = this.baseUrl + "/quizlet/sets";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(query);
+        
         let options_ = {
+            body: content_,
             method: "post",
-            responseType: ResponseContentType.Blob,
             headers: new Headers({
                 "Content-Type": "application/json", 
                 "Accept": "application/json"
@@ -339,27 +341,26 @@ export class QuizletApiClient implements IQuizletApiClient {
                 try {
                     return this.processCreateSet(response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>Observable.throw(e);
+                    return <Observable<QuizletSet>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<FileResponse>><any>Observable.throw(response_);
+                return <Observable<QuizletSet>><any>Observable.throw(response_);
         });
     }
 
-    protected processCreateSet(response: Response): Observable<FileResponse | null> {
+    protected processCreateSet(response: Response): Observable<QuizletSet | null> {
         const status = response.status; 
 
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*)"?;/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Observable.of({ fileName: fileName, data: response.blob(), status: status, headers: response.headers ? response.headers.toJSON() : {} });
+        if (status === 201) {
+            const _responseText = response.text();
+            let result201: QuizletSet | null = null;
+            result201 = _responseText === "" ? null : <QuizletSet>JSON.parse(_responseText, this.jsonParseReviver);
+            return Observable.of(result201);
         } else if (status !== 200 && status !== 204) {
-            return blobToText(response.blob()).flatMap(_responseText => {
+            const _responseText = response.text();
             return throwException("An unexpected server error occurred.", status, _responseText);
-            });
         }
-        return Observable.of<FileResponse | null>(<any>null);
+        return Observable.of<QuizletSet | null>(<any>null);
     }
 }
 
@@ -451,16 +452,24 @@ export interface QuizletTokenResponse {
     expires_in: number;
 }
 
+export interface FactQuery {
+    tags?: string | undefined;
+}
+
+export interface QuizletSet {
+    id: number;
+    url?: string | undefined;
+    terms?: QuizletTerm[] | undefined;
+}
+
+export interface QuizletTerm {
+    name?: string | undefined;
+    definition?: string | undefined;
+}
+
 export interface Tag {
     text?: string | undefined;
     usageCount: number;
-}
-
-export interface FileResponse {
-    data: Blob;
-	status: number;
-    fileName?: string;
-	headers?: { [name: string]: any };
 }
 
 export class SwaggerException extends Error {

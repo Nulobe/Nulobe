@@ -12,7 +12,9 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddQuizletApiServices(
             this IServiceCollection services)
         {
-            services.AddTransient<IQuizletTokenClient, QuizletTokenClient>();
+            services.AddTransient<IQuizletClientFactory, QuizletClientFactory>();
+            services.AddTransient<IQuizletTokenService, QuizletTokenService>();
+            services.AddTransient<IQuizletSetService, QuizletSetService>();
 
             return services;
         }

@@ -15,5 +15,7 @@ namespace Nulobe.Framework
         public string ClientSecret { get; set; }
 
         public Uri TokenEndpoint { get; set; }
+
+        public Uri ApiBaseUri { get; set; }
     }
 }

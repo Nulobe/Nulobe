@@ -12,6 +12,7 @@ using Nulobe.Api.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Nulobe.Framework;
+using Nulobe.Api.Services;
 
 namespace Nulobe.Api
 {
@@ -30,12 +31,15 @@ namespace Nulobe.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
 
             services.ConfigureAuth0(_configuration);
             services.ConfigureQuizlet(_configuration);
 
             services.AddCoreApiServices(_configuration);
             services.AddQuizletApiServices();
+
+            services.AddScoped<IAccessTokenAccessor, HttpBearerAccessTokenAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,8 +81,9 @@ namespace Nulobe.Api
                     {
                         Audience = auth0Options.Value.ClientId,
                         Authority = auth0Options.Value.GetAuthority()
-
                     });
+
+                    innerApp.UseMvc();
                 });
 
             app.UseMvc();

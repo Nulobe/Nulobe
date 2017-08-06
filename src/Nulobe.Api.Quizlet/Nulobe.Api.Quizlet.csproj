@@ -82,10 +82,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IQuizletTokenClient.cs" />
+    <Compile Include="IQuizletClientFactory.cs" />
+    <Compile Include="IQuizletSetService.cs" />
+    <Compile Include="IQuizletTokenService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuizletApiServiceCollectionExtensions.cs" />
-    <Compile Include="QuizletTokenClient.cs" />
+    <Compile Include="QuizletClient.cs" />
+    <Compile Include="QuizletClientExtensions.cs" />
+    <Compile Include="QuizletClientFactory.cs" />
+    <Compile Include="QuizletSet.cs" />
+    <Compile Include="QuizletSetService.cs" />
+    <Compile Include="QuizletTerm.cs" />
+    <Compile Include="QuizletTokenService.cs" />
     <Compile Include="QuizletTokenError.cs" />
     <Compile Include="QuizletTokenRequest.cs" />
     <Compile Include="QuizletTokenRequestException.cs" />
@@ -98,6 +106,10 @@
     <ProjectReference Include="..\..\util\Nulobe.System\Nulobe.System.csproj">
       <Project>{d8e0a60f-9f35-44a7-83a5-c0d3fadd1f83}</Project>
       <Name>Nulobe.System</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nulobe.Api.Core\Nulobe.Api.Core.csproj">
+      <Project>{E4000C19-53A6-406D-9F8A-C6FCB19F76BA}</Project>
+      <Name>Nulobe.Api.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Nulobe.Framework\Nulobe.Framework.csproj">
       <Project>{C475CBF0-F2EF-4134-93D1-A20E5EA7B2E6}</Project>

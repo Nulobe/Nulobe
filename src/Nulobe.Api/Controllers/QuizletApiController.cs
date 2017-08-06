@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Nulobe.Api.Core;
 using Nulobe.Api.Quizlet;
 using Nulobe.Framework;
 using System;
@@ -12,12 +13,15 @@ namespace Nulobe.Api.Controllers
     [Route("quizlet")]
     public class QuizletApiController : Controller
     {
-        private readonly IQuizletTokenClient _quizletTokenClient;
+        private readonly IQuizletTokenService _quizletTokenClient;
+        private readonly IQuizletSetService _quizletSetService;
 
         public QuizletApiController(
-            IQuizletTokenClient quizletTokenClient)
+            IQuizletTokenService quizletTokenClient,
+            IQuizletSetService quizletSetService)
         {
             _quizletTokenClient = quizletTokenClient;
+            _quizletSetService = quizletSetService;
         }
 
         [HttpPost("token")]
@@ -26,9 +30,11 @@ namespace Nulobe.Api.Controllers
             => Ok(await _quizletTokenClient.GetTokenAsync(request));
 
         [Route("sets")]
-        public Task<IActionResult> CreateSet()
+        [ProducesResponseType(typeof(QuizletSet), 201)]
+        public async Task<IActionResult> CreateSetAsync([FromBody] FactQuery query)
         {
-            throw new NotImplementedException();
+            var set = await _quizletSetService.CreateSetAsync(query);
+            return new CreatedResult(set.Url, set);
         }
     }
 }

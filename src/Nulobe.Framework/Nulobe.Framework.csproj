@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auth0Options.cs" />
+    <Compile Include="IAccessTokenAccessor.cs" />
     <Compile Include="IAuthOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FrameworkServiceCollectionExtensions.cs" />

@@ -32,7 +32,7 @@ namespace Nulobe.Api.Controllers
         public async Task<IActionResult> Get(string id)
             => Ok(await _factService.GetFactAsync(id));
 
-        [HttpPost]
+        [HttpPost("")]
         [Authorize]
         [ProducesResponseType(typeof(Fact), 201)]
         public async Task<IActionResult> Create([FromBody] Fact fact)
