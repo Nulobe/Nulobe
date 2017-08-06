@@ -1,15 +1,13 @@
 import { Injectable, Injector } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, UrlTree } from '@angular/router';
 
-import * as auth0 from 'auth0-js';
+import { NULOBE_ENV_SETTINGS } from '../../../environments/environment';
 
-import { NULOBE_ENV_SETTINGS } from '../../../../../environments/environment';
-
+import { AuthHanderFactory } from './auth-handler.factory';
 import { AuthConfig } from './auth-config';
 import { AuthResult } from './auth-result';
 import { IAuthHandler } from './auth-handler';
-
-import { QuizletAuthHandler } from './handlers/quizlet-auth-handler';
+import { Auth0Helper } from './helpers/auth0.helper';
 
 interface AuthLocalStorageItem {
   expiresAt: number;
@@ -29,28 +27,27 @@ export interface IAuthService {
 export class AuthService implements IAuthService {
 
   constructor(
+    private authHanderFactory: AuthHanderFactory,
     private injector: Injector
   ) { }
 
   redirectToLogin(authorityName?: string) {
-    let authHandler = this.getAuthHandler(this.getAuthorityName(authorityName));
-    let auth0 = this.createAuth0(authorityName, authHandler.authConfig);
+    let resolvedAuthorityName = this.getAuthorityName(authorityName);
+    let authHandler = this.authHanderFactory.createAuthHandler(resolvedAuthorityName);
+
+    let state = `${resolvedAuthorityName}-${new Date().getTime()}`;
+    localStorage.setItem('auth:state', state);
+
+    let auth0 = Auth0Helper.getAuth0(authHandler.authConfig, resolvedAuthorityName, state);
     auth0.authorize();
   }
 
-  onLoginCallback() {
+  onLoginCallback(authorityName?: string) {
+    let authHandler = this.authHanderFactory.createAuthHandler(this.getAuthorityName(authorityName));
+
     let router = this.injector.get(Router);
     let url = router.parseUrl(router.url);
-    let params = url.queryParams;
-    
-    let state = params['state'];
-    if (!state) {
-      // TODO: Handle error
-    }
-    //TODO: Validate state vs localStorage
 
-    let [authorityName] = state.split('-');
-    let authHandler = this.getAuthHandler(authorityName);
     authHandler.handleCallback(url)
       .then(authResult => {
         this.setAuthLocalStorageItem({
@@ -82,31 +79,6 @@ export class AuthService implements IAuthService {
   getBearerToken(authorityName?: string): string {
     let authInfo = this.getAuthLocalStorageItem(authorityName);
     return authInfo ? authInfo.bearerToken : null;
-  }
-
-  private createAuth0(authorityName: string, config: AuthConfig) {
-    let state = `${authorityName}-${new Date().getTime()}`;
-    localStorage.setItem('auth:state', state);
-
-    let router = this.injector.get(Router);
-    localStorage.setItem('auth:previousUrl', router.url);
-
-    return new auth0.WebAuth({
-      clientID: config.clientId,
-      domain: config.domain,
-      responseType: config.responseType,
-      audience: config.audience,
-      redirectUri: `${NULOBE_ENV_SETTINGS.baseUrl}/LOBE/callback`,
-      scope: config.scope,
-      state
-    })
-  }
-
-  private getAuthHandler(authorityName: string): IAuthHandler {
-    switch (authorityName.toLowerCase()) {
-      case 'quizlet': return this.injector.get(QuizletAuthHandler);
-      default: throw new Error("Not implemented.");
-    }
   }
 
   private setAuthLocalStorageItem(authInfo: AuthLocalStorageItem, authorityName?: string) {

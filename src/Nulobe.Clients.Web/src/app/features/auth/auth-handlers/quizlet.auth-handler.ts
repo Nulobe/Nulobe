@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { UrlTree } from '@angular/router';
 
-import { NULOBE_ENV_SETTINGS } from '../../../../../../environments/environment';
+import { NULOBE_ENV_SETTINGS } from '../../../../environments/environment';
 
 import { AuthConfig } from '../auth-config';
 import { AuthResult } from '../auth-result';
 import { IAuthHandler } from '../auth-handler';
 
-import { QuizletApiClient } from '../../../../api/api.swagger';
+import { QuizletApiClient } from '../../api/api.swagger';
 
 @Injectable()
 export class QuizletAuthHandler implements IAuthHandler {
@@ -27,16 +27,12 @@ export class QuizletAuthHandler implements IAuthHandler {
     return this.quizletApiClient
       .token({
         code: parsedUrl.queryParams['code'],
-        redirectUri: `${NULOBE_ENV_SETTINGS.baseUrl}/LOBE/callback`})
+        redirectUri: `${NULOBE_ENV_SETTINGS.baseUrl}/LOBE/callback/quizlet`})
       .map(r => <AuthResult>{
         bearerToken: r.access_token,
         expiresIn: r.expires_in,
         userId: r.user_id
       })
       .toPromise();
-  }
-
-  getBearerToken(authResult: AuthResult): string {
-    return authResult.accessToken;
   }
 }

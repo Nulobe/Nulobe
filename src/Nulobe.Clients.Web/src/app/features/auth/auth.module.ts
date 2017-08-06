@@ -10,8 +10,10 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { AuthComponent } from './components/auth/auth.component';
 import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
 
-import { AuthService } from './services/auth/auth.service';
-import { QuizletAuthHandler } from './services/auth/handlers/quizlet-auth-handler';
+import { AuthService } from './auth.service';
+import { AuthHanderFactory } from './auth-handler.factory';
+import { Auth0AuthHandler } from './auth-handlers/auth0.auth-handler';
+import { QuizletAuthHandler } from './auth-handlers/quizlet.auth-handler';
 
 @NgModule({
   imports: [
@@ -27,7 +29,9 @@ import { QuizletAuthHandler } from './services/auth/handlers/quizlet-auth-handle
   ],
   providers: [
     AuthService,
+    AuthHanderFactory,
     QuizletAuthHandler,
+    Auth0AuthHandler
   ]
 })
 export class AuthModule { }

@@ -31,6 +31,8 @@ namespace Nulobe.Runner
             //    SearchPattern = "x"
             //}).Result;
 
+            var quizletBearer = "J4W8PQjEy9US7ejpTaX4V43dKcdp3sG99EnpFrb6";
+
             var factQueryService = serviceProvider.GetRequiredService<IFactQueryService>();
             var result = factQueryService.QueryFactsAsync(new FactQuery()
             {

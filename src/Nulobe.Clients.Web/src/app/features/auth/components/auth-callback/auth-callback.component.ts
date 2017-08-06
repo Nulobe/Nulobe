@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import { AuthService } from '../../services/auth/auth.service';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-auth-callback',
@@ -10,10 +11,14 @@ import { AuthService } from '../../services/auth/auth.service';
 export class AuthCallbackComponent implements OnInit {
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this.authService.onLoginCallback();
+    this.route.params.subscribe(params => {
+      debugger;
+      this.authService.onLoginCallback(params['authorityName']);
+    });
   }
 }
