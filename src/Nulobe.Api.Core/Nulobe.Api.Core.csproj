@@ -79,6 +79,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.ComponentModel.Primitives, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
     </Reference>
@@ -103,17 +104,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreApiServiceCollectionExtensions.cs" />
-    <Compile Include="Fact.cs" />
-    <Compile Include="FactQuery.cs" />
-    <Compile Include="FactService.cs" />
-    <Compile Include="FactServiceOptions.cs" />
-    <Compile Include="IFactQueryService.cs" />
-    <Compile Include="IFactService.cs" />
-    <Compile Include="ITagQueryService.cs" />
+    <Compile Include="Facts\Fact.cs" />
+    <Compile Include="Facts\FactQuery.cs" />
+    <Compile Include="Facts\FactService.cs" />
+    <Compile Include="Facts\FactServiceOptions.cs" />
+    <Compile Include="Flags\Flag.cs" />
+    <Compile Include="Flags\FlagRemove.cs" />
+    <Compile Include="Facts\IFactQueryService.cs" />
+    <Compile Include="Facts\IFactService.cs" />
+    <Compile Include="Flags\IFlagService.cs" />
+    <Compile Include="Tags\ITagQueryService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tag.cs" />
-    <Compile Include="TagQuery.cs" />
-    <Compile Include="TagQueryService.cs" />
+    <Compile Include="Tags\Tag.cs" />
+    <Compile Include="Tags\TagQuery.cs" />
+    <Compile Include="Tags\TagQueryService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\util\Nulobe.DocumentDb.Client\Nulobe.DocumentDb.Client.csproj">

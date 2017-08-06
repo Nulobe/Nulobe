@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Nulobe.Api.Core;
+using Nulobe.Api.Core.Facts;
 using Nulobe.Api.Quizlet;
 using Nulobe.Framework;
 using System;

@@ -1,4 +1,4 @@
-﻿namespace Nulobe.Api.Core
+﻿namespace Nulobe.Api.Core.Facts
 {
     public class FactQuery
     {

@@ -458,6 +458,7 @@ export interface FactQuery {
 
 export interface QuizletSet {
     id: number;
+    title?: string | undefined;
     url?: string | undefined;
     terms?: QuizletTerm[] | undefined;
 }

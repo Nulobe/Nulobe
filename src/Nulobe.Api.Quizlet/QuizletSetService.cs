@@ -1,4 +1,5 @@
 ﻿using Nulobe.Api.Core;
+using Nulobe.Api.Core.Facts;
 using System;
 using System.Collections.Generic;
 using System.Linq;

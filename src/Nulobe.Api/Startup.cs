@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Nulobe.DocumentDb.Client;
-using Nulobe.Api.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Nulobe.Framework;
 using Nulobe.Api.Services;
+using Nulobe.Api.Core.Facts;
 
 namespace Nulobe.Api
 {

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Nulobe.Api.Core;
+using Nulobe.Api.Core.Facts;
 
 namespace Nulobe.Api.Controllers
 {

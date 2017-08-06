@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Nulobe.Api.Core;
+using Nulobe.Api.Core.Tags;
 using System;
 using System.Collections.Generic;
 using System.Linq;

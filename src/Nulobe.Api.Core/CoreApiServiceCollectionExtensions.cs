@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Nulobe.Api.Core;
+using Nulobe.Api.Core.Facts;
+using Nulobe.Api.Core.Tags;
 using Nulobe.DocumentDb.Client;
 using System;
 using System.Collections.Generic;

@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Nulobe.Api.Core;
 using Nulobe.Framework;
 using Nulobe.Api.Quizlet;
+using Nulobe.Api.Core.Facts;
 
 namespace Nulobe.Runner
 {

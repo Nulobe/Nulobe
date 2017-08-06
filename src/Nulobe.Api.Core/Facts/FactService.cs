@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Nulobe.DocumentDb.Client;
 using Microsoft.Azure.Documents;
 
-namespace Nulobe.Api.Core
+namespace Nulobe.Api.Core.Facts
 {
     public class FactService : IFactService, IFactQueryService
     {

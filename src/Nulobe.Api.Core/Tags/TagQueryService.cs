@@ -1,12 +1,13 @@
 ﻿using Microsoft.Azure.Documents;
 using Microsoft.Extensions.Options;
+using Nulobe.Api.Core.Facts;
 using Nulobe.DocumentDb.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Nulobe.Api.Core
+namespace Nulobe.Api.Core.Tags
 {
     public class TagQueryService : ITagQueryService
     {
