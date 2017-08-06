@@ -1,0 +1,19 @@
+.app-auth-callback {
+    position: relative;
+
+    .spinner-container {
+        position: absolute;
+        width: calc(100% - 15px);
+        left: 0;
+        top: 0;
+
+        .spinner {
+            margin-top: 160px;
+
+            &.fade-out {
+                animation: app-results-spinner-fade-out 0.5s linear;
+                animation-fill-mode: forwards;
+            }
+        }
+    }
+}

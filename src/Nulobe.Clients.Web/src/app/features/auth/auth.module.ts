@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
 
 import { ApiModule } from '../api/api.module';
+import { CoreModule } from '../core/core.module';
 
 import { AuthRoutingModule } from './auth-routing.module';
 
@@ -17,6 +18,7 @@ import { QuizletAuthHandler } from './services/auth/handlers/quizlet-auth-handle
     CommonModule,
     HttpModule,
     ApiModule,
+    CoreModule,
     AuthRoutingModule
   ],
   declarations: [
