@@ -14,7 +14,9 @@ export interface FactLinkResolver {
 export class FactListComponent implements OnInit {
   @Input() facts: Fact[];
   @Input() factLinkResolver: FactLinkResolver;
-  @Output() onTagClick = new EventEmitter<string>()
+  @Output() onTagSelect = new EventEmitter<string>();
+  @Output() onVote = new EventEmitter<Fact>();
+  @Output() onFlag = new EventEmitter<Fact>();
 
   constructor() { }
 
@@ -27,6 +29,14 @@ export class FactListComponent implements OnInit {
   }
 
   tagClicked(tag: string) {
-    this.onTagClick.emit(tag);
+    this.onTagSelect.emit(tag);
+  }
+
+  voteClicked(fact: Fact) {
+    this.onVote.emit(fact);
+  }
+
+  flagClicked(fact: Fact) {
+    this.onFlag.emit(fact);
   }
 }

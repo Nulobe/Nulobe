@@ -11,6 +11,9 @@ using Nulobe.Api.Core;
 using Nulobe.Framework;
 using Nulobe.Api.Quizlet;
 using Nulobe.Api.Core.Facts;
+using AutoMapper;
+using Nulobe.Api.Core.Events;
+using System.Reflection;
 
 namespace Nulobe.Runner
 {
@@ -23,18 +26,38 @@ namespace Nulobe.Runner
 
             var services = new ServiceCollection();
             services.AddOptions();
+            services.AddAutoMapper(conf =>
+            {
+                conf.AddCoreApiMapperConfigurations();
+            }, Assembly.GetEntryAssembly());
             services.AddCoreApiServices(configuration);
             services.AddQuizletApiServices();
             services.ConfigureQuizlet(configuration);
+            services.AddTransient<IRemoteIpAddressAccessor, StubbedRemoteIpAddressAccessor>();
             services.AddTransient<IAccessTokenAccessor, StubbedAccessTokenAccessor>();
             var serviceProvider = services.BuildServiceProvider();
 
-            var quizletSetService = serviceProvider.GetRequiredService<IQuizletSetService>();
-            var result = quizletSetService.CreateSetAsync(new FactQuery()
+            //var quizletSetService = serviceProvider.GetRequiredService<IQuizletSetService>();
+            //var result = quizletSetService.CreateSetAsync(new FactQuery()
+            //{
+            //    Tags = "dairy,nutrition"
+            //}).Result;
+
+
+            var factService = serviceProvider.GetRequiredService<IFactService>();
+            var fact = factService.CreateFactAsync(new Fact()
             {
-                Tags = "dairy,nutrition"
+                Title = "Test fact",
+                Definition = "Test definition",
+                Tags = new string[] { "dairy", "environment", "NZ" }
             }).Result;
 
+            var flagService = serviceProvider.GetRequiredService<IFlagEventService>();
+            var flag = flagService.CreateEventAsync(new FlagCreate()
+            {
+                Description = "Yo this shit is straight up wrong",
+                FactId = fact.Id
+            }).Result;
         }
 
         private class StubbedAccessTokenAccessor : IAccessTokenAccessor
@@ -50,6 +73,11 @@ namespace Nulobe.Runner
             public IFileProvider WebRootFileProvider { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
             public string ContentRootPath { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
             public IFileProvider ContentRootFileProvider { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        }
+
+        private class StubbedRemoteIpAddressAccessor : IRemoteIpAddressAccessor
+        {
+            public string RemoteIpAddress => "1.0.0.127";
         }
     }
 }

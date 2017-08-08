@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Nulobe.Api.Core.Events;
 using Nulobe.Api.Core.Facts;
 using Nulobe.Api.Core.Tags;
 using Nulobe.DocumentDb.Client;
@@ -21,8 +22,11 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<IFactService, FactService>();
             services.AddTransient<IFactQueryService, FactService>();
             services.AddTransient<ITagQueryService, TagQueryService>();
+            services.AddTransient<IFlagEventService, FlagEventService>();
+            services.AddTransient<IVoteEventService, VoteEventService>();
 
             services.Configure<FactServiceOptions>(configuration.GetSection("Nulobe:FactService"));
+            services.Configure<EventServiceOptions>(configuration.GetSection("Nulobe:EventService"));
 
             return services;
         }

@@ -3,6 +3,7 @@ import { UrlTree } from '@angular/router';
 
 import { NULOBE_ENV_SETTINGS } from '../../../../environments/environment';
 
+import { AUTH_CONSTANTS } from '../auth.constants';
 import { AuthConfig } from '../auth-config';
 import { AuthResult } from '../auth-result';
 import { IAuthHandler } from '../auth-handler';
@@ -20,7 +21,10 @@ export class Auth0AuthHandler implements IAuthHandler {
   };
 
   handleCallback(parsedUrl: UrlTree): Promise<AuthResult> {
-    let auth0 = Auth0Helper.getAuth0(this.authConfig, 'auth0');
+    let auth0 = Auth0Helper.getAuth0(
+      this.authConfig,
+      AUTH_CONSTANTS.AUTHORITY_NAMES.AUTH0);
+
     return new Promise<AuthResult>((resolve, reject) => {
       auth0.parseHash((err, authResult) => {
         if (authResult && authResult.accessToken && authResult.idToken) {

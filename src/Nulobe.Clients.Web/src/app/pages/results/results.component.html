@@ -15,7 +15,9 @@
       <div class="fact-list-container">
         <app-fact-list
           [facts]="facts$ | async"
-          (onTagClick)="navigateToTag($event)"></app-fact-list>
+          (onTagSelect)="navigateToTag($event)"
+          (onVote)="voteFact($event)"
+          (onFlag)="flagFact($event)"></app-fact-list>
       </div>
       <div class="fact-list-end-container">
           <div class="fact-list-end">

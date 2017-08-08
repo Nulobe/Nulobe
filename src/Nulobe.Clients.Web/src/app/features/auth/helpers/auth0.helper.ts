@@ -3,11 +3,12 @@ import * as auth0 from 'auth0-js';
 import { NULOBE_ENV_SETTINGS } from '../../../../environments/environment';
 
 import { AuthConfig } from '../auth-config';
+import { AUTH_CONSTANTS } from '../auth.constants';
 
 export const Auth0Helper = {
   getAuth0: (config: AuthConfig, authorityName?: string, state?: string) => {
     let redirectUri = `${NULOBE_ENV_SETTINGS.baseUrl}/LOBE/callback`;
-    if (authorityName) {
+    if (authorityName && authorityName !== AUTH_CONSTANTS.AUTHORITY_NAMES.AUTH0) {
         redirectUri += `/${authorityName}`;
     }
 

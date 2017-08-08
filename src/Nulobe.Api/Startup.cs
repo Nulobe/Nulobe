@@ -13,6 +13,8 @@ using Microsoft.Extensions.Options;
 using Nulobe.Framework;
 using Nulobe.Api.Services;
 using Nulobe.Api.Core.Facts;
+using Nulobe.Api.Core.Events;
+using AutoMapper;
 
 namespace Nulobe.Api
 {
@@ -31,7 +33,10 @@ namespace Nulobe.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddAutoMapper(conf =>
+            {
+                conf.AddCoreApiMapperConfigurations();
+            });
 
             services.ConfigureAuth0(_configuration);
             services.ConfigureQuizlet(_configuration);
@@ -39,6 +44,8 @@ namespace Nulobe.Api
             services.AddCoreApiServices(_configuration);
             services.AddQuizletApiServices();
 
+            services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IRemoteIpAddressAccessor, HttpRemoteIpAddressAccessor>();
             services.AddScoped<IAccessTokenAccessor, HttpBearerAccessTokenAccessor>();
         }
 
@@ -49,6 +56,7 @@ namespace Nulobe.Api
             ILoggerFactory loggerFactory,
             IDocumentClientFactory documentClientFactory,
             IOptions<FactServiceOptions> factServiceOptions,
+            IOptions<EventServiceOptions> eventServiceOptions,
             IOptions<Auth0Options> auth0Options)
         {
             loggerFactory.AddConsole();
@@ -56,6 +64,7 @@ namespace Nulobe.Api
             using (var client = documentClientFactory.Create(factServiceOptions.Value))
             {
                 client.EnsureCollectionAsync(factServiceOptions.Value).Wait();
+                client.EnsureCollectionAsync(eventServiceOptions.Value).Wait();
             }
 
             if (env.IsDevelopment())

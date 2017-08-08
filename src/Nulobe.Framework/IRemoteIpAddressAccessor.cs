@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Nulobe.Framework
 {
-    public class IRemoteIpAddressAudited
+    public interface IRemoteIpAddressAccessor
     {
-        public DateTime EventTime { get; set; }
-
-        public string RemoteIpAddress { get; set; }
+        string RemoteIpAddress { get; }
     }
 }

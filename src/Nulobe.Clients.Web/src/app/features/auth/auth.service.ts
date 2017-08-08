@@ -3,6 +3,7 @@ import { Router, UrlTree } from '@angular/router';
 
 import { NULOBE_ENV_SETTINGS } from '../../../environments/environment';
 
+import { AUTH_CONSTANTS } from './auth.constants';
 import { AuthHanderFactory } from './auth-handler.factory';
 import { AuthConfig } from './auth-config';
 import { AuthResult } from './auth-result';
@@ -103,6 +104,6 @@ export class AuthService implements IAuthService {
   }
 
   private getAuthorityName(authorityName?: string): string {
-    return authorityName || 'auth0';
+    return authorityName || AUTH_CONSTANTS.AUTHORITY_NAMES.AUTH0;
   }
 }

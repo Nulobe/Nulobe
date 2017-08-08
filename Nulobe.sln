@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nulobe.Api.Quizlet", "src\N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nulobe.System", "util\Nulobe.System\Nulobe.System.csproj", "{D8E0A60F-9F35-44A7-83A5-C0D3FADD1F83}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nulobe.Utility.Validation", "util\Nulobe.Utility.Validation\Nulobe.Utility.Validation.csproj", "{6EF93140-E726-41E7-A4BB-2AA572B686EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -116,6 +118,14 @@ Global
 		{D8E0A60F-9F35-44A7-83A5-C0D3FADD1F83}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D8E0A60F-9F35-44A7-83A5-C0D3FADD1F83}.Release|x64.ActiveCfg = Release|Any CPU
 		{D8E0A60F-9F35-44A7-83A5-C0D3FADD1F83}.Release|x64.Build.0 = Release|Any CPU
+		{6EF93140-E726-41E7-A4BB-2AA572B686EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EF93140-E726-41E7-A4BB-2AA572B686EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EF93140-E726-41E7-A4BB-2AA572B686EF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6EF93140-E726-41E7-A4BB-2AA572B686EF}.Debug|x64.Build.0 = Debug|Any CPU
+		{6EF93140-E726-41E7-A4BB-2AA572B686EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EF93140-E726-41E7-A4BB-2AA572B686EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EF93140-E726-41E7-A4BB-2AA572B686EF}.Release|x64.ActiveCfg = Release|Any CPU
+		{6EF93140-E726-41E7-A4BB-2AA572B686EF}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -130,5 +140,6 @@ Global
 		{E4000C19-53A6-406D-9F8A-C6FCB19F76BA} = {7730D72A-C982-4C1F-8D9E-AFB746108F31}
 		{95E7D1BA-51FC-4761-8302-4E7633C99AA9} = {7730D72A-C982-4C1F-8D9E-AFB746108F31}
 		{D8E0A60F-9F35-44A7-83A5-C0D3FADD1F83} = {FAD21DEF-BB75-4E10-9CE9-0F63F904A05E}
+		{6EF93140-E726-41E7-A4BB-2AA572B686EF} = {FAD21DEF-BB75-4E10-9CE9-0F63F904A05E}
 	EndGlobalSection
 EndGlobal

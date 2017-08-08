@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 
-import { FactApiClient, Fact } from '../../features/api/api.swagger';
+import {
+  FactApiClient, Fact,
+  VoteApiClient,
+  FlagApiClient,
+} from '../../features/api/api.swagger';
 
 import { ResultsPathHelper } from './results-path.helper';
 
@@ -22,6 +26,8 @@ export class ResultsComponent implements OnInit {
 
   constructor(
     private factApiClient: FactApiClient,
+    private voteApiClient: VoteApiClient,
+    private flagApiClient: FlagApiClient,
     private router: Router
   ) { }
 
@@ -44,6 +50,16 @@ export class ResultsComponent implements OnInit {
     this._loading.next(true);
     this.tags = [tag];
     this.router.navigate([tag]).then(() => this.loadFacts());
+  }
+
+  voteFact(fact: Fact) {
+    this.voteApiClient.create({ factId: fact.id })
+      .subscribe();
+  }
+
+  flagFact(fact: Fact) {
+    this.flagApiClient.create({ factId: fact.id })
+      .subscribe();
   }
 
   private loadFacts() {

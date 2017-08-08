@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nulobe.Api.Core.Flags
+namespace Nulobe.Api.Core.Events
 {
-    public interface IFlagService
+    public interface IVoteEventService : IEventService<VoteCreate>
     {
-
     }
 }

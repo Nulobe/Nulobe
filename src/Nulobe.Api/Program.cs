@@ -29,11 +29,11 @@ namespace Nulobe.Api
 
 #if DEBUG
 
-        private const string DocumentDbEmulatorExePath = @"C:\Program Files\DocumentDB Emulator\DocumentDB.Emulator.exe";
+        private const string DocumentDbEmulatorExePath = @"C:\Program Files\Azure Cosmos DB Emulator\CosmosDB.Emulator.exe";
 
         private static async Task EnsureDocumentDbRunningAsync()
         {
-            var existingProcess = System.Diagnostics.Process.GetProcessesByName("DocumentDB.Emulator").FirstOrDefault();
+            var existingProcess = System.Diagnostics.Process.GetProcessesByName("CosmosDB.Emulator").FirstOrDefault();
             if (existingProcess == null || !(await TestConnectionAsync(existingProcess)))
             {
                 Console.WriteLine("DocumentDB Emulator is not running, attempting to start");

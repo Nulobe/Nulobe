@@ -100,7 +100,7 @@
     <Compile Include="Auth0Options.cs" />
     <Compile Include="IAccessTokenAccessor.cs" />
     <Compile Include="IAuthOptions.cs" />
-    <Compile Include="IRemoteIpAddressAudited.cs" />
+    <Compile Include="IRemoteIpAddressAccessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FrameworkServiceCollectionExtensions.cs" />
     <Compile Include="QuizletOptions.cs" />

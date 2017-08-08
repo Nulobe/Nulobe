@@ -259,6 +259,66 @@ export class FactApiClient implements IFactApiClient {
     }
 }
 
+export interface IFlagApiClient {
+    create(create: FlagCreate | undefined): Observable<Event | null>;
+}
+
+@Injectable()
+export class FlagApiClient implements IFlagApiClient {
+    private http: Http;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    create(create: FlagCreate | undefined): Observable<Event | null> {
+        let url_ = this.baseUrl + "/flags";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(create);
+        
+        let options_ = {
+            body: content_,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processCreate(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processCreate(response_);
+                } catch (e) {
+                    return <Observable<Event>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<Event>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processCreate(response: Response): Observable<Event | null> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: Event | null = null;
+            result200 = _responseText === "" ? null : <Event>JSON.parse(_responseText, this.jsonParseReviver);
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText);
+        }
+        return Observable.of<Event | null>(<any>null);
+    }
+}
+
 export interface IQuizletApiClient {
     token(request: QuizletTokenRequest | undefined): Observable<QuizletTokenResponse | null>;
     createSet(query: FactQuery | undefined): Observable<QuizletSet | null>;
@@ -427,6 +487,66 @@ export class TagApiClient implements ITagApiClient {
     }
 }
 
+export interface IVoteApiClient {
+    create(create: VoteCreate | undefined): Observable<Event | null>;
+}
+
+@Injectable()
+export class VoteApiClient implements IVoteApiClient {
+    private http: Http;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    create(create: VoteCreate | undefined): Observable<Event | null> {
+        let url_ = this.baseUrl + "/votes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(create);
+        
+        let options_ = {
+            body: content_,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processCreate(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processCreate(response_);
+                } catch (e) {
+                    return <Observable<Event>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<Event>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processCreate(response: Response): Observable<Event | null> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: Event | null = null;
+            result200 = _responseText === "" ? null : <Event>JSON.parse(_responseText, this.jsonParseReviver);
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText);
+        }
+        return Observable.of<Event | null>(<any>null);
+    }
+}
+
 export interface Fact {
     id?: string | undefined;
     title?: string | undefined;
@@ -439,6 +559,26 @@ export interface Fact {
 export interface Source {
     description?: string | undefined;
     url?: string | undefined;
+}
+
+export interface FlagCreate {
+    factId?: string | undefined;
+    description?: string | undefined;
+}
+
+export interface Event {
+    id?: string | undefined;
+    factId?: string | undefined;
+    type: EventType;
+    created: Date;
+    createdByIp?: string | undefined;
+    data?: any | undefined;
+}
+
+export enum EventType {
+    Unknown = 0, 
+    Flag = 1, 
+    Like = 2, 
 }
 
 export interface QuizletTokenRequest {
@@ -471,6 +611,10 @@ export interface QuizletTerm {
 export interface Tag {
     text?: string | undefined;
     usageCount: number;
+}
+
+export interface VoteCreate {
+    factId?: string | undefined;
 }
 
 export class SwaggerException extends Error {

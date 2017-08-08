@@ -25,7 +25,10 @@ namespace Nulobe.Api.Core.Facts
 
         public Task<Fact> GetFactAsync(string id)
         {
-            throw new NotImplementedException();
+            using (var client = _documentClientFactory.Create(_factServiceOptions))
+            {
+                return client.ReadDocumentAsync<Fact>(_factServiceOptions, id);
+            }
         }
 
         public async Task<Fact> CreateFactAsync(Fact fact)

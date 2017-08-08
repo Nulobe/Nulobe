@@ -8,10 +8,10 @@
     </a>-->
     <div class="fact-controls-container">
       <div class="fact-controls">
-        <div class="fact-control">
+        <div class="fact-control" (click)="voteClicked(fact)">
           <md-icon>thumb_up</md-icon>
         </div>
-        <div class="fact-control">
+        <div class="fact-control" (click)="flagClicked(fact)">
           <md-icon>flag</md-icon>
         </div>
       </div>
