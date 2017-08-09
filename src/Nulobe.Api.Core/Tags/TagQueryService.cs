@@ -11,62 +11,38 @@ namespace Nulobe.Api.Core.Tags
 {
     public class TagQueryService : ITagQueryService
     {
-        private readonly FactServiceOptions _factServiceOptions;
-        private readonly IDocumentClientFactory _documentClientFactory;
+        private readonly ITagMemoryRepository _tagMemoryRepository;
 
         public TagQueryService(
-            IOptions<FactServiceOptions> factServiceOptions,
-            IDocumentClientFactory documentClientFactory)
+            ITagMemoryRepository tagMemoryRepository)
         {
-            _factServiceOptions = factServiceOptions.Value;
-            _documentClientFactory = documentClientFactory;
+            _tagMemoryRepository = tagMemoryRepository;
         }
-
-        // TODO: Performance wont scale at all here, use a user-defined function to select tags inside of Cosmos, or just use a cache.
-        public Task<IEnumerable<Tag>> QueryTagsAsync(TagQuery query)
+        
+        public async Task<IEnumerable<Tag>> QueryTagsAsync(TagQuery query)
         {
             var fields = query.Fields.Split(',');
             if (!fields.Any())
             {
-                return Task.FromResult(Enumerable.Empty<Tag>());
+                return Enumerable.Empty<Tag>();
             }
-
-            var sqlQuery = new SqlQuerySpec()
-            {
-                QueryText = @"
-                    SELECT f.Tags
-                    FROM Facts f
-                ",
-                Parameters = new SqlParameterCollection()
-                {
-                    //new SqlParameter("@factcollectionname", _factServiceOptions.CollectionName)
-                }
-            };
-
-            IEnumerable<Fact> facts = null;
-            using (var client = _documentClientFactory.Create(_factServiceOptions))
-            {
-                facts = client.CreateDocumentQuery<Fact>(_factServiceOptions, sqlQuery).ToList();
-            }
-
-            var tags = facts
-                .SelectMany(f => f.Tags)
-                .GroupBy(t => t, StringComparer.InvariantCultureIgnoreCase)
-                .Where(g =>
+            
+            var tags = (await _tagMemoryRepository.GetTagsAsync())
+                .Where(t =>
                     string.IsNullOrEmpty(query.SearchPattern) ||
-                    g.Key.ToLowerInvariant().Contains(query.SearchPattern.ToLowerInvariant()))
-                .Select(g =>
+                    t.Text.ToLowerInvariant().Contains(query.SearchPattern.ToLowerInvariant()))
+                .Select(t =>
                 {
                     var tag = new Tag();
 
                     if (fields.Contains(nameof(Tag.Text), StringComparer.OrdinalIgnoreCase))
                     {
-                        tag.Text = g.Key;
+                        tag.Text = t.Text;
                     }
 
                     if (fields.Contains(nameof(Tag.UsageCount), StringComparer.OrdinalIgnoreCase))
                     {
-                        tag.UsageCount = g.Count();
+                        tag.UsageCount = t.UsageCount;
                     }
 
                     return tag;
@@ -111,7 +87,7 @@ namespace Nulobe.Api.Core.Tags
                 }
             }
 
-            return Task.FromResult(orderedTags.AsEnumerable());
+            return orderedTags.AsEnumerable();
         }
     }
 }

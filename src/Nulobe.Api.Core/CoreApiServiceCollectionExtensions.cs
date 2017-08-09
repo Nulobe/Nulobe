@@ -22,6 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<IFactService, FactService>();
             services.AddTransient<IFactQueryService, FactService>();
             services.AddTransient<ITagQueryService, TagQueryService>();
+            services.AddTransient<ITagMemoryRepository, TagMemoryRepository>();
             services.AddTransient<IFlagEventService, FlagEventService>();
             services.AddTransient<IVoteEventService, VoteEventService>();
 
