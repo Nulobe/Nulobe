@@ -2,9 +2,9 @@ import { Component, OnInit, HostListener, Output, EventEmitter } from '@angular/
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/debounceTime';
 
-import { TagApiClient } from '../../api/api.swagger';
+import { TagApiClient, Tag } from '../../api/api.swagger';
 
-interface Tag {
+interface TagModel {
   display: string;
   value: string;
 }
@@ -18,9 +18,11 @@ export class TagSelectorComponent implements OnInit {
   @Output() onTagsUpdated = new EventEmitter<string[]>();
   @Output() onSubmit = new EventEmitter();
 
-  private tags: Tag[] = [];
+  private tags: TagModel[] = [];
   private tagInput_isFocused = false;
   private tagInput_currentText = '';
+  private tagInput_lastApiCallText: string = null;
+  private tagInput_lastApiCall: Promise<Tag[]>;
 
   constructor(
     private tagApiClient: TagApiClient
@@ -29,21 +31,37 @@ export class TagSelectorComponent implements OnInit {
   ngOnInit() {
   }
 
-  tagInput_getSuggestions = (text: string): Observable<string[]> =>
-    text === '' ?
-      Observable.of([]) :
-      this.tagApiClient
-        .list(text, undefined, undefined)
-        .map(r => {
-          return r
-            .filter(x => {
-              let existing = this.tags.find(y => y.display.substring(1).toLowerCase() === x.text.toLowerCase());
-              return !existing;
-            })
-            .map(t => t.text)
-        });
+  tagInput_getSuggestions = (text: string): Observable<string[]> => {
+    if (text === '') {
+      return Observable.of([]);
+    } else {
+      let apiSuggestions: Promise<Tag[]> = null;
+      if (this.tagInput_lastApiCallText && text.includes(this.tagInput_lastApiCallText)) {
+        // Retrieve a subset of the last API results
+        let normalizeText = text.toLowerCase();
+        apiSuggestions = this.tagInput_lastApiCall.then(tags =>
+          tags.filter(t => t.text.toLowerCase().includes(normalizeText)));
 
-  tagInput_addHash = (text: string | Tag): Observable<Tag> => {
+      } else {
+        this.tagInput_lastApiCallText = text;
+
+        apiSuggestions = this.tagApiClient
+          .list(text, undefined, undefined)
+          .toPromise();
+
+        this.tagInput_lastApiCall = apiSuggestions;
+      }
+
+      return Observable.fromPromise(apiSuggestions.then(r => r
+        .filter(x => {
+          let existing = this.tags.find(y => y.display.substring(1).toLowerCase() === x.text.toLowerCase());
+          return !existing;
+        })
+        .map(t => t.text)))
+    }
+  }
+
+  tagInput_addHash = (text: string | TagModel): Observable<TagModel> => {
     if (typeof(text) === 'object') {
       text = text.display;
     }
