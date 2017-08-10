@@ -17,7 +17,6 @@ export class AuthCallbackComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      debugger;
       this.authService.onLoginCallback(params['authorityName']);
     });
   }

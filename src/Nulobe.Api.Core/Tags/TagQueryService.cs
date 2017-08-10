@@ -18,7 +18,7 @@ namespace Nulobe.Api.Core.Tags
         {
             _tagMemoryRepository = tagMemoryRepository;
         }
-        
+
         public async Task<IEnumerable<Tag>> QueryTagsAsync(TagQuery query)
         {
             var fields = query.Fields.Split(',');

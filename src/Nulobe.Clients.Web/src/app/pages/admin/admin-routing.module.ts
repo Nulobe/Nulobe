@@ -21,7 +21,7 @@ import { AdminComponent } from './admin.component';
 
 export const routes: Routes = [
   {
-    path: 'LOBE/admin',
+    path: '',
     component: AdminComponent,
     canActivate: [CanActivateAdmin]
   }
@@ -29,7 +29,7 @@ export const routes: Routes = [
 
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
   providers: [CanActivateAdmin]
 })

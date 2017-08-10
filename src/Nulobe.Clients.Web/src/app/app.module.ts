@@ -6,14 +6,18 @@ import { NgModule, Injector } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdIconModule } from '@angular/material';
 
-import { AppComponent } from './app.component';
-
-import { AdminModule } from './pages/admin/admin.module';
+import { AppRoutingModule } from './app-routing.module';
 import { HomeModule } from './pages/home/home.module';
 import { ResultsModule } from './pages/results/results.module';
 
+import { AppComponent } from './app.component';
 import { AuthModule, AuthService } from './features/auth';
 import { AuthHttp, authHttpProvider } from './auth-http.service';
+
+export const authHttpFactory = (backend: XHRBackend, defaultOptions: RequestOptions, injector: Injector) => {
+  let authService = injector.get(AuthService);
+  return new AuthHttp(backend, defaultOptions, authService);
+};
 
 @NgModule({
   declarations: [
@@ -28,7 +32,7 @@ import { AuthHttp, authHttpProvider } from './auth-http.service';
     MdButtonModule,
     MdIconModule,
 
-    AdminModule,
+    AppRoutingModule,
     HomeModule,
     ResultsModule,
 
@@ -38,10 +42,7 @@ import { AuthHttp, authHttpProvider } from './auth-http.service';
     AuthHttp,
     {
       provide: Http,
-      useFactory: (backend: XHRBackend, defaultOptions: RequestOptions, injector: Injector) => {
-          let authService = injector.get(AuthService);
-          return new AuthHttp(backend, defaultOptions, authService);
-      },
+      useFactory: authHttpFactory,
       deps: [XHRBackend, RequestOptions, Injector]
     }
   ],
