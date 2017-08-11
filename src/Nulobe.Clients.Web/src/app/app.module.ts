@@ -13,6 +13,7 @@ import { ResultsModule } from './pages/results/results.module';
 
 import { AppComponent } from './app.component';
 import { AuthModule, AuthService } from './features/auth';
+import { CoreModule } from './core';
 import { AuthHttp, authHttpProvider } from './auth-http.service';
 
 export const authHttpFactory = (backend: XHRBackend, defaultOptions: RequestOptions, injector: Injector) => {
@@ -35,6 +36,7 @@ export const authHttpFactory = (backend: XHRBackend, defaultOptions: RequestOpti
 
     AppRoutingModule,
     AppStateModule,
+    CoreModule,
     HomeModule,
     ResultsModule,
 

@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
     {
         path: 'LOBE/admin',
-        loadChildren: './pages/admin/admin.module#AdminModule'
+        loadChildren: './features/admin/admin.module#AdminModule'
     }
 ];
 

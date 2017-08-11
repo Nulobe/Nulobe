@@ -12,5 +12,5 @@ $copyFilesScriptArgs = "$solutionDir $projectDir"
 Invoke-Expression "& `"$copyFilesScriptPath`" $copyFilesScriptArgs"
 
 # Execute NSwag
-$nswagExeArgs = "swagger2tsclient /input:`"$projectDir\..\Nulobe.Api\swagger.json`" /output:`"$projectDir/../Nulobe.Clients.Web/src/app/features/api/api.swagger.ts`" /className:`"{controller}Client`" /typescriptVersion:2.0 /template:`"Angular`" /promiseType:`"Promise`" /dateTimeType:`"Date`" /generateClientInterfaces:true /generateDtoTypes:true /typeStyle:`"Interface`""
+$nswagExeArgs = "swagger2tsclient /input:`"$projectDir\..\Nulobe.Api\swagger.json`" /output:`"$projectDir/../Nulobe.Clients.Web/src/app/core/api/api.swagger.ts`" /className:`"{controller}Client`" /typescriptVersion:2.0 /template:`"Angular`" /promiseType:`"Promise`" /dateTimeType:`"Date`" /generateClientInterfaces:true /generateDtoTypes:true /typeStyle:`"Interface`""
 Start-Process -NoNewWindow -PassThru -Wait -FilePath $nswagExePath -ArgumentList $nswagExeArgs
