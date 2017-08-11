@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AdminComponent } from './admin.component';
 
 import { AuthModule } from '../../features/auth';
-import { FactsModule } from '../../features/facts/facts.module';
+import { CoreModule } from '../../core';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminStateModule } from './state/admin-state.module';
@@ -15,7 +15,7 @@ import { CreateFactsComponent } from './pages/create-facts/create-facts.componen
     AdminRoutingModule,
     AdminStateModule,
     AuthModule,
-    FactsModule
+    CoreModule
   ],
   declarations: [AdminComponent, CreateFactsComponent]
 })

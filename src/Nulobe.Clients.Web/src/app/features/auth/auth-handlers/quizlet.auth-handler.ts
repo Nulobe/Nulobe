@@ -7,7 +7,7 @@ import { AuthConfig } from '../auth-config';
 import { AuthResult } from '../auth-result';
 import { IAuthHandler } from '../auth-handler';
 
-import { QuizletApiClient } from '../../api/api.swagger';
+import { QuizletApiClient } from '../../../core/api';
 
 @Injectable()
 export class QuizletAuthHandler implements IAuthHandler {

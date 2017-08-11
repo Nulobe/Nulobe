@@ -2,11 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 
-import {
-  FactApiClient, Fact,
-  VoteApiClient,
-  FlagApiClient,
-} from '../../features/api/api.swagger';
+import { FactApiClient, Fact, VoteApiClient, FlagApiClient } from '../../core/api';
 
 import { ResultsPathHelper } from './results-path.helper';
 

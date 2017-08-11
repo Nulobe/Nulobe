@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
 
-import { ApiModule } from '../api/api.module';
-import { CoreModule } from '../core/core.module';
+import { CoreModule } from '../../core';
 
 import { AuthRoutingModule } from './auth-routing.module';
 
@@ -19,7 +18,6 @@ import { QuizletAuthHandler } from './auth-handlers/quizlet.auth-handler';
   imports: [
     CommonModule,
     HttpModule,
-    ApiModule,
     CoreModule,
     AuthRoutingModule
   ],

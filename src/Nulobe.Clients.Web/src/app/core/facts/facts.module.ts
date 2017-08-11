@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdIconModule } from '@angular/material';
 
 import { TagsModule } from '../tags/tags.module';
@@ -16,7 +15,6 @@ import { FactFormComponent } from './fact-form/fact-form.component';
   imports: [
     CommonModule,
     FormsModule,
-    //BrowserAnimationsModule,
     MdIconModule,
     TagsModule
   ],

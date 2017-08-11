@@ -1,0 +1,10 @@
+@import "../../../../../assets/scss/mixins";
+
+:host {
+    @include flex-display();
+    @include justify-content(center);
+
+    .container {
+        width: 1000px;
+    }
+}
