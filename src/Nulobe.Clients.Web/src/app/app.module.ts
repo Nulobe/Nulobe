@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdIconModule } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
+import { AppStateModule } from './state/app-state.module';
 import { HomeModule } from './pages/home/home.module';
 import { ResultsModule } from './pages/results/results.module';
 
@@ -33,6 +34,7 @@ export const authHttpFactory = (backend: XHRBackend, defaultOptions: RequestOpti
     MdIconModule,
 
     AppRoutingModule,
+    AppStateModule,
     HomeModule,
     ResultsModule,
 
@@ -40,11 +42,7 @@ export const authHttpFactory = (backend: XHRBackend, defaultOptions: RequestOpti
   ],
   providers: [
     AuthHttp,
-    {
-      provide: Http,
-      useFactory: authHttpFactory,
-      deps: [XHRBackend, RequestOptions, Injector]
-    }
+    authHttpProvider
   ],
   bootstrap: [AppComponent]
 })

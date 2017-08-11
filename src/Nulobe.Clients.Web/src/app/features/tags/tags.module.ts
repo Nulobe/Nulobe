@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { MdChipsModule } from '@angular/material';
 import { TagInputModule } from 'ngx-chips';
@@ -14,7 +13,6 @@ import { ApiModule } from '../api/api.module';
 @NgModule({
   imports: [
     CommonModule,
-    BrowserAnimationsModule,
     FormsModule,
     MdChipsModule,
     TagInputModule,

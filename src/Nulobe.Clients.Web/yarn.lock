@@ -153,6 +153,18 @@
   dependencies:
     tsickle "^0.21.0"
 
+"@ngrx/router-store@^4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@ngrx/router-store/-/router-store-4.0.2.tgz#787c9fe3af60f5f9318ed80d3f8c8ac2601b94da"
+
+"@ngrx/store-devtools@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@ngrx/store-devtools/-/store-devtools-4.0.0.tgz#b79c24773217df7fd9735ad21f9cbf2533c96e04"
+
+"@ngrx/store@^4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-4.0.2.tgz#bd0388f0444a78b87059738274a3d3b5cc43e402"
+
 "@ngtools/json-schema@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0.tgz#c3a0c544d62392acc2813a42c8a0dc6f58f86922"

@@ -18,12 +18,17 @@ export class CanActivateAdmin implements CanActivate {
 
 
 import { AdminComponent } from './admin.component';
+import { CreateFactsComponent } from './pages/create-facts/create-facts.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: AdminComponent,
     canActivate: [CanActivateAdmin]
+  },
+  {
+    path: 'create',
+    component: CreateFactsComponent
   }
 ];
 
@@ -33,4 +38,4 @@ export const routes: Routes = [
   exports: [RouterModule],
   providers: [CanActivateAdmin]
 })
-export class AppRoutingModule { }
+export class AdminRoutingModule { }
