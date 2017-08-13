@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
-import { MdIconModule } from '@angular/material';
+import { MdIconModule, MdInputModule } from '@angular/material';
 
 import { TagsModule } from '../tags/tags.module';
 
@@ -14,8 +14,9 @@ import { FactFormComponent } from './fact-form/fact-form.component';
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     MdIconModule,
+    MdInputModule,
     TagsModule
   ],
   declarations: [

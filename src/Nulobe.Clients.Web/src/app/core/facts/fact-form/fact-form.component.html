@@ -1,3 +1,44 @@
-<p>
-  fact-form works!
-</p>
+<div>
+  <form [formGroup]="form">
+    <div class="title">
+      <md-input-container>
+        <input mdInput formControlName="title" type="text" placeholder="Title" />
+      </md-input-container>
+    </div>
+    <div class="tag-selector-container">
+      <app-tag-selector
+          (onTagsUpdated)="updateTags($event)"
+          (onSubmit)="search()">
+      </app-tag-selector>
+    </div>
+      <div class="description">
+      <md-input-container tabindex="-1">
+        <textarea mdInput formControlName="description" placeholder="Description" rows="10" tabindex="0"></textarea>
+      </md-input-container>
+    </div>
+    <div class="sources">
+      <div class="indexed-sources">
+        <div class="source" formArrayName="indexedSources" *ngFor="let indexedSourceControl of form.get('indexedSources').controls; let i = index;">
+          <div class="index">{{ i + 1 }}.</div>
+          <div class="source-details" [formGroupName]="i">
+            <div class="description">
+              <md-input-container>
+                <textarea mdInput formControlName="description" placeholder="Description of source {{ i + 1 }}" tabindex="0"></textarea>
+              </md-input-container>
+            </div>
+            <div class="url">
+              <md-input-container>
+                <input mdInput type="url" formControlName="url" placeholder="Link to source {{ i + 1 }}" />
+              </md-input-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="notes">
+      <md-input-container>
+        <textarea mdInput formControlName="notes" placeholder="Notes" rows="5"></textarea>
+      </md-input-container>
+    </div>
+  </form>
+</div>
