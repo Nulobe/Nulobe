@@ -99,8 +99,6 @@ export class FactFormComponent implements OnInit, OnChanges {
     }
   }
 
-  
-
   private triggerFactValidChanges() {
     let valid = this.isValid();
     if (valid !== this.lastValid) {

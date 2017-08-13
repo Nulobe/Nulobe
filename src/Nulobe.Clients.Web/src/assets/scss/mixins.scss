@@ -1,3 +1,25 @@
 @import './mixins/transitions';
 @import './mixins/flexbox';
 @import './mixins/keyframes';
+
+@mixin placeholder() {
+    &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+        @content;
+    }
+
+    &::-moz-placeholder { /* Firefox 19+ */
+        @content;
+    }
+
+    &:-ms-input-placeholder { /* IE 10+ */
+        @content;
+    }
+
+    &:-moz-placeholder { /* Firefox 18- */
+        @content;
+    }
+}
+
+@mixin font-family-default {
+    font-family: Cambay;
+}

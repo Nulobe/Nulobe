@@ -1,2 +1,27 @@
+@import "~ngx-chips/dist/modules/core/styles/core/_core.scss";
+@import "../../../../assets/scss/variables";
+@import "../../../../assets/scss/mixins";
+
 .app-tag-selector {
+
+    /deep/ .ng2-tag-input {
+        
+        tag-input-form form input {
+            @include font-family-default();
+            padding: 0;
+
+            @include placeholder() {
+                @include font-family-default();
+                color: $placeholder-color;
+            }
+        }
+
+        tag {
+            @include font-family-default();
+
+            delete-icon {
+                margin-top: -3px;
+            }
+        }
+    }
 }
