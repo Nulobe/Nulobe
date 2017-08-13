@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, HostListener, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/debounceTime';
 
@@ -15,6 +15,7 @@ interface TagModel {
   styleUrls: ['./tag-selector.component.scss']
 })
 export class TagSelectorComponent implements OnInit {
+  @Input() secondaryPlaceholder: string;
   @Output() onTagsUpdated = new EventEmitter<string[]>();
   @Output() onSubmit = new EventEmitter();
 
@@ -29,6 +30,9 @@ export class TagSelectorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (!this.secondaryPlaceholder) {
+      this.secondaryPlaceholder = "Enter a new tag";
+    }
   }
 
   tagInput_getSuggestions = (text: string): Observable<string[]> => {

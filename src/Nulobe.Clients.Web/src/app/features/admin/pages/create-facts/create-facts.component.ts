@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateFactsComponent implements OnInit {
 
+  private valid: boolean;
+
   constructor() { }
 
   ngOnInit() {
+    this.valid = false;
   }
 
 }

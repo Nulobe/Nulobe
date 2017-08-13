@@ -2,7 +2,7 @@ import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitte
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
-import { Fact, Tag } from '../../api';
+import { Fact } from '../../api';
 
 @Component({
   selector: 'app-fact-form',
@@ -15,7 +15,7 @@ export class FactFormComponent implements OnInit, OnChanges {
   @Output() factValidChanges = new EventEmitter<boolean>();
 
   private form: FormGroup;
-  private tags: Tag[] = [];
+  private tags: string[] = [];
   private sourceCount$: Observable<number>;
   private lastFormValid: boolean;
   private lastValid: boolean;
@@ -33,9 +33,9 @@ export class FactFormComponent implements OnInit, OnChanges {
       indexedSources: fb.array([])
     });
 
-    this.sourceCount$ = this.form.valueChanges.map(v => {
+    this.sourceCount$ = this.form.valueChanges.map(formValue => {
       let sourceReferenceRegex = /\[(\d+)\]/g;
-      let description = v['description'];
+      let description = formValue.description;
 
       let matches = [];
       let match = null;
@@ -85,18 +85,21 @@ export class FactFormComponent implements OnInit, OnChanges {
     debugger;
   }
 
+  private updateTags(tags: string[]) {
+    this.tags = tags;
+    this.triggerFactChanges();
+  }
+
   private triggerFactChanges() {
-    if (this.isValid()) {
-      let formValue = this.form.value;
-      this.fact = {
-        title: formValue.title,
-        tags: this.tags.map(t => t.text),
-        definition: formValue.definition,
-        sources: formValue.indexedSources,
-        //notes: formValue.notes
-      };
-      this.factChanges.emit(this.fact);
-    }
+    let formValue = this.form.value;
+    this.fact = {
+      title: formValue.title || '',
+      definition: formValue.definition || '',
+      sources: formValue.indexedSources,
+      //notes: formValue.notes,
+      tags: this.tags
+    };
+    this.factChanges.emit(this.fact);
   }
 
   private triggerFactValidChanges() {

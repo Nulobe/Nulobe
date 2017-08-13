@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ApiModule } from './api';
-import { FactsModule, FactListComponent, FactFormBulkComponent } from './facts';
+import { FactsModule, FactListComponent, FactFormBulkComponent, FactFormComponent } from './facts';
 import { SpinnerModule, SpinnerComponent } from './spinner';
 import { TagsModule, TagListComponent, TagSelectorComponent } from './tags';
 
@@ -15,7 +15,7 @@ import { TagsModule, TagListComponent, TagSelectorComponent } from './tags';
     TagsModule
   ],
   exports: [
-    FactListComponent, FactFormBulkComponent,
+    FactListComponent, FactFormBulkComponent, FactFormComponent,
     SpinnerComponent,
     TagListComponent, TagSelectorComponent
   ]

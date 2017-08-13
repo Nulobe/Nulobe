@@ -9,6 +9,7 @@
         tag-input-form form input {
             @include font-family-default();
             padding: 0;
+            padding-top: 3px;
 
             @include placeholder() {
                 @include font-family-default();
@@ -18,9 +19,14 @@
 
         tag {
             @include font-family-default();
+            line-height: 39px;
 
             delete-icon {
-                margin-top: -3px;
+                margin-top: -4px;
+
+                &:hover {
+                    transform: scale(1.5) translateY(-5px);
+                }
             }
         }
     }

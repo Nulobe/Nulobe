@@ -1,6 +1,14 @@
 <div class="container">
-  <h1>Bulk Create</h1>
-  <div class="fact-form-bulk-container">
-    <app-fact-form-bulk></app-fact-form-bulk>
+  <h1>Add a new granule</h1>
+  <div class="fact-form-container">
+    <app-fact-form
+      (factChanges)="fact = $event"
+      (factValidChanges)="valid = $event"></app-fact-form>
   </div>
+  <div class="button-container">
+    <button md-button (click)="search()">Cancel</button>
+    <button md-button (click)="search()">Preview</button>
+    <button md-button color="warn" (click)="search()">Publish</button>
+  </div>
+  <pre *ngIf="fact">{{ fact | json }}</pre>
 </div>

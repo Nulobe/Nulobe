@@ -6,5 +6,17 @@
 
     .container {
         width: 1000px;
+
+        .button-container {
+            @include flex-display();
+            @include justify-content(flex-end);
+            margin-top: 50px;
+
+            button {
+                &:not(:first-child) {
+                    margin-left: 5px;
+                }
+            }
+        }
     }
 }
