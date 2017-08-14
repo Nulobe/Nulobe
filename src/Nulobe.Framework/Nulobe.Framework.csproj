@@ -98,8 +98,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auth0Options.cs" />
+    <Compile Include="ClientUnauthenticatedException.cs" />
+    <Compile Include="FrameworkClaimsIdentityExtensions.cs" />
     <Compile Include="IAccessTokenAccessor.cs" />
     <Compile Include="IAuthOptions.cs" />
+    <Compile Include="IClaimsPrincipalAccessor.cs" />
     <Compile Include="IRemoteIpAddressAccessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FrameworkServiceCollectionExtensions.cs" />
@@ -107,6 +110,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\util\Nulobe.Utility.Validation\Nulobe.Utility.Validation.csproj">
+      <Project>{6ef93140-e726-41e7-a4bb-2aa572b686ef}</Project>
+      <Name>Nulobe.Utility.Validation</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

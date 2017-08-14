@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Fact } from '../../../../core/api';
+import { FactCreate } from '../../../../core/api';
 
 @Component({
   selector: 'app-fact-preview-dialog',
@@ -9,7 +9,7 @@ import { Fact } from '../../../../core/api';
 })
 export class FactPreviewDialogComponent implements OnInit {
 
-  fact: Fact;
+  fact: FactCreate;
 
   constructor() { }
 

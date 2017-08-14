@@ -12,5 +12,6 @@ namespace Nulobe.Api.Core.Facts
         public string AuthorizationKey { get; set; }
         public string CollectionName { get; set; }
         public string DatabaseName { get; set; }
+        public int MaxSourceCount { get; set; }
     }
 }

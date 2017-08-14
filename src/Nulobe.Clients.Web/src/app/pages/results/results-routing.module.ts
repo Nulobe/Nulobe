@@ -3,7 +3,7 @@ import { Routes, RouterModule, Route, UrlMatcher, UrlMatchResult, UrlSegment, Ur
 
 import { ResultsComponent } from './results.component';
 
-export const resultsMatcher: UrlMatcher = (segments: UrlSegment[], group: UrlSegmentGroup, route: Route) => {
+export const resultsMatcher = (segments: UrlSegment[], group: UrlSegmentGroup, route: Route): UrlMatchResult => {
   let consumed = [];
       
   if (segments.length && segments[0].path !== 'LOBE') {

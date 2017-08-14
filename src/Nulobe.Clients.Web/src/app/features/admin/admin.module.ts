@@ -4,6 +4,7 @@ import { MdButtonModule, MdDialogModule } from '@angular/material';
 
 import { AuthModule } from '../../features/auth';
 import { CoreModule } from '../../core';
+import { AuthHttp, authHttpProvider } from '../../auth-http.service';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminStateModule } from './state/admin-state.module';
@@ -30,6 +31,10 @@ import { FactPreviewDialogComponent } from './pages/fact-preview-dialog/fact-pre
   ],
   entryComponents: [
     FactPreviewDialogComponent
+  ],
+  providers: [
+    AuthHttp,
+    authHttpProvider
   ]
 })
 export class AdminModule { }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FactApiClient } from './core/api';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,8 @@ export class AppComponent implements OnInit {
   title = 'app';
 
   constructor(
-    private router: Router
+    private router: Router,
+    private factApiClient: FactApiClient
   ) { }
 
   ngOnInit(): void {

@@ -15,17 +15,18 @@ namespace Nulobe.Api.Core.Facts
 
         public string Definition { get; set; }
 
+        public string Notes { get; set; }
+
         public IEnumerable<Source> Sources { get; set; }
 
         public IEnumerable<string> Tags { get; set; }
 
         public string Credit { get; set; }
-    }
 
-    public class Source
-    {
-        public string Description { get; set; }
+        public DateTime Created { get; set; }
 
-        public string Url { get; set; }
+        public string CreatedByRemoteIp { get; set; }
+
+        public string CreatedById { get; set; }
     }
 }

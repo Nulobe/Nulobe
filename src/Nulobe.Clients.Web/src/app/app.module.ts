@@ -16,11 +16,6 @@ import { AuthModule, AuthService } from './features/auth';
 import { CoreModule } from './core';
 import { AuthHttp, authHttpProvider } from './auth-http.service';
 
-export const authHttpFactory = (backend: XHRBackend, defaultOptions: RequestOptions, injector: Injector) => {
-  let authService = injector.get(AuthService);
-  return new AuthHttp(backend, defaultOptions, authService);
-};
-
 @NgModule({
   declarations: [
     AppComponent,

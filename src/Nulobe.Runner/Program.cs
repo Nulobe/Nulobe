@@ -14,6 +14,7 @@ using Nulobe.Api.Core.Facts;
 using AutoMapper;
 using Nulobe.Api.Core.Events;
 using System.Reflection;
+using System.Security.Claims;
 
 namespace Nulobe.Runner
 {
@@ -35,6 +36,7 @@ namespace Nulobe.Runner
             services.ConfigureQuizlet(configuration);
             services.AddTransient<IRemoteIpAddressAccessor, StubbedRemoteIpAddressAccessor>();
             services.AddTransient<IAccessTokenAccessor, StubbedAccessTokenAccessor>();
+            services.AddTransient<IClaimsPrincipalAccessor, StubbedClaimsPrincipalAccessor>();
             var serviceProvider = services.BuildServiceProvider();
 
             //var quizletSetService = serviceProvider.GetRequiredService<IQuizletSetService>();
@@ -45,10 +47,10 @@ namespace Nulobe.Runner
 
 
             var factService = serviceProvider.GetRequiredService<IFactService>();
-            var fact = factService.CreateFactAsync(new Fact()
+            var fact = factService.CreateFactAsync(new FactCreate()
             {
                 Title = "Test fact",
-                Definition = "Test definition",
+                Definition = " [2] Test [1] definition",
                 Tags = new string[] { "dairy", "environment", "NZ" }
             }).Result;
 
@@ -78,6 +80,24 @@ namespace Nulobe.Runner
         private class StubbedRemoteIpAddressAccessor : IRemoteIpAddressAccessor
         {
             public string RemoteIpAddress => "1.0.0.127";
+        }
+
+        private class StubbedClaimsPrincipalAccessor : IClaimsPrincipalAccessor
+        {
+            public ClaimsPrincipal ClaimsPrincipal
+            {
+                get
+                {
+                    var identity = new ClaimsIdentity("test");
+
+                    var claim = new Claim("sub", "test-user");
+                    claim.Properties.Add("x", "sub");
+
+                    identity.AddClaim(claim);
+
+                    return new ClaimsPrincipal(identity);
+                }
+            }
         }
     }
 }

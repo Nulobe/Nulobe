@@ -1,6 +1,6 @@
 export { ApiModule } from './api.module';
 export {
-    FactApiClient, Fact,
+    FactApiClient, Fact, FactCreate,
     TagApiClient, Tag,
     VoteApiClient, VoteCreate,
     FlagApiClient, FlagCreate,

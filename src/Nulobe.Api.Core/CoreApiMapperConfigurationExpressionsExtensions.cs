@@ -1,4 +1,5 @@
 ﻿using Nulobe.Api.Core.Events;
+using Nulobe.Api.Core.Facts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace AutoMapper
             this IMapperConfigurationExpression conf)
         {
             conf.AddProfile<EventMappingProfile>();
+            conf.AddProfile<FactMappingProfile>();
         }
     }
 }

@@ -8,7 +8,7 @@
         }
     }
 
-    .description {
+    .definition {
         md-input-container {
             width: 100%;
         }
@@ -34,6 +34,12 @@
 
                 .source-details {
                     @include flex(1);
+
+                    .description {
+                        md-input-container {
+                            width: 100%;
+                        }
+                    }
 
                     .url {
                         md-input-container {

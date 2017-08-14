@@ -14,15 +14,15 @@ export class AdminComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.factApiClient.create({
-      title: 'Test fact',
-      definition: 'Test definition',
-      sources: [],
-      tags: ['dairy', 'nutrition'],
-      credit: '@mushimas'
-    })
-    .subscribe((...args) => {
-    });
+    // this.factApiClient.create({
+    //   title: 'Test fact',
+    //   definition: 'Test definition',
+    //   sources: [],
+    //   tags: ['dairy', 'nutrition'],
+    //   credit: '@mushimas'
+    // })
+    // .subscribe((...args) => {
+    // });
   }
 
 }

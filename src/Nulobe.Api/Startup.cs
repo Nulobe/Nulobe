@@ -45,6 +45,7 @@ namespace Nulobe.Api
             services.AddQuizletApiServices();
 
             services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IClaimsPrincipalAccessor, HttpClaimsPrincipalAccessor>();
             services.AddScoped<IRemoteIpAddressAccessor, HttpRemoteIpAddressAccessor>();
             services.AddScoped<IAccessTokenAccessor, HttpBearerAccessTokenAccessor>();
         }

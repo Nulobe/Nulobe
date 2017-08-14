@@ -35,10 +35,10 @@ namespace Nulobe.Api.Controllers
 
         [HttpPost("")]
         [Authorize]
-        [ProducesResponseType(typeof(Fact), 201)]
-        public async Task<IActionResult> Create([FromBody] Fact fact)
+        [ProducesResponseType(typeof(FactCreate), 201)]
+        public async Task<IActionResult> Create([FromBody] FactCreate create)
         {
-            var result = await _factService.CreateFactAsync(fact);
+            var result = await _factService.CreateFactAsync(create);
             return CreatedAtAction(
                 nameof(Get),
                 new { id = result.Id },

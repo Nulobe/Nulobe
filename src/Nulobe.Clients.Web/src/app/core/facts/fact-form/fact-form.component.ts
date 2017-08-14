@@ -2,7 +2,7 @@ import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitte
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
-import { Fact } from '../../api';
+import { FactCreate } from '../../api';
 
 @Component({
   selector: 'app-fact-form',
@@ -10,8 +10,8 @@ import { Fact } from '../../api';
   styleUrls: ['./fact-form.component.scss']
 })
 export class FactFormComponent implements OnInit, OnChanges {
-  @Input() fact: Fact;
-  @Output() factChanges = new EventEmitter<Fact>();
+  @Input() fact: FactCreate;
+  @Output() factChanges = new EventEmitter<FactCreate>();
   @Output() factValidChanges = new EventEmitter<boolean>();
 
   private form: FormGroup;
@@ -28,18 +28,18 @@ export class FactFormComponent implements OnInit, OnChanges {
 
     this.form = fb.group({
       title: fb.control('', Validators.required),
-      description: fb.control('', Validators.required),
+      definition: fb.control('', Validators.required),
       notes: fb.control(''),
       indexedSources: fb.array([])
     });
 
     this.sourceCount$ = this.form.valueChanges.map(formValue => {
       let sourceReferenceRegex = /\[(\d+)\]/g;
-      let description = formValue.description;
+      let definition = formValue.definition;
 
       let matches = [];
       let match = null;
-      while ((match = sourceReferenceRegex.exec(description)) != null) {
+      while ((match = sourceReferenceRegex.exec(definition)) != null) {
         matches.push(parseInt(match[1], 10));
       }
 
@@ -73,7 +73,7 @@ export class FactFormComponent implements OnInit, OnChanges {
       }
     });
 
-    this.fact = this.fact || {};
+    this.fact = this.fact || <FactCreate>{};
 
     this.form.valueChanges.subscribe(f => {
       this.triggerFactValidChanges();
@@ -96,7 +96,7 @@ export class FactFormComponent implements OnInit, OnChanges {
       title: formValue.title || '',
       definition: formValue.definition || '',
       sources: formValue.indexedSources,
-      //notes: formValue.notes,
+      notes: formValue.notes,
       tags: this.tags
     };
     this.factChanges.emit(this.fact);

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MdDialog } from '@angular/material';
 
-import { Fact } from '../../../../core/api';
+import { FactApiClient, FactCreate } from '../../../../core/api';
 
 import { FactPreviewDialogComponent } from '../fact-preview-dialog/fact-preview-dialog.component';
 
@@ -12,10 +12,11 @@ import { FactPreviewDialogComponent } from '../fact-preview-dialog/fact-preview-
 })
 export class CreateFactsComponent implements OnInit {
 
-  private fact: Fact;
+  private fact: FactCreate;
   private valid: boolean;
 
   constructor(
+    private factApiClient: FactApiClient,
     private mdDialog: MdDialog
   ) { }
 
@@ -32,6 +33,13 @@ export class CreateFactsComponent implements OnInit {
   previewFact() {
     let dialogRef = this.mdDialog.open(FactPreviewDialogComponent);
     dialogRef.componentInstance.fact = this.fact;
+  }
+
+  publishFact() {
+    if (window.confirm('Are you sure you want to publish this fact?')) {
+      this.factApiClient.create(this.fact)
+        .subscribe();
+    }
   }
 
 }
