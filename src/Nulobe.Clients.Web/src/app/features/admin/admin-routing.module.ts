@@ -24,11 +24,13 @@ export const routes: Routes = [
   {
     path: '',
     component: AdminComponent,
-    canActivate: [CanActivateAdmin]
-  },
-  {
-    path: 'create',
-    component: CreateFactsComponent
+    canActivate: [CanActivateAdmin],
+    children: [
+      {
+        path: 'create',
+        component: CreateFactsComponent
+      }
+    ]
   }
 ];
 

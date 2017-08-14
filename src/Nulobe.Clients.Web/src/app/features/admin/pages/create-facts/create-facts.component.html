@@ -7,8 +7,7 @@
   </div>
   <div class="button-container">
     <button md-button (click)="search()">Cancel</button>
-    <button md-button (click)="search()">Preview</button>
+    <button md-button (click)="previewFact()">Preview</button>
     <button md-button color="warn" (click)="search()">Publish</button>
   </div>
-  <pre *ngIf="fact">{{ fact | json }}</pre>
 </div>

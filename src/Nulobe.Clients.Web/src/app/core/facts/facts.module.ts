@@ -27,6 +27,7 @@ import { FactFormComponent } from './fact-form/fact-form.component';
   ],
   exports: [
     FactListComponent,
+    FactListItemComponent,
     FactFormBulkComponent,
     FactFormComponent
   ]
