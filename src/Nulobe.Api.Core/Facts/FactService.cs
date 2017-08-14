@@ -20,102 +20,50 @@ namespace Nulobe.Api.Core.Facts
         private static readonly Regex SourceReferenceRegex = new Regex(@"\[(\d+)\]");
 
         private readonly FactServiceOptions _factServiceOptions;
+        private readonly DocumentDbOptions _documentDbOptions;
         private readonly IClaimsPrincipalAccessor _claimsPrincipalAccessor;
-        private readonly IRemoteIpAddressAccessor _remoteIpAddressAccessor;
+        private readonly Auditor _auditor;
         private readonly IDocumentClientFactory _documentClientFactory;
         private readonly IMapper _mapper;
 
         public FactService(
             IOptions<FactServiceOptions> factServiceOptions,
+            IOptions<DocumentDbOptions> documentDbOptions,
             IClaimsPrincipalAccessor claimsPrincipalAccessor,
-            IRemoteIpAddressAccessor remoteIpAddressAccessor,
+            Auditor auditor,
             IDocumentClientFactory documentClientFactory,
             IMapper mapper)
         {
             _factServiceOptions = factServiceOptions.Value;
+            _documentDbOptions = documentDbOptions.Value;
             _claimsPrincipalAccessor = claimsPrincipalAccessor;
-            _remoteIpAddressAccessor = remoteIpAddressAccessor;
+            _auditor = auditor;
             _documentClientFactory = documentClientFactory;
             _mapper = mapper;
         }
 
         public Task<Fact> GetFactAsync(string id)
         {
-            using (var client = _documentClientFactory.Create(_factServiceOptions))
+            using (var client = _documentClientFactory.Create(_documentDbOptions))
             {
-                return client.ReadDocumentAsync<Fact>(_factServiceOptions, id);
+                return client.ReadDocumentAsync<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
             }
         }
 
-        public async Task<Fact> CreateFactAsync(FactCreate create)
+        public async Task<Fact> CreateFactAsync(Fact fact)
         {
-            var principal = _claimsPrincipalAccessor.ClaimsPrincipal;
-            if (!principal.Identity.IsAuthenticated)
-            {
-                throw new ClientUnauthenticatedException();
-            }
+            AssertAuthenticated();
+            Validator.ValidateNotNull(fact, nameof(fact));
+            ValidateFact(fact);
 
-            Validator.ValidateNotNull(create, nameof(create));
-            var (isValid, modelErrors) = Validator.IsValid(create);
-
-            if (modelErrors.IsMemberValid(nameof(FactCreate.Definition)))
-            {
-                var indexSequence = SourceReferenceRegex.Matches(create.Definition)
-                    .Cast<Match>()
-                    .Select(m =>
-                    {
-                        var groups = m.Groups.Cast<Group>();
-                        var group = groups.Skip(1).First();
-
-                        int index = 0;
-                        int.TryParse(group.Value, out index);
-                        return index;
-                    })
-                    .Where(i => i >= 1 && i <= _factServiceOptions.MaxSourceCount);
-
-                if (indexSequence.Max() != create.Sources.Count())
-                {
-                    modelErrors.Add(
-                        $"Expected number of sources ({create.Sources.Count()}) to equal the number referenced in {nameof(FactCreate.Definition)} ({indexSequence.Max()})",
-                        nameof(FactCreate.Definition));
-                }
-
-                if (indexSequence.Any())
-                {
-                    var expectedIndexSequence = ListHelpers.Range(1, indexSequence.Max());
-                    if (!expectedIndexSequence.SequenceEqual(indexSequence))
-                    {
-                        modelErrors.Add(
-                            $"Source references in {nameof(FactCreate.Definition)} should be ascending and without missing indicies. Index sequence was [{string.Join(", ", indexSequence)}]",
-                            nameof(FactCreate.Definition));
-                    }
-                }
-            }
-
-            var sources = create.Sources.ToList();
-            for (var i = 0; i < sources.Count(); i++)
-            {
-                var (isSourceValid, sourceModelErrors) = Validator.IsValid(sources[i]);
-                if (!isSourceValid)
-                {
-                    modelErrors.Add(sourceModelErrors, $"{nameof(create.Sources)}[{i}]");
-                }
-            }
-
-            if (modelErrors.Errors.Count() > 0)
-            {
-                throw new ClientModelValidationException(modelErrors);
-            }
-
-            var fact = _mapper.Map<FactCreate, Fact>(create);
-            fact.Created = DateTime.UtcNow;
-            fact.CreatedById = principal.Identities.First().GetId();
-            fact.CreatedByRemoteIp = _remoteIpAddressAccessor.RemoteIpAddress;
+            var factAudit = new FactAudit() { CurrentValue = fact };
+            _auditor.AuditAction(nameof(CreateFactAsync), factAudit);
 
             fact.Id = Guid.NewGuid().ToString();
-            using (var client = _documentClientFactory.Create(_factServiceOptions))
+            using (var client = _documentClientFactory.Create(_documentDbOptions))
             {
-                await client.CreateDocumentAsync(_factServiceOptions, fact);
+                await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactCollectionName, fact);
+                await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactAuditCollectionName, factAudit);
             }
             return fact;
         }
@@ -127,7 +75,14 @@ namespace Nulobe.Api.Core.Facts
 
         public Task<Fact> UpdateFactAsync(string id, Fact fact)
         {
-            throw new NotImplementedException();
+            AssertAuthenticated();
+            Validator.ValidateNotNull(fact, nameof(fact));
+            ValidateFact(fact);
+
+            var factAudit = new FactAudit() { CurrentValue = fact };
+            _auditor.AuditAction(nameof(UpdateFactAsync), factAudit);
+
+            return Task.FromResult(fact);
         }
 
         public Task<IEnumerable<Fact>> QueryFactsAsync(FactQuery query)
@@ -147,9 +102,9 @@ namespace Nulobe.Api.Core.Facts
             var sqlParameters = new SqlParameterCollection(
                 tags.Select((t, i) => new SqlParameter($"@tag{i}", t)));
 
-            using (var client = _documentClientFactory.Create(_factServiceOptions))
+            using (var client = _documentClientFactory.Create(_documentDbOptions))
             {
-                var result = client.CreateDocumentQuery<Fact>(_factServiceOptions, new SqlQuerySpec()
+                var result = client.CreateDocumentQuery<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, new SqlQuerySpec()
                 {
                     QueryText = sqlQueryText,
                     Parameters = sqlParameters
@@ -158,6 +113,72 @@ namespace Nulobe.Api.Core.Facts
                 return Task.FromResult(result.AsEnumerable());
             }
         }
+
+
+        #region Helpers
+
+        private void AssertAuthenticated()
+        {
+            if (!_claimsPrincipalAccessor.ClaimsPrincipal.Identity.IsAuthenticated)
+            {
+                throw new ClientUnauthenticatedException();
+            }
+        }
+
+        private void ValidateFact(Fact fact)
+        {
+            var (isValid, modelErrors) = Validator.IsValid(fact);
+
+            if (modelErrors.IsMemberValid(nameof(FactCreate.Definition)))
+            {
+                var indexSequence = SourceReferenceRegex.Matches(fact.Definition)
+                    .Cast<Match>()
+                    .Select(m =>
+                    {
+                        var groups = m.Groups.Cast<Group>();
+                        var group = groups.Skip(1).First();
+
+                        int.TryParse(group.Value, out int index);
+                        return index;
+                    })
+                    .Where(i => i >= 1 && i <= _factServiceOptions.MaxSourceCount);
+
+                if (indexSequence.Any())
+                {
+                    if (indexSequence.Max() != fact.Sources.Count())
+                    {
+                        modelErrors.Add(
+                            $"Expected number of sources ({fact.Sources.Count()}) to equal the number referenced in {nameof(FactCreate.Definition)} ({indexSequence.Max()})",
+                            nameof(FactCreate.Definition));
+                    }
+
+                    var expectedIndexSequence = ListHelpers.Range(1, indexSequence.Max());
+                    if (!expectedIndexSequence.SequenceEqual(indexSequence))
+                    {
+                        modelErrors.Add(
+                            $"Source references in {nameof(FactCreate.Definition)} should be ascending and without missing indicies. Index sequence was [{string.Join(", ", indexSequence)}]",
+                            nameof(FactCreate.Definition));
+                    }
+                }
+            }
+
+            var sources = fact.Sources.ToList();
+            for (var i = 0; i < sources.Count(); i++)
+            {
+                var (isSourceValid, sourceModelErrors) = Validator.IsValid(sources[i]);
+                if (!isSourceValid)
+                {
+                    modelErrors.Add(sourceModelErrors, $"{nameof(fact.Sources)}[{i}]");
+                }
+            }
+
+            if (modelErrors.Errors.Count() > 0)
+            {
+                throw new ClientModelValidationException(modelErrors);
+            }
+        }
+        
+        #endregion
 
     }
 }

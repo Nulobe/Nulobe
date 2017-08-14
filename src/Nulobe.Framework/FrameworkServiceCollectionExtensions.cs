@@ -23,5 +23,12 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             return services.Configure<QuizletOptions>(configuration.GetSection("Nulobe:Quizlet"));
         }
+
+        public static IServiceCollection ConfigureDocumentDb(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            return services.Configure<DocumentDbOptions>(configuration.GetSection("Nulobe:DocumentDb"));
+        }
     }
 }

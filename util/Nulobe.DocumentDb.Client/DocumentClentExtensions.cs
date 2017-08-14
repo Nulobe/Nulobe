@@ -12,42 +12,36 @@ namespace Nulobe.DocumentDb.Client
     {
         public static Task<ResourceResponse<Document>> CreateDocumentAsync(
             this DocumentClient documentClient,
-            IDocumentDbCollectionSpec collectionSpec,
+            IDocumentDbDatabaseSpec documentDbDatabaseSpec,
+            string collectionName,
             object document,
             RequestOptions options = null,
             bool disableAutomaticIdGeneration = false)
         {
-            var documentCollectionUri = UriFactoryExtensions.CreateDocumentCollectionUri(collectionSpec);
-            return documentClient.CreateDocumentAsync(documentCollectionUri, document, options, disableAutomaticIdGeneration);
-        }
-
-        public static IOrderedQueryable<ResourceType> CreateDocumentQuery<ResourceType>(
-            this DocumentClient documentClient,
-            IDocumentDbCollectionSpec collectionSpec,
-            FeedOptions feedOptions = null)
-        {
-            var documentCollectionUri = UriFactoryExtensions.CreateDocumentCollectionUri(collectionSpec);
-            return documentClient.CreateDocumentQuery<ResourceType>(documentCollectionUri, feedOptions);
+            var uri = UriFactory.CreateDocumentCollectionUri(documentDbDatabaseSpec.DatabaseName, collectionName);
+            return documentClient.CreateDocumentAsync(uri, document, options, disableAutomaticIdGeneration);
         }
 
         public static IQueryable<ResourceType> CreateDocumentQuery<ResourceType>(
             this DocumentClient documentClient,
-            IDocumentDbCollectionSpec collectionSpec,
+            IDocumentDbDatabaseSpec documentDbDatabaseSpec,
+            string collectionName,
             SqlQuerySpec sqlQuery,
             FeedOptions feedOptions = null)
         {
-            var documentCollectionUri = UriFactoryExtensions.CreateDocumentCollectionUri(collectionSpec);
-            return documentClient.CreateDocumentQuery<ResourceType>(documentCollectionUri, sqlQuery, feedOptions);
+            var uri = UriFactory.CreateDocumentCollectionUri(documentDbDatabaseSpec.DatabaseName, collectionName);
+            return documentClient.CreateDocumentQuery<ResourceType>(uri, sqlQuery, feedOptions);
         }
 
-        public static async Task<TResourceType> ReadDocumentAsync<TResourceType>(
+        public static async Task<TResult> ReadDocumentAsync<TResult>(
             this DocumentClient documentClient,
-            IDocumentDbCollectionSpec collectionSpec,
-            string documentId)
-            where TResourceType : new()
+            IDocumentDbDatabaseSpec documentDbDatabaseSpec,
+            string collectionName,
+            string id) where TResult : new()
         {
-            var documentUri = UriFactoryExtensions.CreateDocumentUri(collectionSpec, documentId);
-            return await documentClient.ReadDocumentAsync<TResourceType>(documentUri);
+            var uri = UriFactory.CreateDocumentUri(documentDbDatabaseSpec.DatabaseName, collectionName, id);
+            var documentResponse = await documentClient.ReadDocumentAsync<TResult>(uri);
+            return documentResponse.Document;
         }
 
         public static async Task<ResourceResponse<Document>> ReplaceDocumentAsync(
@@ -73,14 +67,15 @@ namespace Nulobe.DocumentDb.Client
 
         public static async Task EnsureCollectionAsync(
             this DocumentClient documentClient,
-            IDocumentDbCollectionSpec collectionSpec)
+            IDocumentDbDatabaseSpec documentDbDatabaseSpec,
+            string collectionName)
         {
-            await documentClient.EnsureDatabaseAsync(collectionSpec);
+            await documentClient.EnsureDatabaseAsync(documentDbDatabaseSpec);
             await documentClient.CreateDocumentCollectionIfNotExistsAsync(
-                UriFactoryExtensions.CreateDocumentDatabaseUri(collectionSpec),
+                UriFactory.CreateDatabaseUri(documentDbDatabaseSpec.DatabaseName),
                 new DocumentCollection()
                 {
-                    Id = collectionSpec.CollectionName
+                    Id = collectionName
                 });
         }
     }

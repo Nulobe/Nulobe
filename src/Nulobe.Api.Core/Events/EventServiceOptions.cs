@@ -7,11 +7,8 @@ using System.Threading.Tasks;
 
 namespace Nulobe.Api.Core.Events
 {
-    public class EventServiceOptions : IDocumentDbConnectionSpec, IDocumentDbCollectionSpec
+    public class EventServiceOptions
     {
-        public Uri ServiceEndpoint { get; set; }
-        public string AuthorizationKey { get; set; }
-        public string CollectionName { get; set; }
-        public string DatabaseName { get; set; }
+        public string EventCollectionName { get; set; }
     }
 }

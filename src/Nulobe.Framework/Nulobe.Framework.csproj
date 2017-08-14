@@ -97,8 +97,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auditor.cs" />
     <Compile Include="Auth0Options.cs" />
     <Compile Include="ClientUnauthenticatedException.cs" />
+    <Compile Include="DocumentDbOptions.cs" />
     <Compile Include="FrameworkClaimsIdentityExtensions.cs" />
     <Compile Include="IAccessTokenAccessor.cs" />
     <Compile Include="IAuthOptions.cs" />
@@ -112,6 +114,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\util\Nulobe.DocumentDb.Client\Nulobe.DocumentDb.Client.csproj">
+      <Project>{779F6F7E-0EAE-45A8-BD9D-069D8F75C0A3}</Project>
+      <Name>Nulobe.DocumentDb.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\util\Nulobe.Utility.Validation\Nulobe.Utility.Validation.csproj">
       <Project>{6ef93140-e726-41e7-a4bb-2aa572b686ef}</Project>
       <Name>Nulobe.Utility.Validation</Name>

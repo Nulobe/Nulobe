@@ -14,6 +14,7 @@ namespace Nulobe.Api.Core.Events
 {
     public class EventService<TEventCreate> : IEventService<TEventCreate> where TEventCreate : IEventCreate
     {
+        private readonly DocumentDbOptions _documentDbOptions;
         private readonly EventServiceOptions _eventOptions;
         private readonly FactServiceOptions _factOptions;
         private readonly IRemoteIpAddressAccessor _remoteIpAddressAccessor;
@@ -21,12 +22,14 @@ namespace Nulobe.Api.Core.Events
         private readonly IMapper _mapper;
 
         public EventService(
+            IOptions<DocumentDbOptions> documentDbOptions,
             IOptions<EventServiceOptions> eventOptions,
             IOptions<FactServiceOptions> factOptions,
             IRemoteIpAddressAccessor remoteIpAddressAccessor,
             IDocumentClientFactory documentClientFactory,
             IMapper mapper)
         {
+            _documentDbOptions = documentDbOptions.Value;
             _eventOptions = eventOptions.Value;
             _factOptions = factOptions.Value;
             _remoteIpAddressAccessor = remoteIpAddressAccessor;
@@ -37,9 +40,9 @@ namespace Nulobe.Api.Core.Events
         async Task<Event> IEventService<TEventCreate>.CreateEventAsync(TEventCreate create)
         {
             // TODO: Validate TEventCreate
-            using (var client = _documentClientFactory.Create(_eventOptions))
+            using (var client = _documentClientFactory.Create(_documentDbOptions))
             {
-                var fact = await client.ReadDocumentAsync<Fact>(_factOptions, create.FactId);
+                var fact = await client.ReadDocumentAsync<Fact>(_documentDbOptions, _factOptions.FactCollectionName, create.FactId);
                 if (fact == null)
                 {
                     throw new ClientException($"Fact with ID {create.FactId} could not be found");
@@ -49,11 +52,8 @@ namespace Nulobe.Api.Core.Events
                 ev.Created = DateTime.UtcNow;
                 ev.CreatedByIp = _remoteIpAddressAccessor.RemoteIpAddress;
 
-                using (var documentClient = _documentClientFactory.Create(_eventOptions))
-                {
-                    var result = await documentClient.CreateDocumentAsync(_eventOptions, ev);
-                    ev.Id = result.Resource.Id;
-                }
+                var result = await client.CreateDocumentAsync(_documentDbOptions, _eventOptions.EventCollectionName, ev);
+                ev.Id = result.Resource.Id;
 
                 return ev;
             }

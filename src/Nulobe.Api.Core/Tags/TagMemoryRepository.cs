@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Nulobe.Api.Core.Facts;
 using Nulobe.DocumentDb.Client;
+using Nulobe.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,13 +20,16 @@ namespace Nulobe.Api.Core.Tags
         private IEnumerable<Tag> _cachedTags = Enumerable.Empty<Tag>();
         private DateTime _cachedTagsAge = DateTime.MinValue;
 
+        private readonly DocumentDbOptions _documentDbOptions;
         private readonly FactServiceOptions _factServiceOptions;
         private readonly IDocumentClientFactory _documentClientFactory;
 
         public TagMemoryRepository(
+            IOptions<DocumentDbOptions> documentDbOptions,
             IOptions<FactServiceOptions> factServiceOptions,
             IDocumentClientFactory documentClientFactory)
         {
+            _documentDbOptions = documentDbOptions.Value;
             _factServiceOptions = factServiceOptions.Value;
             _documentClientFactory = documentClientFactory;
         }
@@ -61,9 +65,9 @@ namespace Nulobe.Api.Core.Tags
             };
 
             IEnumerable<Fact> facts = null;
-            using (var client = _documentClientFactory.Create(_factServiceOptions))
+            using (var client = _documentClientFactory.Create(_documentDbOptions))
             {
-                facts = client.CreateDocumentQuery<Fact>(_factServiceOptions, sqlQuery).ToList();
+                facts = client.CreateDocumentQuery<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, sqlQuery).ToList();
             }
 
             var tags = facts

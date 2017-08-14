@@ -6,12 +6,12 @@ using Nulobe.DocumentDb.Client;
 
 namespace Nulobe.Api.Core.Facts
 {
-    public class FactServiceOptions : IDocumentDbConnectionSpec, IDocumentDbCollectionSpec
+    public class FactServiceOptions
     {
-        public Uri ServiceEndpoint { get; set; }
-        public string AuthorizationKey { get; set; }
-        public string CollectionName { get; set; }
-        public string DatabaseName { get; set; }
+        public string FactCollectionName { get; set; }
+
+        public string FactAuditCollectionName { get; set; }
+
         public int MaxSourceCount { get; set; }
     }
 }

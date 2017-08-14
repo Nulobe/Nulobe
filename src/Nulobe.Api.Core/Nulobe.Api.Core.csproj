@@ -134,6 +134,7 @@
     <Compile Include="Events\VoteCreate.cs" />
     <Compile Include="Events\VoteEventService.cs" />
     <Compile Include="Facts\Fact.cs" />
+    <Compile Include="Facts\FactAudit.cs" />
     <Compile Include="Facts\FactCreate.cs" />
     <Compile Include="Facts\FactMappingProfile.cs" />
     <Compile Include="Facts\FactQuery.cs" />

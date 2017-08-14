@@ -555,23 +555,14 @@ export interface Fact {
     sources?: Source[] | undefined;
     tags?: string[] | undefined;
     credit?: string | undefined;
-    created: Date;
-    createdByRemoteIp?: string | undefined;
-    createdById?: string | undefined;
 }
 
 export interface Source {
-    url?: string | undefined;
+    url: string;
     description?: string | undefined;
 }
 
-export interface FactCreate {
-    title?: string | undefined;
-    definition?: string | undefined;
-    notes?: string | undefined;
-    sources?: Source[] | undefined;
-    tags?: string[] | undefined;
-    credit?: string | undefined;
+export interface FactCreate extends Fact {
 }
 
 export interface FlagCreate {

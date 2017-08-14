@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Nulobe.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +23,5 @@ namespace Nulobe.Api.Core.Facts
         public IEnumerable<string> Tags { get; set; }
 
         public string Credit { get; set; }
-
-        public DateTime Created { get; set; }
-
-        public string CreatedByRemoteIp { get; set; }
-
-        public string CreatedById { get; set; }
     }
 }

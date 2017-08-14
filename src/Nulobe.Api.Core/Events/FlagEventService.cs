@@ -13,7 +13,7 @@ namespace Nulobe.Api.Core.Events
 {
     public class FlagEventService : EventService<FlagCreate>, IFlagEventService
     {
-        public FlagEventService(IOptions<EventServiceOptions> eventOptions, IOptions<FactServiceOptions> factOptions, IRemoteIpAddressAccessor remoteIpAddressAccessor, IDocumentClientFactory documentClientFactory, IMapper mapper) : base(eventOptions, factOptions, remoteIpAddressAccessor, documentClientFactory, mapper)
+        public FlagEventService(IOptions<DocumentDbOptions> documentDbOptions, IOptions<EventServiceOptions> eventOptions, IOptions<FactServiceOptions> factOptions, IRemoteIpAddressAccessor remoteIpAddressAccessor, IDocumentClientFactory documentClientFactory, IMapper mapper) : base(documentDbOptions, eventOptions, factOptions, remoteIpAddressAccessor, documentClientFactory, mapper)
         {
         }
     }

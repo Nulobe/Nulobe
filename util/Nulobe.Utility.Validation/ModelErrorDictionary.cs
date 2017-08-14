@@ -33,8 +33,7 @@ namespace Nulobe.Utility.Validation
 
             if (!string.IsNullOrEmpty(memberName))
             {
-                IEnumerable<string> memberErrors = null;
-                TryGetValue(memberName, out memberErrors);
+                TryGetValue(memberName, out IEnumerable<string> memberErrors);
                 this[memberName] = (memberErrors ?? Enumerable.Empty<string>()).Concat(new string[] { error });
             }
         }
@@ -58,8 +57,7 @@ namespace Nulobe.Utility.Validation
 
         public bool IsMemberValid(string memberName)
         {
-            IEnumerable<string> errors;
-            return !TryGetValue(memberName, out errors) || !errors.Any();
+            return !TryGetValue(memberName, out IEnumerable<string> errors) || !errors.Any();
         }
     }
 }

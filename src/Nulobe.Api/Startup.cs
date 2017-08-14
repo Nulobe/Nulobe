@@ -41,6 +41,7 @@ namespace Nulobe.Api
 
             services.ConfigureAuth0(_configuration);
             services.ConfigureQuizlet(_configuration);
+            services.ConfigureDocumentDb(_configuration);
 
             services.AddCoreApiServices(_configuration);
             services.AddQuizletApiServices();
@@ -49,6 +50,7 @@ namespace Nulobe.Api
             services.AddScoped<IClaimsPrincipalAccessor, HttpClaimsPrincipalAccessor>();
             services.AddScoped<IRemoteIpAddressAccessor, HttpRemoteIpAddressAccessor>();
             services.AddScoped<IAccessTokenAccessor, HttpBearerAccessTokenAccessor>();
+            services.AddScoped<Auditor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,16 +59,18 @@ namespace Nulobe.Api
             IHostingEnvironment env,
             ILoggerFactory loggerFactory,
             IDocumentClientFactory documentClientFactory,
+            IOptions<DocumentDbOptions> documentDbOptions,
             IOptions<FactServiceOptions> factServiceOptions,
             IOptions<EventServiceOptions> eventServiceOptions,
             IOptions<Auth0Options> auth0Options)
         {
             loggerFactory.AddConsole();
 
-            using (var client = documentClientFactory.Create(factServiceOptions.Value))
+            using (var client = documentClientFactory.Create(documentDbOptions.Value))
             {
-                client.EnsureCollectionAsync(factServiceOptions.Value).Wait();
-                client.EnsureCollectionAsync(eventServiceOptions.Value).Wait();
+                client.EnsureCollectionAsync(documentDbOptions.Value, factServiceOptions.Value.FactCollectionName).Wait();
+                client.EnsureCollectionAsync(documentDbOptions.Value, factServiceOptions.Value.FactAuditCollectionName).Wait();
+                client.EnsureCollectionAsync(documentDbOptions.Value, eventServiceOptions.Value.EventCollectionName).Wait();
             }
 
             if (env.IsDevelopment())
