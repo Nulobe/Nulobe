@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using System.Diagnostics;
 
 namespace Nulobe.Api
 {
@@ -33,14 +34,14 @@ namespace Nulobe.Api
 
         private static async Task EnsureDocumentDbRunningAsync()
         {
-            var existingProcess = System.Diagnostics.Process.GetProcessesByName("CosmosDB.Emulator").FirstOrDefault();
+            var existingProcess = Process.GetProcessesByName("CosmosDB.Emulator").FirstOrDefault();
             if (existingProcess == null || !(await TestConnectionAsync(existingProcess)))
             {
                 Console.WriteLine("DocumentDB Emulator is not running, attempting to start");
 
                 if (File.Exists(DocumentDbEmulatorExePath))
                 {
-                    var process = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo()
+                    var process = Process.Start(new ProcessStartInfo()
                     {
                         FileName = DocumentDbEmulatorExePath,
                         CreateNoWindow = true
@@ -57,7 +58,7 @@ namespace Nulobe.Api
             }
         }
 
-        private static async Task<bool> TestConnectionAsync(System.Diagnostics.Process process)
+        private static async Task<bool> TestConnectionAsync(Process process)
         {
             using (var client = new Microsoft.Azure.Documents.Client.DocumentClient(new Uri("https://localhost:8081"), "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="))
             {

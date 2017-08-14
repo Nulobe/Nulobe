@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { Fact } from '../../api/api.swagger';
+import { FactCreate } from '../../api/api.swagger';
 
 export interface FactLinkResolver {
-  resolve(fact: Fact): string;
+  resolve(fact: FactCreate): string;
 }
 
 @Component({
@@ -12,18 +12,18 @@ export interface FactLinkResolver {
   styleUrls: ['./fact-list.component.scss']
 })
 export class FactListComponent implements OnInit {
-  @Input() facts: Fact[];
+  @Input() facts: FactCreate[];
   @Input() factLinkResolver: FactLinkResolver;
   @Output() onTagSelect = new EventEmitter<string>();
-  @Output() onVote = new EventEmitter<Fact>();
-  @Output() onFlag = new EventEmitter<Fact>();
+  @Output() onVote = new EventEmitter<FactCreate>();
+  @Output() onFlag = new EventEmitter<FactCreate>();
 
   constructor() { }
 
   ngOnInit() {
     if (!this.factLinkResolver) {
       this.factLinkResolver = {
-       resolve: (f: Fact) => '#' 
+       resolve: (f: FactCreate) => '#' 
       };
     }
   }
@@ -32,11 +32,11 @@ export class FactListComponent implements OnInit {
     this.onTagSelect.emit(tag);
   }
 
-  voteClicked(fact: Fact) {
+  voteClicked(fact: FactCreate) {
     this.onVote.emit(fact);
   }
 
-  flagClicked(fact: Fact) {
+  flagClicked(fact: FactCreate) {
     this.onFlag.emit(fact);
   }
 }

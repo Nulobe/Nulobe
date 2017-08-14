@@ -22,7 +22,7 @@ export const API_BASE_URL = new OpaqueToken('API_BASE_URL');
 
 export interface IFactApiClient {
     list(tags: string | undefined): Observable<Fact[] | null>;
-    create(create: FactCreate | undefined): Observable<FactCreate | null>;
+    create(create: FactCreate | undefined): Observable<Fact | null>;
     get(id: string): Observable<Fact | null>;
     update(id: string, fact: Fact | undefined): Observable<Fact | null>;
     delete(id: string): Observable<void>;
@@ -82,7 +82,7 @@ export class FactApiClient implements IFactApiClient {
         return Observable.of<Fact[] | null>(<any>null);
     }
 
-    create(create: FactCreate | undefined): Observable<FactCreate | null> {
+    create(create: FactCreate | undefined): Observable<Fact | null> {
         let url_ = this.baseUrl + "/facts";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -104,26 +104,26 @@ export class FactApiClient implements IFactApiClient {
                 try {
                     return this.processCreate(response_);
                 } catch (e) {
-                    return <Observable<FactCreate>><any>Observable.throw(e);
+                    return <Observable<Fact>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<FactCreate>><any>Observable.throw(response_);
+                return <Observable<Fact>><any>Observable.throw(response_);
         });
     }
 
-    protected processCreate(response: Response): Observable<FactCreate | null> {
+    protected processCreate(response: Response): Observable<Fact | null> {
         const status = response.status; 
 
         if (status === 201) {
             const _responseText = response.text();
-            let result201: FactCreate | null = null;
-            result201 = _responseText === "" ? null : <FactCreate>JSON.parse(_responseText, this.jsonParseReviver);
+            let result201: Fact | null = null;
+            result201 = _responseText === "" ? null : <Fact>JSON.parse(_responseText, this.jsonParseReviver);
             return Observable.of(result201);
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.text();
             return throwException("An unexpected server error occurred.", status, _responseText);
         }
-        return Observable.of<FactCreate | null>(<any>null);
+        return Observable.of<Fact | null>(<any>null);
     }
 
     get(id: string): Observable<Fact | null> {

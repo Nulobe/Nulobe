@@ -86,7 +86,7 @@ namespace Nulobe.Api.Core.Facts
                     if (!expectedIndexSequence.SequenceEqual(indexSequence))
                     {
                         modelErrors.Add(
-                            $"Source references in {nameof(FactCreate.Definition)} should be ascending and without missing indicies. Index collection was  [{string.Join(", ", indexSequence)}]",
+                            $"Source references in {nameof(FactCreate.Definition)} should be ascending and without missing indicies. Index sequence was [{string.Join(", ", indexSequence)}]",
                             nameof(FactCreate.Definition));
                     }
                 }

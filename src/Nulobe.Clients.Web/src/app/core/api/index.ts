@@ -4,5 +4,6 @@ export {
     TagApiClient, Tag,
     VoteApiClient, VoteCreate,
     FlagApiClient, FlagCreate,
-    QuizletApiClient, QuizletTokenRequest, QuizletTokenResponse, QuizletSet, QuizletTerm
+    QuizletApiClient, QuizletTokenRequest, QuizletTokenResponse, QuizletSet, QuizletTerm,
+    SwaggerException
 } from './api.swagger';

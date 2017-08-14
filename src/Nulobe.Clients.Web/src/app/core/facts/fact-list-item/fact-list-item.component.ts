@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { Fact } from '../../api/api.swagger';
+import { FactCreate } from '../../api/api.swagger';
 
 @Component({
   selector: 'app-fact-list-item',
@@ -8,7 +8,7 @@ import { Fact } from '../../api/api.swagger';
   styleUrls: ['./fact-list-item.component.scss']
 })
 export class FactListItemComponent implements OnInit {
-  @Input() fact: Fact;
+  @Input() fact: FactCreate;
   @Output() onTagClick = new EventEmitter<string>();
 
   constructor() { }

@@ -1,5 +1,5 @@
 <div class="container">
-  <h1>Add a new granule</h1>
+  <h1>Add a new nueron</h1>
   <div class="fact-form-container">
     <app-fact-form
       (factChanges)="fact = $event"
@@ -9,5 +9,8 @@
     <button md-button (click)="search()">Cancel</button>
     <button md-button (click)="previewFact()">Preview</button>
     <button md-button color="warn" (click)="publishFact()">Publish</button>
+  </div>
+  <div *ngIf="error" class="error">
+    <pre>{{ error | json }}</pre>
   </div>
 </div>

@@ -15,6 +15,7 @@ using Nulobe.Api.Services;
 using Nulobe.Api.Core.Facts;
 using Nulobe.Api.Core.Events;
 using AutoMapper;
+using Nulobe.Api.Middleware;
 
 namespace Nulobe.Api
 {
@@ -72,6 +73,8 @@ namespace Nulobe.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseExceptionHandlingMiddleware();
 
             app.UseCors(builder => builder
                 .AllowAnyHeader()

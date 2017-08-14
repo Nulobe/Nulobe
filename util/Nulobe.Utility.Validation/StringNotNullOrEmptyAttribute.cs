@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Nulobe.Utility.Validation
 {
-    public class StringNotNullOrEmptyAttribute : StringLengthAttribute
+    public class StringNotNullOrEmptyAttribute : ValidationAttribute
     {
-        public StringNotNullOrEmptyAttribute() : base(int.MaxValue)
+        public override bool IsValid(object value)
         {
-            MinimumLength = 1;
+            return !string.IsNullOrEmpty((string)value);
         }
     }
 }
