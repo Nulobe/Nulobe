@@ -4,10 +4,10 @@ import { UrlTree } from '@angular/router';
 import { NULOBE_ENV_SETTINGS } from '../../../../environments/environment';
 
 import { AUTH_CONSTANTS } from '../auth.constants';
-import { AuthConfig } from '../auth-config';
-import { AuthResult } from '../auth-result';
-import { IAuthHandler } from '../auth-handler';
-import { Auth0Helper } from '../helpers/auth0.helper';
+import { AuthConfig } from './auth-config';
+import { AuthResult } from './auth-result';
+import { IAuthHandler } from './auth-handler';
+import { Auth0Helper } from './auth0.helper';
 
 @Injectable()
 export class Auth0AuthHandler implements IAuthHandler {

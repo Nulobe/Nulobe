@@ -1,14 +1,14 @@
 import { Injectable, Injector } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
 
-import { NULOBE_ENV_SETTINGS } from '../../../environments/environment';
+import { NULOBE_ENV_SETTINGS } from '../../../../environments/environment';
 
-import { AUTH_CONSTANTS } from './auth.constants';
+import { AUTH_CONSTANTS } from './../auth.constants';
 import { AuthHanderFactory } from './auth-handler.factory';
 import { AuthConfig } from './auth-config';
 import { AuthResult } from './auth-result';
 import { IAuthHandler } from './auth-handler';
-import { Auth0Helper } from './helpers/auth0.helper';
+import { Auth0Helper } from './auth0.helper';
 
 interface AuthLocalStorageItem {
   expiresAt: number;
@@ -18,7 +18,7 @@ interface AuthLocalStorageItem {
 
 export interface IAuthService {
   redirectToLogin(authorityName?: string);
-  onLoginCallback();
+  onLoginCallback(): Promise<void>;
   logout(authorityName?: string);
   isAuthenticated(authorityName?: string): boolean;
   getBearerToken(authorityName?: string): string;
@@ -43,28 +43,19 @@ export class AuthService implements IAuthService {
     auth0.authorize();
   }
 
-  onLoginCallback(authorityName?: string) {
+  onLoginCallback(authorityName?: string): Promise<void> {
     let authHandler = this.authHanderFactory.createAuthHandler(this.getAuthorityName(authorityName));
 
     let router = this.injector.get(Router);
     let url = router.parseUrl(router.url);
 
-    authHandler.handleCallback(url)
+    return authHandler.handleCallback(url)
       .then(authResult => {
         this.setAuthLocalStorageItem({
           expiresAt: (authResult.expiresIn * 1000) + new Date().getTime(),
           bearerToken: authResult.bearerToken,
           authResult
         }, authorityName);
-
-        let redirectToUrl = this.getLocalStorageItem('previousUrl');
-        if (!redirectToUrl) {
-          redirectToUrl = '';
-        }
-        
-        let router = this.injector.get(Router);
-        // router.navigateByUrl(redirectToUrl);
-        router.navigate(['']);
       });
   }
 

@@ -3,8 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { CoreModule } from '../../core';
 
-import { AuthComponent } from './components/auth/auth.component';
-import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
+import { AuthComponent } from './pages/auth/auth.component';
+import { AuthCallbackComponent } from './pages/auth-callback/auth-callback.component';
 
 const routes: Routes = [
   {

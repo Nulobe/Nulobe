@@ -3,9 +3,9 @@ import { UrlTree } from '@angular/router';
 
 import { NULOBE_ENV_SETTINGS } from '../../../../environments/environment';
 
-import { AuthConfig } from '../auth-config';
-import { AuthResult } from '../auth-result';
-import { IAuthHandler } from '../auth-handler';
+import { AuthConfig } from './auth-config';
+import { AuthResult } from './auth-result';
+import { IAuthHandler } from './auth-handler';
 
 import { QuizletApiClient } from '../../../core/api';
 

@@ -6,13 +6,14 @@ import { CoreModule } from '../../core';
 
 import { AuthRoutingModule } from './auth-routing.module';
 
-import { AuthComponent } from './components/auth/auth.component';
-import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
+import { AuthComponent } from './pages/auth/auth.component';
+import { AuthCallbackComponent } from './pages/auth-callback/auth-callback.component';
 
-import { AuthService } from './auth.service';
-import { AuthHanderFactory } from './auth-handler.factory';
-import { Auth0AuthHandler } from './auth-handlers/auth0.auth-handler';
-import { QuizletAuthHandler } from './auth-handlers/quizlet.auth-handler';
+import { AuthService } from './service/auth.service';
+import { AuthHanderFactory } from './service/auth-handler.factory';
+import { Auth0AuthHandler } from './service/auth0.auth-handler';
+import { QuizletAuthHandler } from './service/quizlet.auth-handler';
+import { AuthGuard } from './guard/auth.guard';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { QuizletAuthHandler } from './auth-handlers/quizlet.auth-handler';
     AuthService,
     AuthHanderFactory,
     QuizletAuthHandler,
-    Auth0AuthHandler
+    Auth0AuthHandler,
+    AuthGuard
   ]
 })
 export class AuthModule { }

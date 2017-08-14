@@ -1,8 +1,8 @@
 import { Injectable, Injector } from '@angular/core';
 
 import { IAuthHandler } from './auth-handler';
-import { Auth0AuthHandler } from './auth-handlers/auth0.auth-handler';
-import { QuizletAuthHandler } from './auth-handlers/quizlet.auth-handler';
+import { Auth0AuthHandler } from './auth0.auth-handler';
+import { QuizletAuthHandler } from './quizlet.auth-handler';
 
 export interface IAuthHandlerFactory {
     createAuthHandler(authorityName: string): IAuthHandler;

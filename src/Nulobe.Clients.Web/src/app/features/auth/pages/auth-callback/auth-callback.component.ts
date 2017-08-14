@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
-import { AuthService } from '../../auth.service';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-auth-callback',
@@ -12,12 +12,16 @@ export class AuthCallbackComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.authService.onLoginCallback(params['authorityName']);
+      this.authService.onLoginCallback(params['authorityName']).then(() => {
+        let redirect = localStorage.getItem('login:redirect')
+        this.router.navigate([redirect || '']);
+      });
     });
   }
 }
