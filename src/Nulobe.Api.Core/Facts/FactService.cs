@@ -68,21 +68,52 @@ namespace Nulobe.Api.Core.Facts
             return fact;
         }
 
-        public Task<Fact> DeleteFactAsync(string id)
+        public async Task DeleteFactAsync(string id)
         {
-            throw new NotImplementedException();
+            AssertAuthenticated();
+            Validator.ValidateStringNotNullOrEmpty(id, nameof(id));
+
+            using (var client = _documentClientFactory.Create(_documentDbOptions))
+            {
+                var fact = await client.ReadDocumentAsync<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
+                if (fact == null)
+                {
+                    throw new ClientEntityNotFoundException<string>(typeof(Fact), id);
+                }
+
+                var factAudit = new FactAudit() { PreviousValue = fact };
+                _auditor.AuditAction(nameof(DeleteFactAsync), factAudit);
+                await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactAuditCollectionName, factAudit);
+
+                await client.DeleteDocumentAsync(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
+            }
         }
 
-        public Task<Fact> UpdateFactAsync(string id, Fact fact)
+        public async Task<Fact> UpdateFactAsync(string id, Fact fact)
         {
             AssertAuthenticated();
             Validator.ValidateNotNull(fact, nameof(fact));
             ValidateFact(fact);
 
-            var factAudit = new FactAudit() { CurrentValue = fact };
-            _auditor.AuditAction(nameof(UpdateFactAsync), factAudit);
+            using (var client = _documentClientFactory.Create(_documentDbOptions))
+            {
+                var existingFact = await client.ReadDocumentAsync<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
+                if (existingFact == null)
+                {
+                    throw new ClientEntityNotFoundException<string>(typeof(Fact), id);
+                }
 
-            return Task.FromResult(fact);
+                var factAudit = new FactAudit() {
+                    CurrentValue = fact,
+                    PreviousValue = existingFact
+                };
+                _auditor.AuditAction(nameof(UpdateFactAsync), factAudit);
+                await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactAuditCollectionName, factAudit);
+
+                await client.ReplaceDocumentAsync(_documentDbOptions, _factServiceOptions.FactCollectionName, id, fact);
+            }
+
+            return fact;
         }
 
         public Task<IEnumerable<Fact>> QueryFactsAsync(FactQuery query)

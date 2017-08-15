@@ -47,5 +47,17 @@ namespace Nulobe.Utility.Validation
                 throw new ClientArgumentNullException(paramName);
             }
         }
+
+        public static void ValidateStringNotNullOrEmpty(string str, string paramName)
+        {
+            if (str == null)
+            {
+                throw new ClientArgumentNullException(paramName);
+            }
+            else if (str == string.Empty)
+            {
+                throw new ClientArgumentException(paramName);
+            }
+        }
     }
 }

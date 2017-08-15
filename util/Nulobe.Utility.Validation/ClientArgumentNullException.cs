@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace Nulobe.Utility.Validation
 {
-    public class ClientArgumentNullException : ClientValidationException
+    public class ClientArgumentNullException : ClientArgumentException
     {
-        public string ParamName { get; private set; }
-
-        public ClientArgumentNullException(string paramName)
-        {
-            ParamName = paramName;
-        }
+        public ClientArgumentNullException(string paramName) : base(paramName) { }
     }
 }

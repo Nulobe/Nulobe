@@ -13,6 +13,6 @@ namespace Nulobe.Api.Core.Facts
 
         Task<Fact> UpdateFactAsync(string id, Fact fact);
 
-        Task<Fact> DeleteFactAsync(string id);
+        Task DeleteFactAsync(string id);
     }
 }
