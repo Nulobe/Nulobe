@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MdDialog } from '@angular/material';
 import { Observable } from 'rxjs';
 
 import { FactApiClient, FactCreate, SwaggerException } from '../../../../core/api';
 
 import { FactPreviewDialogComponent } from '../fact-preview-dialog/fact-preview-dialog.component';
+import { FactPreviewDialogService } from '../fact-preview-dialog/fact-preview-dialog.service';
 
 @Component({
   selector: 'app-create-fact',
@@ -20,7 +20,7 @@ export class CreateFactComponent implements OnInit {
 
   constructor(
     private factApiClient: FactApiClient,
-    private mdDialog: MdDialog
+    private factPreviewDialogService: FactPreviewDialogService
   ) { }
 
   ngOnInit() {
@@ -34,8 +34,7 @@ export class CreateFactComponent implements OnInit {
   }
 
   previewFact() {
-    let dialogRef = this.mdDialog.open(FactPreviewDialogComponent);
-    dialogRef.componentInstance.fact = this.fact;
+    this.factPreviewDialogService.open(this.fact);
   }
 
   publishFact() {

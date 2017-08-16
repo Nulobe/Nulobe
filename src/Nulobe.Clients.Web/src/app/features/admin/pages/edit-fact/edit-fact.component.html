@@ -1,9 +1,17 @@
-<div *ngIf="fact$ | async">
-  <h1>Edit neuron: {{ (fact$ | async).title }}</h1>
+<div *ngIf="fact">
+  <h1>Edit neuron: {{ fact.title }}</h1>
   <div class="fact-form-container">
     <app-fact-form
-      [fact]="fact$ | async"
+      [fact]="fact"
       (factChanges)="fact = $event"
       (factValidChanges)="valid = $event"></app-fact-form>
+  </div>
+  <div class="button-container">
+    <button md-button (click)="cancel()">Cancel</button>
+    <button md-button (click)="previewFact()">Preview</button>
+    <button md-button color="warn" (click)="updateFact()">Update</button>
+  </div>
+  <div *ngIf="error" class="error">
+    <pre>{{ error | json }}</pre>
   </div>
 </div>

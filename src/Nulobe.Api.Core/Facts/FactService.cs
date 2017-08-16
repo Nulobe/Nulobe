@@ -102,6 +102,8 @@ namespace Nulobe.Api.Core.Facts
             Validator.ValidateNotNull(fact, nameof(fact));
             ValidateFact(fact);
 
+            fact.Id = id;
+
             using (var client = _documentClientFactory.Create(_documentDbOptions))
             {
                 var existingFact = await client.ReadDocumentAsync<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
