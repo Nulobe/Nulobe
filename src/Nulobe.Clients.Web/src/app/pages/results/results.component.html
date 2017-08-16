@@ -15,9 +15,11 @@
       <div class="fact-list-container">
         <app-fact-list
           [facts]="facts$ | async"
+          [permissionsResolver]="permissionsResolver"
           (onTagSelect)="navigateToTag($event)"
           (onVote)="voteFact($event)"
-          (onFlag)="flagFact($event)"></app-fact-list>
+          (onFlag)="flagFact($event)"
+          (onEdit)="editFact($event)"></app-fact-list>
       </div>
       <div class="fact-list-end-container">
           <div class="fact-list-end">

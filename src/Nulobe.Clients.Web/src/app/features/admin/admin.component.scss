@@ -1,8 +1,12 @@
 @import '../../../assets/scss/mixins';
 
 :host {
+    @include flex-display();
+    @include justify-content(center);
+
     .container {
         margin-top: 50px;
         margin-bottom: 50px;
+        width: 1000px;
     }
 }

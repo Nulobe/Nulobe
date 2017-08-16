@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 
 import { FactApiClient, Fact, VoteApiClient, FlagApiClient } from '../../core/api';
+import { IPermissionsResolver } from '../../core/abstractions';
+import { AuthService } from '../../features/auth';
 
 import { ResultsPathHelper } from './results-path.helper';
 
@@ -19,12 +21,14 @@ export class ResultsComponent implements OnInit {
   private loading$: Observable<boolean> = this._loading.asObservable();
   private facts$: Observable<Fact[]> = this._facts.asObservable();
   private tags: string[] = [];
+  private permissionsResolver: IPermissionsResolver;
 
   constructor(
     private factApiClient: FactApiClient,
     private voteApiClient: VoteApiClient,
     private flagApiClient: FlagApiClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -39,6 +43,10 @@ export class ResultsComponent implements OnInit {
 
     this.tags = tags;
     this.loadFacts();
+
+    this.permissionsResolver = {
+      resolve: () => this.authService.isAuthenticated() 
+    };
   }
 
   navigateToTag(tag: string) {
@@ -56,6 +64,10 @@ export class ResultsComponent implements OnInit {
   flagFact(fact: Fact) {
     this.flagApiClient.create({ factId: fact.id })
       .subscribe();
+  }
+
+  editFact(fact: Fact) {
+    this.router.navigate([`/LOBE/admin/edit/${fact.id}`]);
   }
 
   private loadFacts() {

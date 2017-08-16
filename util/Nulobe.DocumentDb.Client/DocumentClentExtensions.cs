@@ -51,7 +51,21 @@ namespace Nulobe.DocumentDb.Client
             string id) where TResult : new()
         {
             var uri = UriFactory.CreateDocumentUri(documentDbDatabaseSpec.DatabaseName, collectionName, id);
-            var documentResponse = await documentClient.ReadDocumentAsync<TResult>(uri);
+
+            DocumentResponse<TResult> documentResponse = null;
+            try
+            {
+                documentResponse = await documentClient.ReadDocumentAsync<TResult>(uri);
+            }
+            catch (DocumentClientException ex)
+            {
+                if (ex.Error.Code == "NotFound")
+                {
+                    throw new DocumentNotFoundException($"Could not locate the document with ID {id}", ex);
+                }
+                throw ex;
+            } 
+
             return documentResponse.Document;
         }
 

@@ -7,11 +7,11 @@ import { FactApiClient, FactCreate, SwaggerException } from '../../../../core/ap
 import { FactPreviewDialogComponent } from '../fact-preview-dialog/fact-preview-dialog.component';
 
 @Component({
-  selector: 'app-create-facts',
-  templateUrl: './create-facts.component.html',
-  styleUrls: ['./create-facts.component.scss']
+  selector: 'app-create-fact',
+  templateUrl: './create-fact.component.html',
+  styleUrls: ['./create-fact.component.scss']
 })
-export class CreateFactsComponent implements OnInit {
+export class CreateFactComponent implements OnInit {
 
   private fact: FactCreate;
   private valid: boolean;

@@ -69,6 +69,7 @@
     <Compile Include="DocumentClentExtensions.cs" />
     <Compile Include="DocumentClientAccount.cs" />
     <Compile Include="DocumentClientFactory.cs" />
+    <Compile Include="DocumentNotFoundException.cs" />
     <Compile Include="IDocumentClientFactory.cs" />
     <Compile Include="IDocumentDbCollectionSpec.cs" />
     <Compile Include="IDocumentDbConnectionSpec.cs" />

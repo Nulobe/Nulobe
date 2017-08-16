@@ -15,11 +15,12 @@ interface TagModel {
   styleUrls: ['./tag-selector.component.scss']
 })
 export class TagSelectorComponent implements OnInit {
+  @Input() tags: string[];
   @Input() secondaryPlaceholder: string;
   @Output() onTagsUpdated = new EventEmitter<string[]>();
   @Output() onSubmit = new EventEmitter();
 
-  private tags: TagModel[] = [];
+  private tagInput_tags: TagModel[] = [];
   private tagInput_isFocused = false;
   private tagInput_currentText = '';
   private tagInput_lastApiCallText: string = null;
@@ -30,9 +31,9 @@ export class TagSelectorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (!this.secondaryPlaceholder) {
-      this.secondaryPlaceholder = "Enter a new tag";
-    }
+    this.tags = this.tags || [];
+    this.tagInput_tags = this.tags.map(t => this.createTagModel(t));
+    this.secondaryPlaceholder  = this.secondaryPlaceholder || "Enter a new tag";
   }
 
   tagInput_getSuggestions = (text: string): Observable<string[]> => {
@@ -57,8 +58,8 @@ export class TagSelectorComponent implements OnInit {
       }
 
       return Observable.fromPromise(apiSuggestions.then(r => r
-        .filter(x => {
-          let existing = this.tags.find(y => y.display.substring(1).toLowerCase() === x.text.toLowerCase());
+        .filter(tag => {
+          let existing = this.tags.find(tagString => tagString.substring(1).toLowerCase() === tag.text.toLowerCase());
           return !existing;
         })
         .map(t => t.text)))
@@ -69,18 +70,12 @@ export class TagSelectorComponent implements OnInit {
     if (typeof(text) === 'object') {
       text = text.display;
     }
-
-    let item = {
-      display: `#${text}`,
-      value: `#${text}`
-    };
-
-    return Observable.of(item);
+    return Observable.of(this.createTagModel(text));
   }
 
   tagInput_updated = () => {
-    let tags = this.tags.map(t => t.value.substring(1, t.value.length));
-    this.onTagsUpdated.emit(tags);
+    this.tags = this.tagInput_tags.map(t => t.value.substring(1, t.value.length));
+    this.onTagsUpdated.emit(this.tags);
   }
 
   @HostListener('document:keypress', ['$event'])
@@ -88,5 +83,12 @@ export class TagSelectorComponent implements OnInit {
     if (event.keyCode === 13 && this.tagInput_isFocused && !this.tagInput_currentText) {
       this.onSubmit.emit();
     }
+  }
+
+  private createTagModel(text: string): TagModel {
+    return {
+      display: `#${text}`,
+      value: `#${text}`
+    };
   }
 }

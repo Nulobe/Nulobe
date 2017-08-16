@@ -42,11 +42,18 @@ namespace Nulobe.Api.Core.Facts
             _mapper = mapper;
         }
 
-        public Task<Fact> GetFactAsync(string id)
+        public async Task<Fact> GetFactAsync(string id)
         {
             using (var client = _documentClientFactory.Create(_documentDbOptions))
             {
-                return client.ReadDocumentAsync<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
+                try
+                {
+                    return await client.ReadDocumentAsync<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
+                }
+                catch (DocumentNotFoundException ex)
+                {
+                    throw new ClientEntityNotFoundException(typeof(Fact), id, ex);
+                }
             }
         }
 
@@ -78,7 +85,7 @@ namespace Nulobe.Api.Core.Facts
                 var fact = await client.ReadDocumentAsync<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
                 if (fact == null)
                 {
-                    throw new ClientEntityNotFoundException<string>(typeof(Fact), id);
+                    throw new ClientEntityNotFoundException(typeof(Fact), id);
                 }
 
                 var factAudit = new FactAudit() { PreviousValue = fact };
@@ -100,7 +107,7 @@ namespace Nulobe.Api.Core.Facts
                 var existingFact = await client.ReadDocumentAsync<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
                 if (existingFact == null)
                 {
-                    throw new ClientEntityNotFoundException<string>(typeof(Fact), id);
+                    throw new ClientEntityNotFoundException(typeof(Fact), id);
                 }
 
                 var factAudit = new FactAudit() {

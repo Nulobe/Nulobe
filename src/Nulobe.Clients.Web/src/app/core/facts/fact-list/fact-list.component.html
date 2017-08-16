@@ -14,6 +14,9 @@
         <div class="fact-control" (click)="flagClicked(fact)">
           <md-icon>flag</md-icon>
         </div>
+        <div class="fact-control" *ngIf="canEdit" (click)="editClicked(fact)">
+          <md-icon>mode_edit</md-icon>
+        </div>
       </div>
     </div>
   </div>

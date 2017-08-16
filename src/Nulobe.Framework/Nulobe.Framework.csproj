@@ -99,6 +99,7 @@
   <ItemGroup>
     <Compile Include="Auditor.cs" />
     <Compile Include="Auth0Options.cs" />
+    <Compile Include="ClientEntityNotFoundException.cs" />
     <Compile Include="ClientUnauthenticatedException.cs" />
     <Compile Include="DocumentDbOptions.cs" />
     <Compile Include="FrameworkClaimsIdentityExtensions.cs" />

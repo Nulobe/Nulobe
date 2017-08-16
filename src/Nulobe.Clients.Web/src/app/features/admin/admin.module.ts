@@ -9,8 +9,10 @@ import { AuthHttp, authHttpProvider } from '../../auth-http.service';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminStateModule } from './state/admin-state.module';
 import { AdminComponent } from './admin.component';
-import { CreateFactsComponent } from './pages/create-facts/create-facts.component';
+import { CreateFactComponent } from './pages/create-fact/create-fact.component';
 import { FactPreviewDialogComponent } from './pages/fact-preview-dialog/fact-preview-dialog.component';
+import { EditFactComponent } from './pages/edit-fact/edit-fact.component';
+import { EditFactResolve } from './pages/edit-fact/edit-fact.resolve';
 
 @NgModule({
   imports: [
@@ -26,15 +28,17 @@ import { FactPreviewDialogComponent } from './pages/fact-preview-dialog/fact-pre
   ],
   declarations: [
     AdminComponent,
-    CreateFactsComponent,
-    FactPreviewDialogComponent
+    CreateFactComponent,
+    FactPreviewDialogComponent,
+    EditFactComponent
   ],
   entryComponents: [
     FactPreviewDialogComponent
   ],
   providers: [
     AuthHttp,
-    authHttpProvider
+    authHttpProvider,
+    EditFactResolve
   ]
 })
 export class AdminModule { }

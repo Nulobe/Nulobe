@@ -36,9 +36,10 @@
     </div>
     <div class="tag-selector-container">
       <app-tag-selector
+          [tags]="fact.tags"
+          [secondaryPlaceholder]="'Tags'"
           (onTagsUpdated)="updateTags($event)"
-          (onSubmit)="search()"
-          [secondaryPlaceholder]="'Tags'">
+          (onSubmit)="search()">
       </app-tag-selector>
     </div>
   </form>

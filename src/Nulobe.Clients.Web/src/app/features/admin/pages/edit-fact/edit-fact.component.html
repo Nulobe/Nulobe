@@ -1,0 +1,9 @@
+<div *ngIf="fact$ | async">
+  <h1>Edit neuron: {{ (fact$ | async).title }}</h1>
+  <div class="fact-form-container">
+    <app-fact-form
+      [fact]="fact$ | async"
+      (factChanges)="fact = $event"
+      (factValidChanges)="valid = $event"></app-fact-form>
+  </div>
+</div>

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CoreModule } from '../../core';
+import { AuthModule } from '../../features/auth';
 
 import { ResultsRoutingModule } from './results-routing.module';
 import { ResultsComponent } from './results.component';
@@ -10,7 +11,8 @@ import { ResultsComponent } from './results.component';
   imports: [
     CommonModule,
     CoreModule,
-    ResultsRoutingModule
+    ResultsRoutingModule,
+    AuthModule
   ],
   declarations: [ResultsComponent],
   providers: []

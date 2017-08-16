@@ -31,35 +31,25 @@ namespace Nulobe.Runner
             {
                 conf.AddCoreApiMapperConfigurations();
             }, Assembly.GetEntryAssembly());
+
             services.AddCoreApiServices(configuration);
             services.AddQuizletApiServices();
+            services.ConfigureDocumentDb(configuration);
+
             services.ConfigureQuizlet(configuration);
             services.AddTransient<IRemoteIpAddressAccessor, StubbedRemoteIpAddressAccessor>();
             services.AddTransient<IAccessTokenAccessor, StubbedAccessTokenAccessor>();
             services.AddTransient<IClaimsPrincipalAccessor, StubbedClaimsPrincipalAccessor>();
+            services.AddTransient<Auditor>();
             var serviceProvider = services.BuildServiceProvider();
 
-            //var quizletSetService = serviceProvider.GetRequiredService<IQuizletSetService>();
-            //var result = quizletSetService.CreateSetAsync(new FactQuery()
-            //{
-            //    Tags = "dairy,nutrition"
-            //}).Result;
-
-
+            var factQueryService = serviceProvider.GetRequiredService<IFactQueryService>();
+            var facts = factQueryService.QueryFactsAsync(new FactQuery() { Tags = "dairy" });
+                
             var factService = serviceProvider.GetRequiredService<IFactService>();
-            var fact = factService.CreateFactAsync(new FactCreate()
-            {
-                Title = "Test fact",
-                Definition = " [2] Test [1] definition",
-                Tags = new string[] { "dairy", "environment", "NZ" }
-            }).Result;
+            //var fact = factService.GetFactAsync("e646e51b-bcc9-4690-af02-053e82298b66").Result;
+            var fact = factService.GetFactAsync(Guid.Empty.ToString()).Result;
 
-            var flagService = serviceProvider.GetRequiredService<IFlagEventService>();
-            var flag = flagService.CreateEventAsync(new FlagCreate()
-            {
-                Description = "Yo this shit is straight up wrong",
-                FactId = fact.Id
-            }).Result;
         }
 
         private class StubbedAccessTokenAccessor : IAccessTokenAccessor

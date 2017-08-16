@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { FactCreate } from '../../api/api.swagger';
+import { IPermissionsResolver } from '../../abstractions';
 
 export interface FactLinkResolver {
   resolve(fact: FactCreate): string;
@@ -14,9 +15,13 @@ export interface FactLinkResolver {
 export class FactListComponent implements OnInit {
   @Input() facts: FactCreate[];
   @Input() factLinkResolver: FactLinkResolver;
+  @Input() permissionsResolver: IPermissionsResolver;
   @Output() onTagSelect = new EventEmitter<string>();
   @Output() onVote = new EventEmitter<FactCreate>();
   @Output() onFlag = new EventEmitter<FactCreate>();
+  @Output() onEdit = new EventEmitter<FactCreate>();
+
+  private canEdit: boolean = false;
 
   constructor() { }
 
@@ -25,6 +30,10 @@ export class FactListComponent implements OnInit {
       this.factLinkResolver = {
        resolve: (f: FactCreate) => '#' 
       };
+    }
+
+    if (this.permissionsResolver) {
+      this.canEdit = this.permissionsResolver.resolve('fact', 'edit');
     }
   }
 
@@ -38,5 +47,9 @@ export class FactListComponent implements OnInit {
 
   flagClicked(fact: FactCreate) {
     this.onFlag.emit(fact);
+  }
+
+  editClicked(fact: FactCreate) {
+    this.onEdit.emit(fact);
   }
 }

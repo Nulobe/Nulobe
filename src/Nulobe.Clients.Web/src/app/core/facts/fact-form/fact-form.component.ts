@@ -1,15 +1,22 @@
-import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
-import { FactCreate } from '../../api';
+import { FactCreate, Source } from '../../api';
+
+interface FactFormValue {
+  title: string;
+  definition: string;
+  notes: string;
+  indexedSources: Source[];
+}
 
 @Component({
   selector: 'app-fact-form',
   templateUrl: './fact-form.component.html',
   styleUrls: ['./fact-form.component.scss']
 })
-export class FactFormComponent implements OnInit, OnChanges {
+export class FactFormComponent implements OnInit {
   @Input() fact: FactCreate;
   @Output() factChanges = new EventEmitter<FactCreate>();
   @Output() factValidChanges = new EventEmitter<boolean>();
@@ -24,16 +31,24 @@ export class FactFormComponent implements OnInit, OnChanges {
     private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.fact = this.fact || <FactCreate>{
+      title: '',
+      definition: '',
+      notes: '',
+      sources: [],
+      tags: []
+    };
+
     let { fb } = this;
 
     this.form = fb.group({
-      title: fb.control('', Validators.required),
-      definition: fb.control('', Validators.required),
-      notes: fb.control(''),
-      indexedSources: fb.array([])
+      title: fb.control(this.fact.title, Validators.required),
+      definition: fb.control(this.fact.definition, Validators.required),
+      notes: fb.control(this.fact.notes),
+      indexedSources: fb.array(this.fact.sources.map(s => this.createIndexedSource(s)))
     });
 
-    this.sourceCount$ = this.form.valueChanges.map(formValue => {
+    this.sourceCount$ = this.form.valueChanges.map((formValue: FactFormValue) => {
       let sourceReferenceRegex = /\[(\d+)\]/g;
       let definition = formValue.definition;
 
@@ -73,16 +88,10 @@ export class FactFormComponent implements OnInit, OnChanges {
       }
     });
 
-    this.fact = this.fact || <FactCreate>{};
-
-    this.form.valueChanges.subscribe(f => {
+    this.form.valueChanges.subscribe(() => {
       this.triggerFactValidChanges();
       this.triggerFactChanges();
     });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    debugger;
   }
 
   private updateTags(tags: string[]) {
@@ -91,7 +100,7 @@ export class FactFormComponent implements OnInit, OnChanges {
   }
 
   private triggerFactChanges() {
-    let formValue = this.form.value;
+    let formValue: FactFormValue = this.form.value;
     this.fact = {
       title: formValue.title || '',
       definition: formValue.definition || '',
@@ -114,11 +123,11 @@ export class FactFormComponent implements OnInit, OnChanges {
     return this.tags.length && this.form.valid;
   }
 
-  private createIndexedSource(): FormGroup {
+  private createIndexedSource(source?: Source): FormGroup {
     let { fb } = this;
     return fb.group({
-      url: fb.control(''),
-      description: fb.control('')
+      url: fb.control(source ? source.url : ''),
+      description: fb.control(source ? source.description : '')
     });
   }
 

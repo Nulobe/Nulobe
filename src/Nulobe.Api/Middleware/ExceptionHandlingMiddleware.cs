@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Nulobe.Utility.Validation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Nulobe.Framework;
 
 namespace Nulobe.Api.Middleware
 {
@@ -50,6 +51,7 @@ namespace Nulobe.Api.Middleware
         {
             ClientExceptionResult result = null;
             if (TryHandleInvalidModelException(ex, out result)) { }
+            else if (TryHandleEntityNotFoundException(ex, out result)) { }
             else
             {
                 result = new ClientExceptionResult()
@@ -76,6 +78,28 @@ namespace Nulobe.Api.Middleware
                     Message = "Validation failed on the request",
                     StatusCode = 400,
                     Data = invalidModelEx.ModelErrors
+                };
+                return true;
+            }
+        }
+
+        private bool TryHandleEntityNotFoundException(ClientException ex, out ClientExceptionResult result)
+        {
+            var entityNotFoundEx = ex as ClientEntityNotFoundException;
+            if (entityNotFoundEx == null)
+            {
+                result = null;
+                return false;
+            }
+            else
+            {
+                result = new ClientExceptionResult()
+                {
+                    Message = "Could not locate resource",
+                    StatusCode = 404,
+                    Data = new {
+                        Id = entityNotFoundEx.Id
+                    }
                 };
                 return true;
             }
