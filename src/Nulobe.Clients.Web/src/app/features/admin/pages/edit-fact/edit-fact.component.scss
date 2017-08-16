@@ -1,6 +1,13 @@
 @import "../../../../../assets/scss/mixins";
 
 :host {
+
+    section {
+        &:not(:first-child) {
+            margin-top: 50px;
+        }
+    }
+
     .button-container {
         @include flex-display();
         @include justify-content(flex-end);
@@ -9,6 +16,14 @@
         button {
             &:not(:first-child) {
                 margin-left: 5px;
+            }
+        }
+    }
+
+    form.delete-form {
+        .title {
+            md-input-container {
+                width: 50%;
             }
         }
     }

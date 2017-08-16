@@ -29,7 +29,7 @@ namespace Nulobe.DocumentDb.Client
             string id,
             RequestOptions options = null)
         {
-            var uri = UriFactory.CreateDocumentCollectionUri(documentDbDatabaseSpec.DatabaseName, collectionName);
+            var uri = UriFactory.CreateDocumentUri(documentDbDatabaseSpec.DatabaseName, collectionName, id);
             return documentClient.DeleteDocumentAsync(uri, options);
         }
 

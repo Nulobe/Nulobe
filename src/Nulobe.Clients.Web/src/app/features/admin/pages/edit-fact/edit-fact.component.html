@@ -1,17 +1,39 @@
 <div *ngIf="fact">
-  <h1>Edit neuron: {{ fact.title }}</h1>
-  <div class="fact-form-container">
-    <app-fact-form
-      [fact]="fact"
-      (factChanges)="fact = $event"
-      (factValidChanges)="valid = $event"></app-fact-form>
-  </div>
-  <div class="button-container">
-    <button md-button (click)="cancel()">Cancel</button>
-    <button md-button (click)="previewFact()">Preview</button>
-    <button md-button color="warn" (click)="updateFact()">Update</button>
-  </div>
-  <div *ngIf="error" class="error">
-    <pre>{{ error | json }}</pre>
-  </div>
+  <section>
+    <h1>Edit neuron: {{ fact.title }}</h1>
+    <div class="fact-form-container">
+      <app-fact-form
+        [fact]="fact"
+        (factChanges)="fact = $event"
+        (factValidChanges)="valid = $event"></app-fact-form>
+    </div>
+    <div class="button-container">
+      <button md-button (click)="cancel()">Cancel</button>
+      <button md-button (click)="previewFact()">Preview</button>
+      <button md-button color="warn" (click)="updateFact()">Update</button>
+    </div>
+    <div *ngIf="error" class="error">
+      <pre>{{ error | json }}</pre>
+    </div>
+  </section>
+  <section>
+    <h1>Delete</h1>
+    <div class="fact-form-container">
+      <p>Confirm title to delete</p>
+      <form [formGroup]="deleteForm" class="delete-form">
+        <div class="title">
+          <md-input-container>
+            <input mdInput formControlName="title" type="text" placeholder="Title" />
+          </md-input-container>
+        </div>
+      </form>
+      <div class="button-container">
+        <button md-button (click)="cancel()">Cancel</button>
+        <button md-button color="warn" [disabled]="!deleteFactConfirmed()" (click)="deleteFact()">Delete</button>
+      </div>
+      <div *ngIf="deleteError" class="error">
+        <pre>{{ deleteError | json }}</pre>
+      </div>
+    </div>
+  </section>
 </div>

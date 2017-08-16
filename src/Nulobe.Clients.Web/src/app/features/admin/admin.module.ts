@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MdButtonModule, MdDialogModule } from '@angular/material';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MdButtonModule, MdDialogModule, MdInputModule } from '@angular/material';
 
 import { AuthModule } from '../../features/auth';
 import { CoreModule } from '../../core';
@@ -18,8 +19,10 @@ import { EditFactResolve } from './pages/edit-fact/edit-fact.resolve';
 @NgModule({
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     MdButtonModule,
     MdDialogModule,
+    MdInputModule,
 
     CoreModule,
     AuthModule,
