@@ -136,7 +136,7 @@ namespace Nulobe.Api.Core.Facts
             if (tags.Any())
             {
                 sqlQueryText += " WHERE ";
-                sqlQueryText += string.Join(" OR ", tags.Select((t, i) => $"ARRAY_CONTAINS(f.Tags, @tag{i})"));
+                sqlQueryText += string.Join(" AND ", tags.Select((t, i) => $"ARRAY_CONTAINS(f.Tags, @tag{i})"));
             }
 
             var sqlParameters = new SqlParameterCollection(
