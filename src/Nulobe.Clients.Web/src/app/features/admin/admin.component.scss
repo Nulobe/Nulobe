@@ -7,6 +7,12 @@
     .container {
         margin-top: 50px;
         margin-bottom: 50px;
-        width: 1000px;
+        width: 1000px;   
+    }
+
+    .menu-button-container {
+        position: absolute;
+        right: 15px;
+        top: 15px;
     }
 }

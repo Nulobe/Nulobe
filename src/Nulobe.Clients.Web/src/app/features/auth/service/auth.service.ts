@@ -29,7 +29,8 @@ export class AuthService implements IAuthService {
 
   constructor(
     private authHanderFactory: AuthHanderFactory,
-    private injector: Injector
+    private injector: Injector,
+    private router: Router
   ) { }
 
   redirectToLogin(authorityName?: string) {
@@ -60,7 +61,8 @@ export class AuthService implements IAuthService {
   }
 
   logout(authorityName?: string) {
-    throw new Error("Method not implemented.");
+    localStorage.removeItem(this.getLocalStorageKey(authorityName));
+    this.router.navigate(['']);
   }
 
   isAuthenticated(authorityName?: string): boolean {

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MdButtonModule, MdDialogModule, MdInputModule } from '@angular/material';
+import { MdButtonModule, MdDialogModule, MdInputModule, MdIconModule, MdMenuModule } from '@angular/material';
 
 import { AuthModule } from '../../features/auth';
 import { CoreModule } from '../../core';
@@ -15,6 +15,7 @@ import { FactPreviewDialogComponent } from './pages/fact-preview-dialog/fact-pre
 import { FactPreviewDialogService } from './pages/fact-preview-dialog/fact-preview-dialog.service';
 import { EditFactComponent } from './pages/edit-fact/edit-fact.component';
 import { EditFactResolve } from './pages/edit-fact/edit-fact.resolve';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,8 @@ import { EditFactResolve } from './pages/edit-fact/edit-fact.resolve';
     MdButtonModule,
     MdDialogModule,
     MdInputModule,
+    MdIconModule,
+    MdMenuModule,
 
     CoreModule,
     AuthModule,
@@ -34,7 +37,8 @@ import { EditFactResolve } from './pages/edit-fact/edit-fact.resolve';
     AdminComponent,
     CreateFactComponent,
     FactPreviewDialogComponent,
-    EditFactComponent
+    EditFactComponent,
+    DashboardComponent
   ],
   entryComponents: [
     FactPreviewDialogComponent

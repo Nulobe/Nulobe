@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { AuthModule, AuthService, AuthGuard } from '../../features/auth';
 
 import { AdminComponent } from './admin.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { CreateFactComponent } from './pages/create-fact/create-fact.component';
 import { EditFactComponent } from './pages/edit-fact/edit-fact.component';
 import { EditFactResolve } from './pages/edit-fact/edit-fact.resolve';
@@ -15,6 +16,10 @@ export const routes: Routes = [
     component: AdminComponent,
     canActivate: [AuthGuard],
     children: [
+      {
+        path: '',
+        component: DashboardComponent
+      },
       {
         path: 'create',
         component: CreateFactComponent

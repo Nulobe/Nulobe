@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { FactApiClient } from '../../core/api';
+import { AuthService } from '../../features/auth';
 
 @Component({
   selector: 'app-admin',
@@ -10,19 +11,15 @@ import { FactApiClient } from '../../core/api';
 export class AdminComponent implements OnInit {
 
   constructor(
-    private factApiClient: FactApiClient
+    private factApiClient: FactApiClient,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
-    // this.factApiClient.create({
-    //   title: 'Test fact',
-    //   definition: 'Test definition',
-    //   sources: [],
-    //   tags: ['dairy', 'nutrition'],
-    //   credit: '@mushimas'
-    // })
-    // .subscribe((...args) => {
-    // });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
 }
