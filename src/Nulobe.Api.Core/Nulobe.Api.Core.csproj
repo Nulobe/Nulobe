@@ -138,6 +138,8 @@
     <Compile Include="Facts\FactCreate.cs" />
     <Compile Include="Facts\FactMappingProfile.cs" />
     <Compile Include="Facts\FactQuery.cs" />
+    <Compile Include="Facts\FactQueryResult.cs" />
+    <Compile Include="Facts\FactQueryService.cs" />
     <Compile Include="Facts\FactService.cs" />
     <Compile Include="Facts\FactServiceOptions.cs" />
     <Compile Include="Facts\IFactQueryService.cs" />
@@ -159,6 +161,10 @@
     <ProjectReference Include="..\..\util\Nulobe.System\Nulobe.System.csproj">
       <Project>{d8e0a60f-9f35-44a7-83a5-c0d3fadd1f83}</Project>
       <Name>Nulobe.System</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\util\Nulobe.Utility.Query\Nulobe.Utility.Query.csproj">
+      <Project>{2862daad-8eea-497d-b0d3-efa0df94ded4}</Project>
+      <Name>Nulobe.Utility.Query</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\util\Nulobe.Utility.Validation\Nulobe.Utility.Validation.csproj">
       <Project>{6EF93140-E726-41E7-A4BB-2AA572B686EF}</Project>

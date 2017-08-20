@@ -21,7 +21,7 @@ import { Http, Headers, ResponseContentType, Response } from '@angular/http';
 export const API_BASE_URL = new OpaqueToken('API_BASE_URL');
 
 export interface IFactApiClient {
-    list(tags: string | undefined): Observable<Fact[] | null>;
+    list(tags: string | undefined, pattern: string | undefined, fields: string | undefined, orderBy: string | undefined, pageNumber: string | undefined, pageSize: string | undefined): Observable<Fact[] | null>;
     create(create: FactCreate | undefined): Observable<Fact | null>;
     get(id: string): Observable<Fact | null>;
     update(id: string, fact: Fact | undefined): Observable<Fact | null>;
@@ -39,10 +39,20 @@ export class FactApiClient implements IFactApiClient {
         this.baseUrl = baseUrl ? baseUrl : "";
     }
 
-    list(tags: string | undefined): Observable<Fact[] | null> {
+    list(tags: string | undefined, pattern: string | undefined, fields: string | undefined, orderBy: string | undefined, pageNumber: string | undefined, pageSize: string | undefined): Observable<Fact[] | null> {
         let url_ = this.baseUrl + "/facts?";
         if (tags !== undefined)
             url_ += "tags=" + encodeURIComponent("" + tags) + "&"; 
+        if (pattern !== undefined)
+            url_ += "pattern=" + encodeURIComponent("" + pattern) + "&"; 
+        if (fields !== undefined)
+            url_ += "fields=" + encodeURIComponent("" + fields) + "&"; 
+        if (orderBy !== undefined)
+            url_ += "orderBy=" + encodeURIComponent("" + orderBy) + "&"; 
+        if (pageNumber !== undefined)
+            url_ += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&"; 
+        if (pageSize !== undefined)
+            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
@@ -598,6 +608,11 @@ export interface QuizletTokenResponse {
 
 export interface FactQuery {
     tags?: string | undefined;
+    pattern?: string | undefined;
+    fields?: string | undefined;
+    orderBy?: string | undefined;
+    pageNumber?: string | undefined;
+    pageSize?: string | undefined;
 }
 
 export interface QuizletSet {

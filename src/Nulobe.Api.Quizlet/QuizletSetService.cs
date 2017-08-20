@@ -24,7 +24,7 @@ namespace Nulobe.Api.Quizlet
         public async Task<QuizletSet> CreateSetAsync(FactQuery query)
         {
             var result = await _factQueryService.QueryFactsAsync(query);
-            if (!result.Any())
+            if (!result.Facts.Any())
             {
                 throw new Exception("No results");
             }
@@ -35,7 +35,7 @@ namespace Nulobe.Api.Quizlet
                 return await quizletClient.CreateSetAsync(new QuizletSet()
                 {
                     Title = title,
-                    Terms = result.Select(f => new QuizletTerm()
+                    Terms = result.Facts.Select(f => new QuizletTerm()
                     {
                         Name = f.Title,
                         Definition = f.Definition

@@ -26,7 +26,10 @@ namespace Nulobe.Api.Controllers
         [HttpGet("")]
         [ProducesResponseType(typeof(Fact[]), 200)]
         public async Task<IActionResult> List([FromQuery] FactQuery query)
-            => Ok(await _factQueryService.QueryFactsAsync(query));
+        {
+            var result = await _factQueryService.QueryFactsAsync(query);
+            return Ok(result.Facts);
+        }
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Fact), 200)]

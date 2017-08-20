@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Nulobe.DocumentDb.Client;
-using Microsoft.Azure.Documents;
 using AutoMapper;
 using Nulobe.Framework;
 using Nulobe.Utility.Validation;
@@ -15,7 +14,7 @@ using Nulobe.System.Collections.Generic;
 
 namespace Nulobe.Api.Core.Facts
 {
-    public class FactService : IFactService, IFactQueryService
+    public class FactService : IFactService
     {
         private static readonly Regex SourceReferenceRegex = new Regex(@"\[(\d+)\]");
 
@@ -123,35 +122,6 @@ namespace Nulobe.Api.Core.Facts
             }
 
             return fact;
-        }
-
-        public Task<IEnumerable<Fact>> QueryFactsAsync(FactQuery query)
-        {
-            var tags = query.Tags
-                .Split(',')
-                .Select(t => t.Trim())
-                .Where(t => !string.IsNullOrEmpty(t));
-
-            var sqlQueryText = "SELECT * FROM Facts f";
-            if (tags.Any())
-            {
-                sqlQueryText += " WHERE ";
-                sqlQueryText += string.Join(" AND ", tags.Select((t, i) => $"ARRAY_CONTAINS(f.Tags, @tag{i})"));
-            }
-
-            var sqlParameters = new SqlParameterCollection(
-                tags.Select((t, i) => new SqlParameter($"@tag{i}", t)));
-
-            using (var client = _documentClientFactory.Create(_documentDbOptions))
-            {
-                var result = client.CreateDocumentQuery<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, new SqlQuerySpec()
-                {
-                    QueryText = sqlQueryText,
-                    Parameters = sqlParameters
-                }).ToList();
-
-                return Task.FromResult(result.AsEnumerable());
-            }
         }
 
 

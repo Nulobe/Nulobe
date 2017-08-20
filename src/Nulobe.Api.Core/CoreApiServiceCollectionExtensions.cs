@@ -20,7 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<IDocumentClientFactory, DocumentClientFactory>();
 
             services.AddTransient<IFactService, FactService>();
-            services.AddTransient<IFactQueryService, FactService>();
+            services.AddTransient<IFactQueryService, FactQueryService>();
             services.AddTransient<ITagQueryService, TagQueryService>();
             services.AddTransient<ITagMemoryRepository, TagMemoryRepository>();
             services.AddTransient<IFlagEventService, FlagEventService>();

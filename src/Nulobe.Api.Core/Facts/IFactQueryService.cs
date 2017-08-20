@@ -7,6 +7,6 @@ namespace Nulobe.Api.Core.Facts
 {
     public interface IFactQueryService
     {
-        Task<IEnumerable<Fact>> QueryFactsAsync(FactQuery query);
+        Task<FactQueryResult> QueryFactsAsync(FactQuery query);
     }
 }
