@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 
-import { FactApiClient, Fact, VoteApiClient, FlagApiClient } from '../../core/api';
+import { Fact, VoteApiClient, FlagApiClient } from '../../core/api';
+import { FactQueryService, FactQueryModel } from '../../core/facts';
 import { IPermissionsResolver } from '../../core/abstractions';
 import { AuthService } from '../../features/auth';
 
@@ -24,7 +25,7 @@ export class ResultsComponent implements OnInit {
   private permissionsResolver: IPermissionsResolver;
 
   constructor(
-    private factApiClient: FactApiClient,
+    private factQueryService: FactQueryService,
     private voteApiClient: VoteApiClient,
     private flagApiClient: FlagApiClient,
     private router: Router,
@@ -71,9 +72,11 @@ export class ResultsComponent implements OnInit {
   }
 
   private loadFacts() {
-    let factsUpdated$ = this.factApiClient.list(this.tags.join(','));
+    let factsUpdated$ = this.factQueryService.query({
+      tags: this.tags.join(',')
+    });
     
-    factsUpdated$.subscribe(facts => this._facts.next(facts));
+    factsUpdated$.subscribe(factPage => this._facts.next(factPage.items));
 
     // Delay emitting loading = false intelligently:
     let delay = Observable.timer(500);

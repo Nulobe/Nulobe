@@ -84,7 +84,8 @@ namespace Nulobe.Api
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowAnyOrigin() // Can make this more secure
-                .AllowCredentials());
+                .AllowCredentials()
+                .WithExposedHeaders("X-Total-Count"));
 
             app.MapWhen(
                 context =>

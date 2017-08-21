@@ -11,6 +11,8 @@ import { FactListItemComponent } from './fact-list-item/fact-list-item.component
 import { FactFormBulkComponent } from './fact-form-bulk/fact-form-bulk.component';
 import { FactFormComponent } from './fact-form/fact-form.component';
 
+import { FactQueryService } from './fact-query/fact-query.service';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -30,6 +32,9 @@ import { FactFormComponent } from './fact-form/fact-form.component';
     FactListItemComponent,
     FactFormBulkComponent,
     FactFormComponent
+  ],
+  providers: [
+    FactQueryService
   ]
 })
 export class FactsModule { }

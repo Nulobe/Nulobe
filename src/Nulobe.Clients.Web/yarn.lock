@@ -177,10 +177,6 @@
     magic-string "^0.22.3"
     source-map "^0.5.6"
 
-"@swimlane/ngx-datatable@^10.0.5":
-  version "10.0.5"
-  resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-10.0.5.tgz#b67fa137d7790bb664a01fc94d4679366fd7a2e1"
-
 "@types/jasmine@*", "@types/jasmine@~2.5.53":
   version "2.5.53"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.53.tgz#4e0cefad09df5ec48c8dd40433512f84b1568d61"

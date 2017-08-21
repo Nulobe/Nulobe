@@ -28,6 +28,7 @@ namespace Nulobe.Api.Controllers
         public async Task<IActionResult> List([FromQuery] FactQuery query)
         {
             var result = await _factQueryService.QueryFactsAsync(query);
+            Response.Headers.Add("X-Total-Count", result.Count.ToString());
             return Ok(result.Facts);
         }
 
