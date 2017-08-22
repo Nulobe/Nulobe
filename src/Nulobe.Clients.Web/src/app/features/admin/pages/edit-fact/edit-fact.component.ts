@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
@@ -27,6 +27,7 @@ export class EditFactComponent implements OnInit {
   private hasDeleteError: boolean = false;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private factApiClient: FactApiClient,
     private factPreviewDialogService: FactPreviewDialogService,
@@ -66,7 +67,7 @@ export class EditFactComponent implements OnInit {
           return Observable.empty();
         })
         .subscribe(() => {
-          alert('success!');
+          this.router.navigate(['/LOBE/admin']);
         });
     }
   }
@@ -85,7 +86,7 @@ export class EditFactComponent implements OnInit {
           return Observable.empty();
         })
         .subscribe(() => {
-          alert('success!');
+          this.router.navigate(['/LOBE/admin']);
         });
     }
   }

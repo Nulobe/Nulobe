@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { FactApiClient, FactCreate, SwaggerException } from '../../../../core/api';
@@ -20,7 +21,8 @@ export class CreateFactComponent implements OnInit {
 
   constructor(
     private factApiClient: FactApiClient,
-    private factPreviewDialogService: FactPreviewDialogService
+    private factPreviewDialogService: FactPreviewDialogService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -51,7 +53,7 @@ export class CreateFactComponent implements OnInit {
           return Observable.empty();
         })
         .subscribe(() => {
-          alert('success!');
+          this.router.navigate(['/LOBE/admin']);
         });
     }
   }
