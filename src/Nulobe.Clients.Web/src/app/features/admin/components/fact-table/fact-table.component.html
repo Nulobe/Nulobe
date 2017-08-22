@@ -1,31 +1,24 @@
 <md-table #table [dataSource]="dataSource">
 
-  <!-- ID Column -->
-  <ng-container cdkColumnDef="userId">
-    <md-header-cell *cdkHeaderCellDef> ID </md-header-cell>
-    <md-cell *cdkCellDef="let row">{{ row.id }}</md-cell>
+  <ng-container cdkColumnDef="title">
+    <md-header-cell *cdkHeaderCellDef>Title</md-header-cell>
+    <md-cell *cdkCellDef="let fact">{{ fact.title }}</md-cell>
   </ng-container>
 
-  <!-- Progress Column -->
-  <ng-container cdkColumnDef="progress">
-    <md-header-cell *cdkHeaderCellDef> Progress </md-header-cell>
-    <md-cell *cdkCellDef="let row">{{ row.progress }}%</md-cell>
+  <ng-container cdkColumnDef="definition">
+    <md-header-cell *cdkHeaderCellDef>Definition</md-header-cell>
+    <md-cell *cdkCellDef="let fact">{{ fact.definition }}</md-cell>
   </ng-container>
 
-  <!-- Name Column -->
-  <ng-container cdkColumnDef="userName">
-    <md-header-cell *cdkHeaderCellDef> Name </md-header-cell>
-    <md-cell *cdkCellDef="let row">{{ row.name }}</md-cell>
-  </ng-container>
-
-  <!-- Color Column -->
-  <ng-container cdkColumnDef="color">
-    <md-header-cell *cdkHeaderCellDef> Color </md-header-cell>
-    <md-cell *cdkCellDef="let row" [style.color]="row.color">{{ row.color }}</md-cell>
+  <ng-container cdkColumnDef="controls">
+    <md-header-cell *cdkHeaderCellDef></md-header-cell>
+    <md-cell *cdkCellDef="let fact" class="controls">
+      <md-icon (click)="editFact(fact)">mode_edit</md-icon>
+    </md-cell>
   </ng-container>
 
   <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
-  <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
+  <md-row *cdkRowDef="let fact; columns: displayedColumns;"></md-row>
 </md-table>
 
 <div class="paginator-container" [style.visibility]="{ 'hidden': factCount < 0, 'visible': factCount >= 0 }">

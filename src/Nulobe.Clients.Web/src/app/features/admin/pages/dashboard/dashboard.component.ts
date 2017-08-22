@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, ReplaySubject } from 'rxjs';
 
 import { Fact } from '../../../../core/api';
@@ -16,7 +17,8 @@ export class DashboardComponent implements OnInit {
   private factPageProvider: FactPageProvider;
 
   constructor(
-    private factQueryService: FactQueryService
+    private factQueryService: FactQueryService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -28,5 +30,9 @@ export class DashboardComponent implements OnInit {
         });
       }
     }
+  }
+
+  navigateToEdit(fact: Fact) {
+    this.router.navigate([`/LOBE/admin/edit/${fact.id}`]);
   }
 }

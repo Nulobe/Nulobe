@@ -8,5 +8,7 @@
     [count]="1000"
     [limit]="2">
   </ngx-datatable>-->
-  <app-fact-table [factPageProvider]="factPageProvider"></app-fact-table>
+  <app-fact-table
+    [factPageProvider]="factPageProvider"
+    (onEdit)="navigateToEdit($event)"></app-fact-table>
 </div>

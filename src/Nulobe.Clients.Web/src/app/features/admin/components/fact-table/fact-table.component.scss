@@ -1,0 +1,18 @@
+@import "../../../../../assets/scss/mixins";
+
+:host {
+    md-table {
+        md-row {
+            md-cell {
+                &.controls {
+                    @include flex-display();
+                    @include justify-content(flex-end);
+
+                    md-icon {
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+}

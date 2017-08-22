@@ -3,7 +3,6 @@ import { MdPaginator, PageEvent } from '@angular/material';
 import { DataSource, CollectionViewer } from '@angular/cdk';
 import { Observable } from 'rxjs';
 
-
 import { Fact } from '../../../../core/api';
 import { PageModel } from '../../../../core/abstractions';
 import { FactPageProvider } from './fact-page.provider';
@@ -15,10 +14,11 @@ import { FactPageProvider } from './fact-page.provider';
 })
 export class FactTableComponent implements OnInit {
   @Input() factPageProvider: FactPageProvider;
+  @Output() onEdit = new EventEmitter<Fact>();
 
   @ViewChild(MdPaginator) paginator: MdPaginator;
   private dataSource: FactDataSource;
-  private displayedColumns = ['userId', 'userName', 'progress', 'color'];
+  private displayedColumns = ['title', 'definition', 'controls'];
   private factCount = -1;
 
   constructor() { }
@@ -43,6 +43,9 @@ export class FactTableComponent implements OnInit {
     this.dataSource = new FactDataSource(factPageProvider, this.paginator);
   }
 
+  editFact(fact: Fact) {
+    this.onEdit.emit(fact);
+  }
 }
 
 class FactDataSource implements DataSource<Fact> {
