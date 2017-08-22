@@ -1,3 +1,10 @@
+<div class="tag-selector-container">
+  <app-tag-selector
+      [secondaryPlaceholder]="'Tags'"
+      (onTagsUpdated)="updateTags($event)">
+  </app-tag-selector>
+</div>
+
 <md-table #table [dataSource]="dataSource">
 
   <ng-container cdkColumnDef="title">

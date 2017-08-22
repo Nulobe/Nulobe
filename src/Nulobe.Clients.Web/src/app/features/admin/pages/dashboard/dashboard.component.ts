@@ -5,7 +5,7 @@ import { Observable, ReplaySubject } from 'rxjs';
 import { Fact } from '../../../../core/api';
 import { FactQueryService, FactQueryModel } from '../../../../core/facts';
 import { PageModel } from '../../../../core/abstractions';
-import { FactPageProvider } from '../../components/fact-table';
+import { FactPageProvider, FactPageOptions } from '../../components/fact-table';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,10 +23,11 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.factPageProvider = {
-      getFactPage: (pageIndex: number, pageSize: number): Observable<PageModel<Fact>> => {
+      getFactPage: (pageIndex: number, pageSize: number, options?: FactPageOptions): Observable<PageModel<Fact>> => {
         return this.factQueryService.query({
           pageNumber: pageIndex + 1,
-          pageSize: pageSize
+          pageSize: pageSize,
+          tags: options.tags
         });
       }
     }

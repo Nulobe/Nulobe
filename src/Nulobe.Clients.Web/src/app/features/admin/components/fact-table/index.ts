@@ -1,2 +1,2 @@
 export { FactTableComponent } from './fact-table.component';
-export { FactPageProvider } from './fact-page.provider';
+export { FactPageProvider, FactPageOptions } from './fact-page.provider';
