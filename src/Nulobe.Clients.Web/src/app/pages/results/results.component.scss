@@ -49,6 +49,34 @@
                 @include flex-display();
                 @include flex-direction(column);
                 @include align-items(center);
+
+                .tags {
+                    .tags-view-mode {
+                        @include flex-display();
+                        @include align-items(center);
+
+                        .edit-icon {
+                            color: $medium-lobe-color;
+                            cursor: pointer;
+                            margin-left: 5px;
+
+                            &:hover {
+                                color: $primary-color;
+                            }
+                        }
+                    }
+
+                    .tags-edit-mode {
+                        
+                        &.has-tag {
+                            padding-left: 184px; // Same as input width in tag selector
+                        }
+                        
+                        &:not(.has-tag) {
+                            padding-left: 70px; // Input width - placeholder text length
+                        }
+                    }
+                }
             }
 
             .fact-list-container {
@@ -59,6 +87,7 @@
 
             .fact-list-end-container {
                 margin-top: 100px;
+                visibility: hidden;
 
                 .fact-list-end {
                     padding-left: 100px;

@@ -23,6 +23,7 @@ export class ResultsComponent implements OnInit {
   private facts$: Observable<Fact[]> = this._facts.asObservable();
   private tags: string[] = [];
   private permissionsResolver: IPermissionsResolver;
+  private isEditingTags = false;
 
   constructor(
     private factQueryService: FactQueryService,
@@ -69,6 +70,12 @@ export class ResultsComponent implements OnInit {
 
   editFact(fact: Fact) {
     this.router.navigate([`/LOBE/admin/edit/${fact.id}`]);
+  }
+
+  search() {
+    this._loading.next(true);
+    this.router.navigate([ResultsPathHelper.encode(this.tags)]).then(() => this.loadFacts());
+    this.isEditingTags = false;
   }
 
   private loadFacts() {

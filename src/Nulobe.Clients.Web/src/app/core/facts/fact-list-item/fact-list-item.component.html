@@ -1,5 +1,5 @@
 <div>
-  <h3>
+  <h3 class="title">
     <span *ngIf="fact.title">{{ fact.title }}</span>
     <i *ngIf="!fact.title">(Add a title)</i>
   </h3>
@@ -7,9 +7,13 @@
     <span *ngIf="fact.definition">{{ fact.definition }}</span>
     <i *ngIf="!fact.definition">(Add a definition)</i>
   </div>
-  <div class="sources">
-
-  </div>
+  <ul class="sources">
+    <li class="source" *ngFor="let source of fact.sources; let i = index;">
+      <span>{{ i + 1 }}.</span>
+      <span *ngIf="source.description">{{ source.description }}</span>
+      <a *ngIf="source.url" href="{{ source.url }}">{{ source.url }}</a>
+    </li>
+  </ul>
   <div class="tags-list-container">
     <app-tag-list
       *ngIf="fact.tags.length"

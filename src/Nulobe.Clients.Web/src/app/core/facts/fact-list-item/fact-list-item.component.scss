@@ -1,4 +1,12 @@
 
 :host {
-    
+    .title {
+        margin-bottom: 10px;
+    }
+
+    ul.sources {
+        list-style-type: none;
+        padding-left: 0;
+        font-size: 0.8em;
+    }
 }

@@ -7,10 +7,25 @@
   <div class="content" [class.fade-in]="!(loading$ | async)">
     <div class="container" *ngIf="!(loading$ | async)">
       <div class="title">
-        <app-tag-list
-          [tags]="tags"
-          (onTagClick)="navigateToTag($event)"></app-tag-list>
-        <h1>Found {{ (facts$ | async).length }} nuerons</h1>
+        <div class="tags">
+          <div class="tags-view-mode" *ngIf="!isEditingTags">
+            <app-tag-list
+              [tags]="tags"
+              (onTagClick)="navigateToTag($event)"></app-tag-list>
+            <md-icon class="edit-icon" (click)="isEditingTags = true">mode_edit</md-icon>            
+          </div>
+          <div class="tags-edit-mode" [ngClass]="{ 'has-tag': tags.length > 0 }" *ngIf="isEditingTags">
+            <app-tag-selector
+              [tags]="tags"
+              (onTagsUpdated)="tags = $event"
+              (onSubmit)="search()"></app-tag-selector>
+          </div>
+        </div>
+        <h1>
+          <span>Found {{ (facts$ | async).length }}</span>
+          <span *ngIf="(facts$ | async).length === 1">nueron</span>
+          <span *ngIf="(facts$ | async).length !== 1">nuerons</span>
+        </h1>
       </div>
       <div class="fact-list-container">
         <app-fact-list

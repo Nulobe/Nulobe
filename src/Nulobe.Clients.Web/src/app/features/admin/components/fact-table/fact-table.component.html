@@ -17,6 +17,11 @@
     <md-cell *cdkCellDef="let fact">{{ fact.definition }}</md-cell>
   </ng-container>
 
+  <ng-container cdkColumnDef="tags">
+    <md-header-cell *cdkHeaderCellDef>Tags</md-header-cell>
+    <md-cell *cdkCellDef="let fact">{{ fact.tags.join(', ') }}</md-cell>
+  </ng-container>
+
   <ng-container cdkColumnDef="controls">
     <md-header-cell *cdkHeaderCellDef></md-header-cell>
     <md-cell *cdkCellDef="let fact" class="controls">

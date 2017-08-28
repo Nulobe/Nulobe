@@ -18,7 +18,7 @@ export class FactTableComponent implements OnInit {
 
   @ViewChild(MdPaginator) paginator: MdPaginator;
   private dataSource: FactDataSource;
-  private displayedColumns = ['title', 'definition', 'controls'];
+  private displayedColumns = ['title', 'definition', 'tags', 'controls'];
   private factCount = -1;
 
   constructor() { }

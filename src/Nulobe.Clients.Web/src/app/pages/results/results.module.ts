@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MdIconModule } from '@angular/material';
 
 import { CoreModule } from '../../core';
 import { AuthModule } from '../../features/auth';
@@ -11,6 +12,7 @@ import { ResultsComponent } from './results.component';
   imports: [
     CommonModule,
     CoreModule,
+    MdIconModule,
     ResultsRoutingModule,
     AuthModule
   ],
