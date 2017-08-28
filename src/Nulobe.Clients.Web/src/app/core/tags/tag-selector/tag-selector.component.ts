@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, HostListener, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/debounceTime';
 
@@ -27,7 +27,8 @@ export class TagSelectorComponent implements OnInit {
   private tagInput_lastApiCall: Promise<Tag[]>;
 
   constructor(
-    private tagApiClient: TagApiClient
+    private tagApiClient: TagApiClient,
+    private elementRef: ElementRef
   ) { }
 
   ngOnInit() {
@@ -36,7 +37,12 @@ export class TagSelectorComponent implements OnInit {
     this.secondaryPlaceholder  = this.secondaryPlaceholder || "Enter a new tag";
   }
 
-  tagInput_getSuggestions = (text: string): Observable<string[]> => {
+  focus() {
+    let input = this.elementRef.nativeElement.querySelector('input');
+    input.focus();
+  }
+
+  private tagInput_getSuggestions = (text: string): Observable<string[]> => {
     if (text === '') {
       return Observable.of([]);
     } else {
@@ -66,20 +72,20 @@ export class TagSelectorComponent implements OnInit {
     }
   }
 
-  tagInput_addHash = (text: string | TagModel): Observable<TagModel> => {
+  private tagInput_addHash = (text: string | TagModel): Observable<TagModel> => {
     if (typeof(text) === 'object') {
       text = text.display;
     }
     return Observable.of(this.createTagModel(text));
   }
 
-  tagInput_updated = () => {
+  private tagInput_updated = () => {
     this.tags = this.tagInput_tags.map(t => t.value.substring(1, t.value.length));
     this.onTagsUpdated.emit(this.tags);
   }
 
   @HostListener('document:keypress', ['$event'])
-  host_handleKeyboardEvent(event: KeyboardEvent) {
+  private host_handleKeyboardEvent(event: KeyboardEvent) {
     if (event.keyCode === 13 && this.tagInput_isFocused && !this.tagInput_currentText) {
       this.onSubmit.emit();
     }

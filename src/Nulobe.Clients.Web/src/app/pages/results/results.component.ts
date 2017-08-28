@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 
@@ -6,8 +6,10 @@ import { Fact, VoteApiClient, FlagApiClient } from '../../core/api';
 import { FactQueryService, FactQueryModel } from '../../core/facts';
 import { IPermissionsResolver } from '../../core/abstractions';
 import { AuthService } from '../../features/auth';
+import { TagSelectorComponent } from '../../core/tags';
 
 import { ResultsPathHelper } from './results-path.helper';
+import { ExportResultsDialogService } from './pages/export-results-dialog/export-results-dialog.service';
 
 @Component({
   selector: 'app-results',
@@ -24,13 +26,16 @@ export class ResultsComponent implements OnInit {
   private tags: string[] = [];
   private permissionsResolver: IPermissionsResolver;
   private isEditingTags = false;
+  
+  @ViewChild(TagSelectorComponent) tagSelector: TagSelectorComponent;
 
   constructor(
     private factQueryService: FactQueryService,
     private voteApiClient: VoteApiClient,
     private flagApiClient: FlagApiClient,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private exportResultsDialogService: ExportResultsDialogService
   ) { }
 
   ngOnInit() {
@@ -72,10 +77,19 @@ export class ResultsComponent implements OnInit {
     this.router.navigate([`/LOBE/admin/edit/${fact.id}`]);
   }
 
+  beginEditTags() {
+    this.isEditingTags = true;
+    setTimeout(() => this.tagSelector.focus(), 0);
+  }
+
   search() {
     this._loading.next(true);
     this.router.navigate([ResultsPathHelper.encode(this.tags)]).then(() => this.loadFacts());
     this.isEditingTags = false;
+  }
+
+  openExportDialog() {
+    this.exportResultsDialogService.open(this.tags, this._facts.value);
   }
 
   private loadFacts() {

@@ -55,6 +55,8 @@
                         @include flex-display();
                         @include align-items(center);
 
+                        &[hidden] { display: none !important;}
+
                         .edit-icon {
                             color: $medium-lobe-color;
                             cursor: pointer;
@@ -83,6 +85,13 @@
                 app-fact-list {
                     //width: 600px;
                 }
+            }
+
+            .export-button-container {
+                @include flex-display();
+                @include justify-content(center);
+                margin-top: 100px;
+                margin-bottom: 50px;
             }
 
             .fact-list-end-container {

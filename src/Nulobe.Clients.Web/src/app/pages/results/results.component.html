@@ -8,14 +8,15 @@
     <div class="container" *ngIf="!(loading$ | async)">
       <div class="title">
         <div class="tags">
-          <div class="tags-view-mode" *ngIf="!isEditingTags">
+          <div class="tags-view-mode" [hidden]="isEditingTags">
             <app-tag-list
               [tags]="tags"
               (onTagClick)="navigateToTag($event)"></app-tag-list>
-            <md-icon class="edit-icon" (click)="isEditingTags = true">mode_edit</md-icon>            
+            <md-icon class="edit-icon" (click)="beginEditTags()">mode_edit</md-icon>            
           </div>
-          <div class="tags-edit-mode" [ngClass]="{ 'has-tag': tags.length > 0 }" *ngIf="isEditingTags">
+          <div class="tags-edit-mode" [ngClass]="{ 'has-tag': tags.length > 0 }" [hidden]="!isEditingTags">
             <app-tag-selector
+              #tagSelector
               [tags]="tags"
               (onTagsUpdated)="tags = $event"
               (onSubmit)="search()"></app-tag-selector>
@@ -36,11 +37,14 @@
           (onFlag)="flagFact($event)"
           (onEdit)="editFact($event)"></app-fact-list>
       </div>
-      <div class="fact-list-end-container">
+      <div class="export-button-container">
+        <button md-button (click)="openExportDialog()">Export</button>
+      </div>
+      <!--<div class="fact-list-end-container">
           <div class="fact-list-end">
             <div class="fact-list-end-rule"></div>
           </div>
-      </div>
+      </div>-->
     </div>
   </div>
 </div>
