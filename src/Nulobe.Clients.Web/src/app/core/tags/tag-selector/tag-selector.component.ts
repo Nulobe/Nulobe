@@ -18,6 +18,7 @@ export class TagSelectorComponent implements OnInit {
   @Input() tags: string[];
   @Input() secondaryPlaceholder: string;
   @Output() onTagsUpdated = new EventEmitter<string[]>();
+  @Output() onInputFocusUpdated = new EventEmitter<boolean>();
   @Output() onSubmit = new EventEmitter();
 
   private tagInput_tags: TagModel[] = [];
@@ -40,6 +41,7 @@ export class TagSelectorComponent implements OnInit {
   focus() {
     let input = this.elementRef.nativeElement.querySelector('input');
     input.focus();
+    this.tagInput_focusUpdated(true);
   }
 
   private tagInput_getSuggestions = (text: string): Observable<string[]> => {
@@ -82,6 +84,14 @@ export class TagSelectorComponent implements OnInit {
   private tagInput_updated = () => {
     this.tags = this.tagInput_tags.map(t => t.value.substring(1, t.value.length));
     this.onTagsUpdated.emit(this.tags);
+  }
+
+  private tagInput_focusUpdated = (value) => {
+    let currentValue = this.tagInput_isFocused;
+    if (currentValue !== value) {
+      this.tagInput_isFocused = value;
+      this.onInputFocusUpdated.emit(value);
+    }
   }
 
   @HostListener('document:keypress', ['$event'])

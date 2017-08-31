@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute, UrlSerializer } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -27,6 +27,7 @@ export class ResultsComponent implements OnInit {
   private loading$: Observable<boolean> = this._loading.asObservable();
   private facts$: Observable<Fact[]> = this._facts.asObservable();
   private tags: string[] = [];
+  private editingTags: string[] = [];
   private permissionsResolver: IPermissionsResolver;
   private isEditingTags = false;
   
@@ -98,12 +99,29 @@ export class ResultsComponent implements OnInit {
   }
 
   beginEditTags() {
-    this.isEditingTags = true;
-    setTimeout(() => this.tagSelector.focus(), 0);
+    this.editingTags = [...this.tags];
+    setTimeout(() => {
+      this.isEditingTags = true;
+      setTimeout(() => this.tagSelector.focus(), 0)
+    });
+  }
+
+  cancelEditTags() {
+    this.isEditingTags = false;
+    this.editingTags = [];
+  }
+
+  completeEditTags() {
+    this.tags = [...this.editingTags];
+    this.cancelEditTags();
+    this._loading.next(true);
+    this.router.navigate([ResultsPathHelper.encode(this.tags)]).then(() => this.loadFacts());
   }
 
   search() {
     this._loading.next(true);
+    this.tags.length = 0;
+    this.tags.push(...this.editingTags);
     this.router.navigate([ResultsPathHelper.encode(this.tags)]).then(() => this.loadFacts());
     this.isEditingTags = false;
   }
@@ -123,5 +141,19 @@ export class ResultsComponent implements OnInit {
     let delay = Observable.timer(500);
     Observable.combineLatest([factsUpdated$, delay])
       .subscribe(() => this._loading.next(false));
+  }
+
+  @HostListener('document:keyup', ['$event'])
+  private host_handleKeyboardEvent(event: KeyboardEvent) {
+    if (this.isEditingTags && event.keyCode === 27) {
+      this.cancelEditTags();
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  private document_handleClick(event: any) {
+    if (this.isEditingTags && (<Element[]>event.path).filter(e => e.tagName && e.tagName.toLowerCase() === 'app-tag-selector').length === 0) {
+      this.cancelEditTags();
+    }
   }
 }

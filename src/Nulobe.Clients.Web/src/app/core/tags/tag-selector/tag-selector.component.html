@@ -6,8 +6,8 @@
     [secondaryPlaceholder]="secondaryPlaceholder"
     (onAdd)="tagInput_updated()"
     (onRemove)="tagInput_updated()"
-    (onFocus)="tagInput_isFocused = true"
-    (onBlur)="tagInput_isFocused = false"
+    (onFocus)="tagInput_focusUpdated(true)"
+    (onBlur)="tagInput_focusUpdated(false)"
     (onTextChange)="tagInput_currentText = $event">
     <tag-input-dropdown
       [autocompleteObservable]="tagInput_getSuggestions">

@@ -54,8 +54,8 @@
                     .tags-view-mode {
                         @include flex-display();
                         @include align-items(center);
-
-                        &[hidden] { display: none !important;}
+                        margin-top: 3px;
+                        margin-bottom: 10px;
 
                         .edit-icon {
                             color: $medium-lobe-color;
