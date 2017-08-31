@@ -37,7 +37,7 @@
           (onFlag)="flagFact($event)"
           (onEdit)="editFact($event)"></app-fact-list>
       </div>
-      <div class="export-button-container">
+      <div class="export-button-container" *ngIf="(facts$ | async).length">
         <button md-button (click)="openExportDialog()">Export</button>
       </div>
       <!--<div class="fact-list-end-container">
