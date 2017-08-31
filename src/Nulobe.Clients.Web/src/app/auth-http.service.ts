@@ -31,53 +31,23 @@ export class AuthHttp extends Http {
         if (typeof(url) === 'object') {
             urlString = url.url
         }
-        return super.request(url, this.getRequestOptionArgs(urlString, options))
-            .map(r => {
-              if (r.status === 201) {
-                r.status = 200;
-              }
-              return r;
-            });
+        return super.request(url, this.getRequestOptionArgs(urlString, options));
     }
 
     get(url: string, options?: RequestOptionsArgs): Observable<Response> {
-        return super.get(url, this.getRequestOptionArgs(url, options))
-            .map(r => {
-                if (r.status === 201) {
-                    r.status = 200;
-                }
-                return r;
-                });
+        return super.get(url, this.getRequestOptionArgs(url, options));
     }
 
     post(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
-        return super.post(url, body, this.getRequestOptionArgs(url, options))
-            .map(r => {
-              if (r.status === 201) {
-                r.status = 200;
-              }
-              return r;
-            });
+        return super.post(url, body, this.getRequestOptionArgs(url, options));
     }
 
     put(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
-        return super.put(url, body, this.getRequestOptionArgs(url, options))
-            .map(r => {
-              if (r.status === 201) {
-                r.status = 200;
-              }
-              return r;
-            });
+        return super.put(url, body, this.getRequestOptionArgs(url, options));
     }
 
     delete(url: string, options?: RequestOptionsArgs): Observable<Response> {
-        return super.delete(url, this.getRequestOptionArgs(url, options))
-            .map(r => {
-              if (r.status === 201) {
-                r.status = 200;
-              }
-              return r;
-            });
+        return super.delete(url, this.getRequestOptionArgs(url, options));
     }
 
     private getRequestOptionArgs(url: string, options?: RequestOptionsArgs) : RequestOptionsArgs {

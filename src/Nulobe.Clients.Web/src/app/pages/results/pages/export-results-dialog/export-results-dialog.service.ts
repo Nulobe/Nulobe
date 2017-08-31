@@ -14,7 +14,11 @@ export class ExportResultsDialogService {
 
   open(tags: string[], facts: Fact[]) {
     let dialogRef = this.mdDialog.open(ExportResultsDialogComponent);
-    // dialogRef.componentInstance.fact = fact;
+    dialogRef.componentInstance.tags = tags;
+    dialogRef.componentInstance.facts = facts;
+    dialogRef.componentInstance.onSuccess.first().subscribe(() => {
+      dialogRef.close();
+    });
   }
 
 }

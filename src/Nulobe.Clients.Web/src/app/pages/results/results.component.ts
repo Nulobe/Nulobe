@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { Router, ActivatedRoute, UrlSerializer } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 
 import { Fact, VoteApiClient, FlagApiClient } from '../../core/api';
@@ -10,6 +11,8 @@ import { TagSelectorComponent } from '../../core/tags';
 
 import { ResultsPathHelper } from './results-path.helper';
 import { ExportResultsDialogService } from './pages/export-results-dialog/export-results-dialog.service';
+import { ExportService, ExportTarget } from './services/export';
+import { ExportNotificationService } from './services/export-notification/export-notification.service';
 
 @Component({
   selector: 'app-results',
@@ -34,13 +37,19 @@ export class ResultsComponent implements OnInit {
     private voteApiClient: VoteApiClient,
     private flagApiClient: FlagApiClient,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private urlSerializer: UrlSerializer,
     private authService: AuthService,
-    private exportResultsDialogService: ExportResultsDialogService
+    private exportResultsDialogService: ExportResultsDialogService,
+    private exportService: ExportService,
+    private exportNotificationService: ExportNotificationService,
+    private location: Location
   ) { }
 
   ngOnInit() {
     let { url } = this.router;
-    let pathSections = url.split('/');
+
+    let pathSections = url.split('?')[0].split('/');
     let tagsString = pathSections[pathSections.length - 1];
 
     let tags = ResultsPathHelper.decode(tagsString);
@@ -54,6 +63,17 @@ export class ResultsComponent implements OnInit {
     this.permissionsResolver = {
       resolve: () => this.authService.isAuthenticated() 
     };
+
+    let urlTree = this.urlSerializer.parse(this.router.url);
+    if (urlTree.queryParams.export) {
+      let targetStr = ExportTarget[parseInt(urlTree.queryParams.export)];
+      let target: ExportTarget = ExportTarget[targetStr];
+      this.exportService.exportToTarget(tags, target)
+        .then(result => {
+          this.location.replaceState(pathSections.join('/'));
+          this.exportNotificationService.notifySuccess(target, result);
+        });
+    }
   }
 
   navigateToTag(tag: string) {

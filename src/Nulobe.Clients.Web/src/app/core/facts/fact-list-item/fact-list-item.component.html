@@ -11,7 +11,7 @@
     <li class="source" *ngFor="let source of fact.sources; let i = index;">
       <span>{{ i + 1 }}.</span>
       <span *ngIf="source.description">{{ source.description }}</span>
-      <a *ngIf="source.url" href="{{ source.url }}">{{ source.url }}</a>
+      <a class="url" *ngIf="source.url" href="{{ source.url }}">{{ source.url }}</a>
     </li>
   </ul>
   <div class="tags-list-container">

@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
         queryParams: {
           redirect: state.url
         }
-      })
+      });
       return false;
     }
   }

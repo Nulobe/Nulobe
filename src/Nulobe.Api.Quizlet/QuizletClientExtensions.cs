@@ -29,7 +29,7 @@ namespace Nulobe.Api.Quizlet
             {
                 Id = result.Id,
                 Title = set.Title,
-                Url = result.Url,
+                Url = new Uri("https://quizlet.com" + result.Path),
                 Terms = set.Terms
             };
         }
@@ -39,7 +39,8 @@ namespace Nulobe.Api.Quizlet
             [JsonProperty("set_id")]
             public int Id { get; set; }
 
-            public Uri Url { get; set; }
+            [JsonProperty("url")]
+            public string Path { get; set; }
         }
     }
 }
