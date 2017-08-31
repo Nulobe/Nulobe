@@ -32,7 +32,7 @@ namespace Nulobe.Api.Controllers
 
         [Route("sets")]
         [ProducesResponseType(typeof(QuizletSet), 201)]
-        public async Task<IActionResult> CreateSetAsync([FromBody] FactQuery query)
+        public async Task<IActionResult> CreateSet([FromBody] FactQuery query)
         {
             var set = await _quizletSetService.CreateSetAsync(query);
             return new CreatedResult(set.Url, set);

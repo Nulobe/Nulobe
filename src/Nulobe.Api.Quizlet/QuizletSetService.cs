@@ -4,12 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Nulobe.Api.Quizlet
 {
     public class QuizletSetService : IQuizletSetService
     {
+        private static readonly Regex SourceReferenceRegex = new Regex(@"\[(\d+)\]");
+
         private readonly IQuizletClientFactory _quizletClientFactory;
         private readonly IFactQueryService _factQueryService;
 
@@ -35,10 +38,17 @@ namespace Nulobe.Api.Quizlet
                 return await quizletClient.CreateSetAsync(new QuizletSet()
                 {
                     Title = title,
-                    Terms = result.Facts.Select(f => new QuizletTerm()
-                    {
-                        Name = f.Title,
-                        Definition = f.Definition
+                    Terms = result.Facts.Select(f => {
+                        var definition = Regex
+                            .Replace(f.Definition, @"\[(\d+)\]", string.Empty) // Remove indexed sources
+                            .Replace("  ", " ") // Remove multi-space (i.e. left by indexed sources)
+                            .Trim();
+
+                        return new QuizletTerm()
+                        {
+                            Name = f.Title,
+                            Definition = definition
+                        };
                     })
                 });
             }
