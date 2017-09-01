@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Azure.Documents.Client;
 
 namespace Nulobe.Api.Core.Facts
 {
@@ -32,40 +33,21 @@ namespace Nulobe.Api.Core.Facts
 
         public Task<FactQueryResult> QueryFactsAsync(FactQuery query)
         {
-            var sqlQueryText = "SELECT ";
-
-            var fieldPropertyNames = query.GetFieldPropertyNames();
-            if (fieldPropertyNames.Any())
-            {
-                sqlQueryText += string.Join(" ", fieldPropertyNames.Select(f => $"f.{f}"));
-            }
-            else
-            {
-                sqlQueryText += "*";
-            }
-
-            sqlQueryText += " FROM Facts f";
-
-            var tags = query.Tags
-                .Split(',')
-                .Select(t => t.Trim())
-                .Where(t => !string.IsNullOrEmpty(t));
-            if (tags.Any())
-            {
-                sqlQueryText += " WHERE ";
-                sqlQueryText += string.Join(" AND ", tags.Select((t, i) => $"ARRAY_CONTAINS(f.Tags, @tag{i})"));
-            }
-
-            var sqlParameters = new SqlParameterCollection(
-                tags.Select((t, i) => new SqlParameter($"@tag{i}", t)));
-            
             using (var client = _documentClientFactory.Create(_documentDbOptions))
             {
-                var result = client.CreateDocumentQuery<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, new SqlQuerySpec()
+                IEnumerable<Fact> result = null;
+                if (!string.IsNullOrEmpty(query.Tags))
                 {
-                    QueryText = sqlQueryText,
-                    Parameters = sqlParameters
-                }).ToList();
+                    result = GetTagFactQueryable(client, query.Tags, query.GetFieldPropertyNames());
+                }
+                else if (!string.IsNullOrEmpty(query.Slug))
+                {
+                    result = GetSlugFactQueryable(client, query.Slug, query.GetFieldPropertyNames());
+                }
+                else
+                {
+                    result = GetBaseFactQueryable(client, query.GetFieldPropertyNames());
+                }
 
                 var pageNumber = query.GetPageNumber();
                 var pageSize = query.GetPageSize();
@@ -81,5 +63,69 @@ namespace Nulobe.Api.Core.Facts
                 });
             }
         }
+
+
+        #region Helpers
+
+        private IEnumerable<Fact> GetTagFactQueryable(DocumentClient client, string tagsStr, IEnumerable<string> fieldPropertyNames)
+        {
+            var sqlQueryText = GetBaseSqlQuery(fieldPropertyNames);
+
+            var tags = tagsStr
+                .Split(',')
+                .Select(t => t.Trim())
+                .Where(t => !string.IsNullOrEmpty(t));
+
+            if (tags.Any())
+            {
+                sqlQueryText += " WHERE ";
+                sqlQueryText += string.Join(" AND ", tags.Select((t, i) => $"ARRAY_CONTAINS(f.Tags, @tag{i})"));
+            }
+
+            var sqlParameters = new SqlParameterCollection(tags.Select((t, i) => new SqlParameter($"@tag{i}", t)));
+
+            return GetFactQueryable(client, sqlQueryText, sqlParameters);
+        }
+
+        private IEnumerable<Fact> GetSlugFactQueryable(DocumentClient client, string slug, IEnumerable<string> fieldPropertyNames)
+        {
+            var sqlQueryText = GetBaseSqlQuery(fieldPropertyNames) + " WHERE f.Slug = @slug";
+            var sqlParameters = new SqlParameterCollection(new SqlParameter[] { new SqlParameter("@slug", slug) });
+            return GetFactQueryable(client, sqlQueryText, sqlParameters);
+        }
+
+        private IEnumerable<Fact> GetBaseFactQueryable(DocumentClient client, IEnumerable<string> fieldPropertNames)
+        {
+            return GetFactQueryable(client, GetBaseSqlQuery(fieldPropertNames));
+        }
+
+        private IEnumerable<Fact> GetFactQueryable(DocumentClient client, string sqlQueryText, SqlParameterCollection sqlParameters = null)
+        {
+            return client.CreateDocumentQuery<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, new SqlQuerySpec()
+            {
+                QueryText = sqlQueryText,
+                Parameters = sqlParameters ?? new SqlParameterCollection()
+            }).ToList();
+        }
+
+        private string GetBaseSqlQuery(IEnumerable<string> fieldPropertyNames)
+        {
+            var sqlQueryText = "SELECT ";
+            
+            if (fieldPropertyNames.Any())
+            {
+                sqlQueryText += string.Join(" ", fieldPropertyNames.Select(f => $"f.{f}"));
+            }
+            else
+            {
+                sqlQueryText += "*";
+            }
+
+            sqlQueryText += " FROM Facts f";
+
+            return sqlQueryText;
+        }
+
+        #endregion
     }
 }

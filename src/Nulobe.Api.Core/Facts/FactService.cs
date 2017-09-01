@@ -11,6 +11,7 @@ using Nulobe.Framework;
 using Nulobe.Utility.Validation;
 using System.Text.RegularExpressions;
 using Nulobe.System.Collections.Generic;
+using Nulobe.Utility.SlugBuilder;
 
 namespace Nulobe.Api.Core.Facts
 {
@@ -64,6 +65,16 @@ namespace Nulobe.Api.Core.Facts
 
             var factAudit = new FactAudit() { CurrentValue = fact };
             _auditor.AuditAction(nameof(CreateFactAsync), factAudit);
+            
+            fact.Slug = GenerateSlug(fact);
+            fact.SlugHistory = new SlugAudit[]
+            {
+                new SlugAudit()
+                {
+                    Slug = fact.Slug,
+                    Created = factAudit.Actioned
+                }
+            };
 
             fact.Id = Guid.NewGuid().ToString();
             using (var client = _documentClientFactory.Create(_documentDbOptions))
@@ -89,8 +100,8 @@ namespace Nulobe.Api.Core.Facts
 
                 var factAudit = new FactAudit() { PreviousValue = fact };
                 _auditor.AuditAction(nameof(DeleteFactAsync), factAudit);
-                await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactAuditCollectionName, factAudit);
 
+                await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactAuditCollectionName, factAudit);
                 await client.DeleteDocumentAsync(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
             }
         }
@@ -116,8 +127,23 @@ namespace Nulobe.Api.Core.Facts
                     PreviousValue = existingFact
                 };
                 _auditor.AuditAction(nameof(UpdateFactAsync), factAudit);
-                await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactAuditCollectionName, factAudit);
 
+                if (fact.Title != existingFact.Title)
+                {
+                    fact.Slug = GenerateSlug(fact);
+                    fact.SlugHistory = Enumerable.Empty<SlugAudit>()
+                        .Concat(existingFact.SlugHistory)
+                        .Concat(new SlugAudit[]
+                        {
+                            new SlugAudit()
+                            {
+                                Slug = fact.Slug,
+                                Created = factAudit.Actioned
+                            }
+                        });
+                }
+
+                await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactAuditCollectionName, factAudit);
                 await client.ReplaceDocumentAsync(_documentDbOptions, _factServiceOptions.FactCollectionName, id, fact);
             }
 
@@ -187,7 +213,15 @@ namespace Nulobe.Api.Core.Facts
                 throw new ClientModelValidationException(modelErrors);
             }
         }
-        
+
+        private string GenerateSlug(Fact fact)
+        {
+            var slugBuilder = new SlugBuilderFactory().Create();
+            slugBuilder.Add(new Random().Next(10000, 99999));
+            slugBuilder.Add(fact.Title);
+            return slugBuilder.ToString();
+        }
+
         #endregion
 
     }

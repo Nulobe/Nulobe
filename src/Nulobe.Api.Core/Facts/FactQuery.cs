@@ -4,7 +4,9 @@ namespace Nulobe.Api.Core.Facts
 {
     public class FactQuery : IPageQuery, IFieldQuery<Fact>
     {
-        public string Tags { get; set; } = string.Empty;
+        public string Tags { get; set; }
+
+        public string Slug { get; set; }
 
         public string Pattern { get; set; }
 

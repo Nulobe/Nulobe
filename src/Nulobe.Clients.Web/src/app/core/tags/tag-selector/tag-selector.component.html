@@ -10,7 +10,8 @@
     (onBlur)="tagInput_focusUpdated(false)"
     (onTextChange)="tagInput_currentText = $event">
     <tag-input-dropdown
-      [autocompleteObservable]="tagInput_getSuggestions">
+      [autocompleteObservable]="tagInput_getSuggestions"
+      [appendToBody]="false">
     </tag-input-dropdown>
   </tag-input>
   <!--

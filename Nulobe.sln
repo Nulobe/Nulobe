@@ -40,6 +40,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nulobe.Utility.Validation",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nulobe.Utility.Query", "util\Nulobe.Utility.Query\Nulobe.Utility.Query.csproj", "{2862DAAD-8EEA-497D-B0D3-EFA0DF94DED4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nulobe.Utility", "util\Nulobe.Utility\Nulobe.Utility.csproj", "{6EC7606C-E64B-4729-A11C-CF7F1D445779}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -136,6 +138,14 @@ Global
 		{2862DAAD-8EEA-497D-B0D3-EFA0DF94DED4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2862DAAD-8EEA-497D-B0D3-EFA0DF94DED4}.Release|x64.ActiveCfg = Release|Any CPU
 		{2862DAAD-8EEA-497D-B0D3-EFA0DF94DED4}.Release|x64.Build.0 = Release|Any CPU
+		{6EC7606C-E64B-4729-A11C-CF7F1D445779}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EC7606C-E64B-4729-A11C-CF7F1D445779}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EC7606C-E64B-4729-A11C-CF7F1D445779}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6EC7606C-E64B-4729-A11C-CF7F1D445779}.Debug|x64.Build.0 = Debug|Any CPU
+		{6EC7606C-E64B-4729-A11C-CF7F1D445779}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EC7606C-E64B-4729-A11C-CF7F1D445779}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EC7606C-E64B-4729-A11C-CF7F1D445779}.Release|x64.ActiveCfg = Release|Any CPU
+		{6EC7606C-E64B-4729-A11C-CF7F1D445779}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -152,5 +162,6 @@ Global
 		{D8E0A60F-9F35-44A7-83A5-C0D3FADD1F83} = {FAD21DEF-BB75-4E10-9CE9-0F63F904A05E}
 		{6EF93140-E726-41E7-A4BB-2AA572B686EF} = {FAD21DEF-BB75-4E10-9CE9-0F63F904A05E}
 		{2862DAAD-8EEA-497D-B0D3-EFA0DF94DED4} = {FAD21DEF-BB75-4E10-9CE9-0F63F904A05E}
+		{6EC7606C-E64B-4729-A11C-CF7F1D445779} = {FAD21DEF-BB75-4E10-9CE9-0F63F904A05E}
 	EndGlobalSection
 EndGlobal

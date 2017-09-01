@@ -21,7 +21,7 @@ import { Http, Headers, ResponseContentType, Response } from '@angular/http';
 export const API_BASE_URL = new OpaqueToken('API_BASE_URL');
 
 export interface IFactApiClient {
-    list(tags: string | undefined, pattern: string | undefined, fields: string | undefined, orderBy: string | undefined, pageNumber: string | undefined, pageSize: string | undefined): Observable<Fact[] | null>;
+    list(tags: string | undefined, slug: string | undefined, pattern: string | undefined, fields: string | undefined, orderBy: string | undefined, pageNumber: string | undefined, pageSize: string | undefined): Observable<Fact[] | null>;
     create(create: FactCreate | undefined): Observable<Fact | null>;
     get(id: string): Observable<Fact | null>;
     update(id: string, fact: Fact | undefined): Observable<Fact | null>;
@@ -39,10 +39,12 @@ export class FactApiClient implements IFactApiClient {
         this.baseUrl = baseUrl ? baseUrl : "";
     }
 
-    list(tags: string | undefined, pattern: string | undefined, fields: string | undefined, orderBy: string | undefined, pageNumber: string | undefined, pageSize: string | undefined): Observable<Fact[] | null> {
+    list(tags: string | undefined, slug: string | undefined, pattern: string | undefined, fields: string | undefined, orderBy: string | undefined, pageNumber: string | undefined, pageSize: string | undefined): Observable<Fact[] | null> {
         let url_ = this.baseUrl + "/facts?";
         if (tags !== undefined)
             url_ += "tags=" + encodeURIComponent("" + tags) + "&"; 
+        if (slug !== undefined)
+            url_ += "slug=" + encodeURIComponent("" + slug) + "&"; 
         if (pattern !== undefined)
             url_ += "pattern=" + encodeURIComponent("" + pattern) + "&"; 
         if (fields !== undefined)
@@ -565,11 +567,18 @@ export interface Fact {
     sources?: Source[] | undefined;
     tags?: string[] | undefined;
     credit?: string | undefined;
+    slug?: string | undefined;
+    slugHistory?: SlugAudit[] | undefined;
 }
 
 export interface Source {
     url: string;
     description?: string | undefined;
+}
+
+export interface SlugAudit {
+    slug?: string | undefined;
+    created: Date;
 }
 
 export interface FactCreate extends Fact {
@@ -608,6 +617,7 @@ export interface QuizletTokenResponse {
 
 export interface FactQuery {
     tags?: string | undefined;
+    slug?: string | undefined;
     pattern?: string | undefined;
     fields?: string | undefined;
     orderBy?: string | undefined;

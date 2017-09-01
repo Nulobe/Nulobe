@@ -170,6 +170,10 @@
       <Project>{6EF93140-E726-41E7-A4BB-2AA572B686EF}</Project>
       <Name>Nulobe.Utility.Validation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\util\Nulobe.Utility\Nulobe.Utility.csproj">
+      <Project>{6ec7606c-e64b-4729-a11c-cf7f1d445779}</Project>
+      <Name>Nulobe.Utility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nulobe.Framework\Nulobe.Framework.csproj">
       <Project>{c475cbf0-f2ef-4134-93d1-a20e5ea7b2e6}</Project>
       <Name>Nulobe.Framework</Name>
