@@ -14,13 +14,15 @@
               (onTagClick)="navigateToTag($event)"></core-tag-list>
             <md-icon class="edit-icon" (click)="beginEditTags()">mode_edit</md-icon>            
           </div>
-          <div class="tags-edit-mode" [ngClass]="{ 'has-tag': isEditingTags && editingTags.length > 0 }" *ngIf="isEditingTags">
-            <core-tag-selector
-              #tagSelector
-              [tags]="editingTags"
-              [placeholder]="'+ Tag / \'Enter\' to search'"
-              (onTagsUpdated)="editingTags = $event"
-              (onSubmit)="completeEditTags()"></core-tag-selector>
+          <div class="tags-edit-mode" [ngClass]="{ 'has-tag': isEditingTags && editingTags.length > 0, 'edited': areTagsEdited() }" *ngIf="isEditingTags">
+            <div class="search-hint">Enter to search</div>
+            <div class="tag-selector-container">
+              <core-tag-selector
+                #tagSelector
+                [tags]="editingTags"
+                (onTagsUpdated)="editingTags = $event"
+                (onSubmit)="completeEditTags()"></core-tag-selector>
+            </div>
           </div>
         </div>
         <h1>

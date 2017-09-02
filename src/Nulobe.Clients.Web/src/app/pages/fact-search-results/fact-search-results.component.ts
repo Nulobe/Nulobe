@@ -107,9 +107,23 @@ export class FactSearchResultsComponent implements OnInit {
 
     if (this.tags.length) {
       this.router.navigate([`q/${TagEncodingHelper.encode(this.tags)}/force`]);
-    } else {
-      this.router.navigate(['']);
     }
+  }
+
+  areTagsEdited() {
+    let { tags, editingTags } = this;
+
+    if (tags.length !== editingTags.length) {
+      return true;
+    }
+
+    for (let i = 0; i < tags.length; i++) {
+      if (tags[i] !== editingTags[i]) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   openExportDialog() {

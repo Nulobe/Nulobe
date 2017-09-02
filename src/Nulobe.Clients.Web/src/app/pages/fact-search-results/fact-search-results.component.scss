@@ -69,13 +69,40 @@
                     }
 
                     .tags-edit-mode {
-                        
-                        &.has-tag {
-                            padding-left: 184px; // Same as input width in tag selector
+                        position: relative;
+
+                        .search-hint {
+                            position: absolute;
+                            width: 100%;
+                            text-align: center;
+                            color: $muted-color;
+                            text-transform: uppercase;
+                            font-size: 0.7em;
+                            top: -20px;
+                            opacity: 1;
+                            @include transition(opacity 0.5s ease);
                         }
-                        
+
+                        &.has-tag {
+                            .tag-selector-container { 
+                                padding-left: 184px; // Same as input width in tag selector
+                            }
+                        }
+
                         &:not(.has-tag) {
-                            padding-left: 70px; // Input width - placeholder text length
+                            .tag-selector-container { 
+                                padding-left: 70px; // Input width - placeholder text length
+                            }
+
+                            .search-hint {
+                                opacity: 0;
+                            }
+                        }
+
+                        &:not(.edited) {
+                            .search-hint {
+                                opacity: 0;
+                            }
                         }
                     }
                 }

@@ -98,7 +98,7 @@ export class TagSelectorComponent implements OnInit {
 
   @HostListener('document:keypress', ['$event'])
   private host_handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.keyCode === 13 && this.tagInput_isFocused && !this.tagInput_currentText) {
+    if (event.keyCode === 13 && this.tagInput_isFocused && !this.tagInput_currentText && this.tags.length) {
       this.onSubmit.emit();
     }
   }
