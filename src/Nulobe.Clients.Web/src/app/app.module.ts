@@ -10,7 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppStateModule } from './state/app-state.module';
 import { HomeModule } from './pages/home/home.module';
 import { FactSearchResultsModule } from './pages/fact-search-results/fact-search-results.module';
-import { ResultModule } from './pages/result/result.module';
+import { FactModule } from './pages/fact/fact.module';
 
 import { AppComponent } from './app.component';
 import { AuthModule, AuthService } from './features/auth';
@@ -35,7 +35,7 @@ import { AuthHttp, authHttpProvider } from './auth-http.service';
     CoreModule,
     HomeModule,
     FactSearchResultsModule,
-    ResultModule,
+    FactModule,
 
     AuthModule
   ],

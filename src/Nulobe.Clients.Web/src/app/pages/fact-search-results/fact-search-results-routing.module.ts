@@ -11,6 +11,11 @@ export const routes: Routes = [
   {
     component: FactSearchResultsComponent,
     path: 'q/:tags'
+  },
+  {
+    // Route to allow force refresh of same query
+    redirectTo: 'q/:tags',
+    path: 'q/:tags/force'
   }
 ];
 

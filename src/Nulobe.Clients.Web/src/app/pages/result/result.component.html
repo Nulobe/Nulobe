@@ -1,7 +1,0 @@
-<div class="content" *ngIf="facts$ | async">
-  <div class="container">
-    <core-fact-list
-      [facts]="facts$ | async"
-      (onTagClick)="tagClicked($event)"></core-fact-list>
-  </div>
-</div>

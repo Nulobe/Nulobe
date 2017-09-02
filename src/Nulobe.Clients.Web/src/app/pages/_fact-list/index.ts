@@ -1,0 +1,1 @@
+export { FactListModule } from './fact-list.module';

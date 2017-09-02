@@ -6,11 +6,11 @@ import { FactQueryService } from '../../core/facts';
 import { Fact } from '../../core/api';
 
 @Component({
-  selector: 'app-result',
-  templateUrl: './result.component.html',
-  styleUrls: ['./result.component.scss']
+  selector: 'app-fact',
+  templateUrl: './fact.component.html',
+  styleUrls: ['./fact.component.scss']
 })
-export class ResultComponent implements OnInit {
+export class FactComponent implements OnInit {
 
   private facts$: Observable<Fact[]>;
 
@@ -31,10 +31,5 @@ export class ResultComponent implements OnInit {
         }
       })
       .map(r => r.items);
-  }
-
-  tagClicked(tag: string) {
-    debugger;
-    this.router.navigate([`q/${tag}`]);
   }
 }

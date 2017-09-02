@@ -1,0 +1,5 @@
+<div class="content" *ngIf="facts$ | async">
+  <div class="container">
+    <app-fact-list [facts$]="facts$"></app-fact-list>
+  </div>
+</div>

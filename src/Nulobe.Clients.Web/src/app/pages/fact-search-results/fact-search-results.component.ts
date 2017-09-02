@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router, ActivatedRoute, UrlSerializer, NavigationStart, NavigationEnd } from '@angular/router';
+import { Router, UrlSerializer, NavigationStart, NavigationEnd } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 
-import { Fact, VoteApiClient, FlagApiClient } from '../../core/api';
+import { Fact } from '../../core/api';
 import { FactQueryService, FactQueryModel } from '../../core/facts';
 import { IPermissionsResolver } from '../../core/abstractions';
 import { AuthService } from '../../features/auth';
@@ -35,10 +35,7 @@ export class FactSearchResultsComponent implements OnInit {
 
   constructor(
     private factQueryService: FactQueryService,
-    private voteApiClient: VoteApiClient,
-    private flagApiClient: FlagApiClient,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
     private urlSerializer: UrlSerializer,
     private authService: AuthService,
     private exportResultsDialogService: ExportResultsDialogService,
@@ -78,38 +75,12 @@ export class FactSearchResultsComponent implements OnInit {
 
     this.router.events.subscribe(e => {
       if (e instanceof NavigationStart) {
+        this.tags = TagEncodingHelper.decode(e.url.split('/')[2]);
         this._loading.next(true);
       } else if (e instanceof NavigationEnd) {
         this.loadFacts()
       }
     });
-  }
-
-  navigateToTag(tag: string) {
-    let previousTags = this.tags;
-    this.tags = [tag];
-
-    if (previousTags.length === 1 && previousTags[0] === tag) {
-      // Router doesn't fire navigation events when path doesn't change.
-      this._loading.next(true);
-      this.loadFacts()
-    } else {
-      this.router.navigate([`q/${tag}`]); 
-    }
-  }
-
-  voteFact(fact: Fact) {
-    this.voteApiClient.create({ factId: fact.id })
-      .subscribe();
-  }
-
-  flagFact(fact: Fact) {
-    this.flagApiClient.create({ factId: fact.id })
-      .subscribe();
-  }
-
-  editFact(fact: Fact) {
-    this.router.navigate([`/LOBE/admin/edit/${fact.id}`]);
   }
 
   beginEditTags() {
@@ -128,7 +99,7 @@ export class FactSearchResultsComponent implements OnInit {
   completeEditTags() {
     this.tags = [...this.editingTags];
     this.cancelEditTags();
-    this.router.navigate([`q/${TagEncodingHelper.encode(this.tags)}`]);
+    this.router.navigate([`q/${TagEncodingHelper.encode(this.tags)}/force`]);
   }
 
   openExportDialog() {

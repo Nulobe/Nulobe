@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { ResultComponent } from './result.component';
+import { FactComponent } from './fact.component';
 
 const routes: Routes = [
   {
-    component: ResultComponent,
+    component: FactComponent,
     path: 'n/:slugNuance/:slugTitle'  
   }  
 ];
@@ -14,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ResultRoutingModule { }
+export class FactRoutingModule { }

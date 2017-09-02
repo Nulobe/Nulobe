@@ -4,6 +4,7 @@ import { MdIconModule, MdButtonModule, MdDialogModule } from '@angular/material'
 
 import { CoreModule } from '../../core';
 import { AuthModule } from '../../features/auth';
+import { FactListModule } from '../_fact-list';
 
 import { FactSearchResultsRoutingModule } from './fact-search-results-routing.module';
 import { FactSearchResultsComponent } from './fact-search-results.component';
@@ -16,6 +17,7 @@ import { ExportNotificationService } from './services/export-notification/export
   imports: [
     CommonModule,
     CoreModule,
+    FactListModule,
     MdIconModule,
     MdButtonModule,
     MdDialogModule,

@@ -1,0 +1,14 @@
+@import "../../../assets/scss/mixins";
+@import "../../../assets/scss/variables";
+
+:host {
+    .content {
+        @include flex-display();
+        @include justify-content(center);
+
+        .container {
+            margin-top: 50px;
+            width: 800px;
+        }
+    }
+}

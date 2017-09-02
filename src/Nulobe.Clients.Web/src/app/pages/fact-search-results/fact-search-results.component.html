@@ -29,13 +29,7 @@
         </h1>
       </div>
       <div class="fact-list-container">
-        <core-fact-list
-          [facts]="facts$ | async"
-          [permissionsResolver]="permissionsResolver"
-          (onTagSelect)="navigateToTag($event)"
-          (onVote)="voteFact($event)"
-          (onFlag)="flagFact($event)"
-          (onEdit)="editFact($event)"></core-fact-list>
+        <app-fact-list [facts$]="facts$"></app-fact-list>
       </div>
       <div class="export-button-container" *ngIf="(facts$ | async).length">
         <button md-button (click)="openExportDialog()">Export</button>
