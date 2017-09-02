@@ -23,9 +23,19 @@
                 background-size: contain;
             }
 
-            core-tag-selector {
+            .tag-selector-container {
+                @include flex-display();
+                @include justify-content(center);
                 margin-top: 50px;
                 width: 500px;
+
+                &.has-tag {
+                    padding-left: 191px; // Same as input width in tag selector
+                }
+
+                &:not(.has-tag) { 
+                    padding-left: 16px; // Input width - placeholder text length
+                }
             }
 
             button {

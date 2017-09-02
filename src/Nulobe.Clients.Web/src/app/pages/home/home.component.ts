@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { TagSelectorComponent } from '../../core/tags';
 import { AuthService } from '../../features/auth';
 
 import { TagEncodingHelper } from '../fact-search-results';
@@ -12,7 +13,10 @@ import { TagEncodingHelper } from '../fact-search-results';
 })
 export class HomeComponent implements OnInit {
 
+  private placeholder = 'Search via tags e.g. "dairy"';
   private searchTags: string[] = [];
+
+  @ViewChild(TagSelectorComponent) tagSelector: TagSelectorComponent;
 
   constructor(
     private authService: AuthService,
@@ -20,6 +24,7 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    setTimeout(() => this.tagSelector.focus(), 500);
   }
 
   updateTags(tags: string[]) {

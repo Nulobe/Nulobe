@@ -7,11 +7,14 @@
           width="100px"
           height="100px" />
       </div>
-      <core-tag-selector
+      <div class="tag-selector-container" [ngClass]="{ 'has-tag': searchTags.length > 0 }">
+        <core-tag-selector
+          #tagSelector
+          [secondaryPlaceholder]="placeholder"
           (onTagsUpdated)="updateTags($event)"
-          (onSubmit)="search()">
-      </core-tag-selector>
-      <button md-button (click)="search()">Learn</button>
+          (onSubmit)="search()"></core-tag-selector>
+      </div>
+      <button md-button (click)="search()">Search</button>
     </div>
   </div>
   <div class="admin-button-container" *ngIf="authService.isAuthenticated()">
