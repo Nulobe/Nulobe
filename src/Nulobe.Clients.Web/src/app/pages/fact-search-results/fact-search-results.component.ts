@@ -104,7 +104,12 @@ export class FactSearchResultsComponent implements OnInit {
   completeEditTags() {
     this.tags = [...this.editingTags];
     this.cancelEditTags();
-    this.router.navigate([`q/${TagEncodingHelper.encode(this.tags)}/force`]);
+
+    if (this.tags.length) {
+      this.router.navigate([`q/${TagEncodingHelper.encode(this.tags)}/force`]);
+    } else {
+      this.router.navigate(['']);
+    }
   }
 
   openExportDialog() {

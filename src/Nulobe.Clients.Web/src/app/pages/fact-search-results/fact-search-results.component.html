@@ -18,6 +18,7 @@
             <core-tag-selector
               #tagSelector
               [tags]="editingTags"
+              [placeholder]="'+ Tag / \'Enter\' to search'"
               (onTagsUpdated)="editingTags = $event"
               (onSubmit)="completeEditTags()"></core-tag-selector>
           </div>

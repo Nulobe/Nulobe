@@ -21,6 +21,13 @@
             @include font-family-default();
             line-height: 39px;
 
+            &:not(.readonly):not(.tag--editing) {
+                &:active,
+                &:focus {
+                    background-color: $primary-color
+                }
+            }
+
             delete-icon {
                 margin-top: -4px;
 

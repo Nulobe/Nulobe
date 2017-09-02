@@ -16,6 +16,7 @@ interface TagModel {
 })
 export class TagSelectorComponent implements OnInit {
   @Input() tags: string[];
+  @Input() placeholder: string;
   @Input() secondaryPlaceholder: string;
   @Output() onTagsUpdated = new EventEmitter<string[]>();
   @Output() onInputFocusUpdated = new EventEmitter<boolean>();
@@ -35,6 +36,7 @@ export class TagSelectorComponent implements OnInit {
   ngOnInit() {
     this.tags = this.tags || [];
     this.tagInput_tags = this.tags.map(t => this.createTagModel(t));
+    this.placeholder = this.placeholder || "+ Tag";
     this.secondaryPlaceholder  = this.secondaryPlaceholder || "Enter a new tag";
   }
 
