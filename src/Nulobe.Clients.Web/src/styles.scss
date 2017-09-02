@@ -8,3 +8,7 @@ body {
 .ng2-tag-input {
     border-bottom: 2px solid transparent !important;
 }
+
+button[md-button] {
+    text-transform: uppercase;
+}

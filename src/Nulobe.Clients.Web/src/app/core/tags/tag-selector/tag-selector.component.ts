@@ -46,7 +46,7 @@ export class TagSelectorComponent implements OnInit {
     this.tagInput_focusUpdated(true);
   }
 
-  private tagInput_getSuggestions = (text: string): Observable<string[]> => {
+  private tagInput_getSuggestions = (text: string): Observable<Tag[]> => {
     if (text === '') {
       return Observable.of([]);
     } else {
@@ -61,7 +61,7 @@ export class TagSelectorComponent implements OnInit {
         this.tagInput_lastApiCallText = text;
 
         apiSuggestions = this.tagApiClient
-          .list(text, undefined, undefined)
+          .list(text, "text,usagecount", "usagecount")
           .toPromise();
 
         this.tagInput_lastApiCall = apiSuggestions;
@@ -71,14 +71,16 @@ export class TagSelectorComponent implements OnInit {
         .filter(tag => {
           let existing = this.tags.find(tagString => tagString.toLowerCase() === tag.text.toLowerCase());
           return !existing;
-        })
-        .map(t => t.text)))
+        })))
+        //.map(t => t.text)))
     }
   }
 
-  private tagInput_addHash = (text: string | TagModel): Observable<TagModel> => {
+  private tagInput_matchingFunc = (): boolean => true;
+
+  private tagInput_addHash = (text: string | Tag): Observable<TagModel> => {
     if (typeof(text) === 'object') {
-      text = text.display;
+      text = text.text;
     }
     return Observable.of(this.createTagModel(text));
   }

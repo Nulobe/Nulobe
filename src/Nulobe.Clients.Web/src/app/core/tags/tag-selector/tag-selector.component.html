@@ -12,7 +12,19 @@
     (onTextChange)="tagInput_currentText = $event">
     <tag-input-dropdown
       [autocompleteObservable]="tagInput_getSuggestions"
-      [appendToBody]="false">
+      [appendToBody]="false"
+      [matchingFn]="tagInput_matchingFunc">
+        <ng-template let-item="item" let-index="index">
+          <div class="dropdown-item-container">
+            <div class="dropdown-item">
+              <div class="text">{{ item.text }}</div>
+              <div class="usage-count">
+                <span *ngIf="item.usageCount === 1">{{ item.usageCount }} nueron</span>
+                <span *ngIf="item.usageCount !== 1">{{ item.usageCount }} nuerons</span>                
+              </div>
+            </div>
+          </div>
+        </ng-template>
     </tag-input-dropdown>
   </tag-input>
   <!--

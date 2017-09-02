@@ -4,7 +4,7 @@
 
 .core-tag-selector {
 
-    /deep/ .ng2-tag-input {
+    /deep/ tag-input {
         
         tag-input-form form input {
             @include font-family-default();
@@ -39,6 +39,27 @@
 
         .progress-bar {
             display: none;
+        }
+
+        tag-input-dropdown {
+            .ng2-dropdown-menu {
+                min-width: 300px;
+
+                .dropdown-item-container {
+                    .dropdown-item {
+                        @include flex-display();
+
+                        .text {
+                            @include flex(1);
+                        }
+
+                        .usage-count {
+                            font-size: 0.7em;
+                            color: $muted-color;
+                        }
+                    }
+                }
+            }
         }
     }
 }
