@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-fact-form-bulk',
+  selector: 'core-fact-form-bulk',
   templateUrl: './fact-form-bulk.component.html',
   styleUrls: ['./fact-form-bulk.component.scss']
 })

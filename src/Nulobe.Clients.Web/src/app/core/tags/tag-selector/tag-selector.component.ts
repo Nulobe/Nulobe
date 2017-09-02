@@ -10,7 +10,7 @@ interface TagModel {
 }
 
 @Component({
-  selector: 'app-tag-selector',
+  selector: 'core-tag-selector',
   templateUrl: './tag-selector.component.html',
   styleUrls: ['./tag-selector.component.scss']
 })

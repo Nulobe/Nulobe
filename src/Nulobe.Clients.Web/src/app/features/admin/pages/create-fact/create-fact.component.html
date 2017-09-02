@@ -1,8 +1,8 @@
 <h1>Add a new nueron</h1>
 <div class="fact-form-container">
-  <app-fact-form
+  <core-fact-form
     (factChanges)="fact = $event"
-    (factValidChanges)="valid = $event"></app-fact-form>
+    (factValidChanges)="valid = $event"></core-fact-form>
 </div>
 <div class="button-container">
   <button md-button [routerLink]="'/LOBE/admin'">Cancel</button>

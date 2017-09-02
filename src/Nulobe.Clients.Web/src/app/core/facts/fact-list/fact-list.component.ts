@@ -8,7 +8,7 @@ export interface FactLinkResolver {
 }
 
 @Component({
-  selector: 'app-fact-list',
+  selector: 'core-fact-list',
   templateUrl: './fact-list.component.html',
   styleUrls: ['./fact-list.component.scss']
 })

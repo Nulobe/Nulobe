@@ -128,7 +128,12 @@ namespace Nulobe.Api.Core.Facts
                 };
                 _auditor.AuditAction(nameof(UpdateFactAsync), factAudit);
 
-                if (fact.Title != existingFact.Title)
+                if (fact.Title == existingFact.Title)
+                {
+                    fact.Slug = existingFact.Slug;
+                    fact.SlugHistory = existingFact.SlugHistory;
+                }
+                else
                 {
                     fact.Slug = GenerateSlug(fact);
                     fact.SlugHistory = Enumerable.Empty<SlugAudit>()

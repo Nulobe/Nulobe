@@ -15,10 +15,10 @@
     </li>
   </ul>
   <div class="tags-list-container">
-    <app-tag-list
+    <core-tag-list
       *ngIf="fact.tags.length"
       [tags]="fact.tags"
-      (onTagClick)="tagClicked($event)"></app-tag-list>
+      (onTagClick)="tagClicked($event)"></core-tag-list>
     <i *ngIf="!fact.tags.length">(No tags)</i>
   </div>
 </div>

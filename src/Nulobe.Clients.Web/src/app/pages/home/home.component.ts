@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../../features/auth';
 
-import { ResultsPathHelper } from '../results/results-path.helper';
+import { TagEncodingHelper } from '../fact-search-results';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
 
   search() {
     if (this.searchTags.length) {
-      this.router.navigate([ResultsPathHelper.encode(this.searchTags)]);
+      this.router.navigate([`q/${TagEncodingHelper.encode(this.searchTags)}`]);
     }
   }
 }

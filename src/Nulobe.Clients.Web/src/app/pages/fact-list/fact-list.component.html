@@ -1,0 +1,7 @@
+<core-fact-list
+    [facts]="facts$ | async"
+    [permissionsResolver]="permissionsResolver"
+    (onTagSelect)="navigateToTag($event)"
+    (onVote)="voteFact($event)"
+    (onFlag)="flagFact($event)"
+    (onEdit)="editFact($event)"></core-fact-list>

@@ -3,7 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FactCreate } from '../../api/api.swagger';
 
 @Component({
-  selector: 'app-fact-list-item',
+  selector: 'core-fact-list-item',
   templateUrl: './fact-list-item.component.html',
   styleUrls: ['./fact-list-item.component.scss']
 })

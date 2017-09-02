@@ -1,7 +1,7 @@
 <div class="app-results">
   <div class="spinner-container">
     <div class="spinner" [class.fade-out]="!(loading$ | async)">
-      <app-spinner></app-spinner>
+      <core-spinner></core-spinner>
     </div>
   </div>
   <div class="content" [class.fade-in]="!(loading$ | async)">
@@ -9,17 +9,17 @@
       <div class="title">
         <div class="tags">
           <div class="tags-view-mode" *ngIf="!isEditingTags">
-            <app-tag-list
+            <core-tag-list
               [tags]="tags"
-              (onTagClick)="navigateToTag($event)"></app-tag-list>
+              (onTagClick)="navigateToTag($event)"></core-tag-list>
             <md-icon class="edit-icon" (click)="beginEditTags()">mode_edit</md-icon>            
           </div>
           <div class="tags-edit-mode" [ngClass]="{ 'has-tag': isEditingTags && editingTags.length > 0 }" *ngIf="isEditingTags">
-            <app-tag-selector
+            <core-tag-selector
               #tagSelector
               [tags]="editingTags"
               (onTagsUpdated)="editingTags = $event"
-              (onSubmit)="completeEditTags()"></app-tag-selector>
+              (onSubmit)="completeEditTags()"></core-tag-selector>
           </div>
         </div>
         <h1>
@@ -29,13 +29,13 @@
         </h1>
       </div>
       <div class="fact-list-container">
-        <app-fact-list
+        <core-fact-list
           [facts]="facts$ | async"
           [permissionsResolver]="permissionsResolver"
           (onTagSelect)="navigateToTag($event)"
           (onVote)="voteFact($event)"
           (onFlag)="flagFact($event)"
-          (onEdit)="editFact($event)"></app-fact-list>
+          (onEdit)="editFact($event)"></core-fact-list>
       </div>
       <div class="export-button-container" *ngIf="(facts$ | async).length">
         <button md-button (click)="openExportDialog()">Export</button>

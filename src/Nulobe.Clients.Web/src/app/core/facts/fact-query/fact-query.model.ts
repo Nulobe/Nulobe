@@ -4,5 +4,6 @@ export interface FactQueryModel {
     pageNumber?: number;
     pageSize?: number;
     orderBy?: string;
-    fields?: string
+    fields?: string,
+    slug?: string
 }

@@ -12,7 +12,7 @@ interface FactFormValue {
 }
 
 @Component({
-  selector: 'app-fact-form',
+  selector: 'core-fact-form',
   templateUrl: './fact-form.component.html',
   styleUrls: ['./fact-form.component.scss']
 })

@@ -35,12 +35,12 @@
       </md-input-container>
     </div>
     <div class="tag-selector-container">
-      <app-tag-selector
+      <core-tag-selector
           [tags]="fact.tags"
           [secondaryPlaceholder]="'Tags'"
           (onTagsUpdated)="updateTags($event)"
           (onSubmit)="search()">
-      </app-tag-selector>
+      </core-tag-selector>
     </div>
   </form>
 </div>

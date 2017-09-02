@@ -8,7 +8,7 @@ import { FactPreviewDialogComponent } from '../fact-preview-dialog/fact-preview-
 import { FactPreviewDialogService } from '../fact-preview-dialog/fact-preview-dialog.service';
 
 @Component({
-  selector: 'app-create-fact',
+  selector: 'admin-create-fact',
   templateUrl: './create-fact.component.html',
   styleUrls: ['./create-fact.component.scss']
 })

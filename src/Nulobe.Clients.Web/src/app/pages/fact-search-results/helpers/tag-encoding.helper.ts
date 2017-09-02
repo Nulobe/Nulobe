@@ -1,6 +1,6 @@
 export const QUERY_STRING_SEPARATOR = '-';
 
-export class ResultsPathHelper {
+export class TagEncodingHelper {
 
     static encode(tags: string[]): string {
         return tags

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FactCreate } from '../../../../core/api';
 
 @Component({
-  selector: 'app-fact-preview-dialog',
+  selector: 'admin-fact-preview-dialog',
   templateUrl: './fact-preview-dialog.component.html',
   styleUrls: ['./fact-preview-dialog.component.scss']
 })

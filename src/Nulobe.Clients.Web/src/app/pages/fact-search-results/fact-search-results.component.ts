@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router, ActivatedRoute, UrlSerializer } from '@angular/router';
+import { Router, ActivatedRoute, UrlSerializer, NavigationStart, NavigationEnd } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 
 import { Fact, VoteApiClient, FlagApiClient } from '../../core/api';
@@ -9,17 +9,17 @@ import { IPermissionsResolver } from '../../core/abstractions';
 import { AuthService } from '../../features/auth';
 import { TagSelectorComponent } from '../../core/tags';
 
-import { ResultsPathHelper } from './results-path.helper';
+import { TagEncodingHelper } from './helpers';
 import { ExportResultsDialogService } from './pages/export-results-dialog/export-results-dialog.service';
 import { ExportService, ExportTarget } from './services/export';
 import { ExportNotificationService } from './services/export-notification/export-notification.service';
 
 @Component({
-  selector: 'app-results',
-  templateUrl: './results.component.html',
-  styleUrls: ['./results.component.scss']
+  selector: 'app-fact-search-results',
+  templateUrl: './fact-search-results.component.html',
+  styleUrls: ['./fact-search-results.component.scss']
 })
-export class ResultsComponent implements OnInit {
+export class FactSearchResultsComponent implements OnInit {
 
   private _loading: BehaviorSubject<boolean> = new BehaviorSubject(true);
   private _facts = new BehaviorSubject<Fact[]>([]);
@@ -53,7 +53,7 @@ export class ResultsComponent implements OnInit {
     let pathSections = url.split('?')[0].split('/');
     let tagsString = pathSections[pathSections.length - 1];
 
-    let tags = ResultsPathHelper.decode(tagsString);
+    let tags = TagEncodingHelper.decode(tagsString);
     if (!tags.length) {
       throw new Error('error parsing tags');
     }
@@ -75,13 +75,27 @@ export class ResultsComponent implements OnInit {
           this.exportNotificationService.notifySuccess(target, result);
         });
     }
+
+    this.router.events.subscribe(e => {
+      if (e instanceof NavigationStart) {
+        this._loading.next(true);
+      } else if (e instanceof NavigationEnd) {
+        this.loadFacts()
+      }
+    });
   }
 
   navigateToTag(tag: string) {
-    // Router doesn't refresh when ending up at same route, even when path changes
-    this._loading.next(true);
+    let previousTags = this.tags;
     this.tags = [tag];
-    this.router.navigate([tag]).then(() => this.loadFacts());
+
+    if (previousTags.length === 1 && previousTags[0] === tag) {
+      // Router doesn't fire navigation events when path doesn't change.
+      this._loading.next(true);
+      this.loadFacts()
+    } else {
+      this.router.navigate([`q/${tag}`]); 
+    }
   }
 
   voteFact(fact: Fact) {
@@ -114,16 +128,7 @@ export class ResultsComponent implements OnInit {
   completeEditTags() {
     this.tags = [...this.editingTags];
     this.cancelEditTags();
-    this._loading.next(true);
-    this.router.navigate([ResultsPathHelper.encode(this.tags)]).then(() => this.loadFacts());
-  }
-
-  search() {
-    this._loading.next(true);
-    this.tags.length = 0;
-    this.tags.push(...this.editingTags);
-    this.router.navigate([ResultsPathHelper.encode(this.tags)]).then(() => this.loadFacts());
-    this.isEditingTags = false;
+    this.router.navigate([`q/${TagEncodingHelper.encode(this.tags)}`]);
   }
 
   openExportDialog() {
@@ -152,7 +157,7 @@ export class ResultsComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   private document_handleClick(event: any) {
-    if (this.isEditingTags && (<Element[]>event.path).filter(e => e.tagName && e.tagName.toLowerCase() === 'app-tag-selector').length === 0) {
+    if (this.isEditingTags && (<Element[]>event.path).filter(e => e.tagName && e.tagName.toLowerCase() === 'core-tag-selector').length === 0) {
       this.cancelEditTags();
     }
   }

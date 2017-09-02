@@ -1,10 +1,10 @@
 <div>
   <div *ngFor="let fact of facts" class="fact-container">
-    <app-fact-list-item
+    <core-fact-list-item
       [fact]="fact"
-      (onTagClick)="tagClicked($event)"></app-fact-list-item>
+      (onTagClick)="tagClicked($event)"></core-fact-list-item>
     <!--<a [routerLink]="factLinkResolver.resolve(fact)">
-      <app-fact-list-item [fact]="fact"></app-fact-list-item>
+      <core-fact-list-item [fact]="fact"></core-fact-list-item>
     </a>-->
     <div class="fact-controls-container">
       <div class="fact-controls">

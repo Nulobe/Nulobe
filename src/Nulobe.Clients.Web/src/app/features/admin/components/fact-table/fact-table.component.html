@@ -1,8 +1,8 @@
 <div class="tag-selector-container">
-  <app-tag-selector
+  <core-tag-selector
       [secondaryPlaceholder]="'Tags'"
       (onTagsUpdated)="updateTags($event)">
-  </app-tag-selector>
+  </core-tag-selector>
 </div>
 
 <md-table #table [dataSource]="dataSource">

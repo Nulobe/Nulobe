@@ -6,8 +6,8 @@ import { CoreModule } from '../../core';
 
 import { AuthRoutingModule } from './auth-routing.module';
 
-import { AuthComponent } from './pages/auth/auth.component';
-import { AuthCallbackComponent } from './pages/auth-callback/auth-callback.component';
+import { LoginComponent } from './pages/login/login.component';
+import { LoginCallbackComponent } from './pages/login-callback/login-callback.component';
 
 import { AuthService } from './service/auth.service';
 import { AuthHanderFactory } from './service/auth-handler.factory';
@@ -23,8 +23,8 @@ import { AuthGuard } from './guard/auth.guard';
     AuthRoutingModule
   ],
   declarations: [
-    AuthComponent,
-    AuthCallbackComponent
+    LoginComponent,
+    LoginCallbackComponent
   ],
   providers: [
     AuthService,

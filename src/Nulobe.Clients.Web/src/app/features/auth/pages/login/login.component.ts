@@ -4,10 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 
 @Component({
-  selector: 'app-auth',
+  selector: 'auth-login',
   template: ''
 })
-export class AuthComponent implements OnInit {
+export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService,

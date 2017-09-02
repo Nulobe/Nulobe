@@ -4,11 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 
 @Component({
-  selector: 'app-auth-callback',
-  templateUrl: './auth-callback.component.html',
-  styleUrls: ['./auth-callback.component.scss']
+  selector: 'auth-login-callback',
+  templateUrl: './login-callback.component.html',
+  styleUrls: ['./login-callback.component.scss']
 })
-export class AuthCallbackComponent implements OnInit {
+export class LoginCallbackComponent implements OnInit {
 
   constructor(
     private authService: AuthService,

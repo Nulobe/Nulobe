@@ -3,25 +3,25 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { CoreModule } from '../../core';
 
-import { AuthComponent } from './pages/auth/auth.component';
-import { AuthCallbackComponent } from './pages/auth-callback/auth-callback.component';
+import { LoginComponent } from './pages/login/login.component';
+import { LoginCallbackComponent } from './pages/login-callback/login-callback.component';
 
 const routes: Routes = [
   {
     path: 'LOBE/login',
-    component: AuthComponent
+    component: LoginComponent
   },
   {
     path: 'LOBE/login/:authorityName',
-    component: AuthComponent
+    component: LoginComponent
   },
   {
     path: 'LOBE/callback',
-    component: AuthCallbackComponent
+    component: LoginCallbackComponent
   },
   {
     path: 'LOBE/callback/:authorityName',
-    component: AuthCallbackComponent
+    component: LoginCallbackComponent
   }
 ];
 

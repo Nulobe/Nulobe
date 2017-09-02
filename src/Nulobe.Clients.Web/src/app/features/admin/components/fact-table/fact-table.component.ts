@@ -8,7 +8,7 @@ import { PageModel } from '../../../../core/abstractions';
 import { FactPageProvider, FactPageOptions } from './fact-page.provider';
 
 @Component({
-  selector: 'app-fact-table',
+  selector: 'admin-fact-table',
   templateUrl: './fact-table.component.html',
   styleUrls: ['./fact-table.component.scss']
 })

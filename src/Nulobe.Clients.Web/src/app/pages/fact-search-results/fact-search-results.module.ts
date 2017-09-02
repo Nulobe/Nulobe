@@ -5,8 +5,8 @@ import { MdIconModule, MdButtonModule, MdDialogModule } from '@angular/material'
 import { CoreModule } from '../../core';
 import { AuthModule } from '../../features/auth';
 
-import { ResultsRoutingModule } from './results-routing.module';
-import { ResultsComponent } from './results.component';
+import { FactSearchResultsRoutingModule } from './fact-search-results-routing.module';
+import { FactSearchResultsComponent } from './fact-search-results.component';
 import { ExportResultsDialogComponent } from './pages/export-results-dialog/export-results-dialog.component';
 import { ExportResultsDialogService } from './pages/export-results-dialog/export-results-dialog.service';
 import { ExportService } from './services/export';
@@ -19,10 +19,10 @@ import { ExportNotificationService } from './services/export-notification/export
     MdIconModule,
     MdButtonModule,
     MdDialogModule,
-    ResultsRoutingModule,
+    FactSearchResultsRoutingModule,
     AuthModule
   ],
-  declarations: [ResultsComponent, ExportResultsDialogComponent],
+  declarations: [FactSearchResultsComponent, ExportResultsDialogComponent],
   entryComponents: [ExportResultsDialogComponent],
   providers: [
     ExportResultsDialogService,
@@ -30,4 +30,4 @@ import { ExportNotificationService } from './services/export-notification/export
     ExportNotificationService
   ]
 })
-export class ResultsModule { }
+export class FactSearchResultsModule { }

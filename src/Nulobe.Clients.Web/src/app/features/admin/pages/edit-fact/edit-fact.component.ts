@@ -8,7 +8,7 @@ import { FactApiClient, Fact, SwaggerException } from '../../../../core/api';
 import { FactPreviewDialogService } from '../fact-preview-dialog/fact-preview-dialog.service';
 
 @Component({
-  selector: 'app-edit-fact',
+  selector: 'admin-edit-fact',
   templateUrl: './edit-fact.component.html',
   styleUrls: ['./edit-fact.component.scss']
 })
