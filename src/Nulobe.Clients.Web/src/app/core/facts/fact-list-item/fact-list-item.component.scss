@@ -4,15 +4,24 @@
         margin-bottom: 10px;
     }
 
-    ul.sources {
+    ul.footnotes {
         list-style-type: none;
         padding-left: 0;
         font-size: 0.8em;
 
-        li.source {
-            .url {
+        li {
+            /deep/ a {
                 font-style: italic;
                 color: rgba(0,0,0,.87);
+            }
+        }
+
+        li.notes {
+            /deep/ markdown {
+                display: inline-block;
+                p {
+                    margin: 0;
+                }
             }
         }
     }

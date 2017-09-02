@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { MdIconModule, MdInputModule } from '@angular/material';
+import { MarkdownModule } from 'angular2-markdown';
 
 import { TagsModule } from '../tags/tags.module';
 
@@ -19,6 +20,7 @@ import { FactQueryService } from './fact-query/fact-query.service';
     ReactiveFormsModule,
     MdIconModule,
     MdInputModule,
+    MarkdownModule,
     TagsModule
   ],
   declarations: [

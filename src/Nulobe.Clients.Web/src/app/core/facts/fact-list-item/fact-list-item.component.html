@@ -7,11 +7,15 @@
     <span *ngIf="fact.definition">{{ fact.definition }}</span>
     <i *ngIf="!fact.definition">(Add a definition)</i>
   </div>
-  <ul class="sources">
+  <ul class="footnotes">
     <li class="source" *ngFor="let source of fact.sources; let i = index;">
-      <span>{{ i + 1 }}.</span>
+      <span>{{ i + 1 }}</span>
       <span *ngIf="source.description">{{ source.description }}</span>
       <a class="url" *ngIf="source.url" href="{{ source.url }}">{{ source.url }}</a>
+    </li>
+    <li class="notes" *ngIf="fact.notesMarkdown">
+      <span>&#8224;</span>
+      <markdown>{{ fact.notesMarkdown }}</markdown>
     </li>
   </ul>
   <div class="tags-list-container">
