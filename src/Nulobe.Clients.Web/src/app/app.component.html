@@ -1,1 +1,11 @@
+<div class="home-link-position" *ngIf="!(isHome$ | async)">
+  <div class="home-link-container">
+    <a class="home-link" routerLink="/">
+      <img
+        src="/assets/images/garlic.png"
+        width="35px"
+        height="35px" />
+    </a>
+  </div>
+</div>
 <router-outlet></router-outlet>

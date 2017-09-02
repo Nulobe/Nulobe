@@ -1,0 +1,14 @@
+
+:host {
+    .home-link-position {
+        position: absolute;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+
+        .home-link-container {
+            padding: 10px;
+            position: relative;
+        }
+    }
+}
