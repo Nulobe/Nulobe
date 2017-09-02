@@ -74,11 +74,16 @@ export class FactSearchResultsComponent implements OnInit {
     }
 
     this.router.events.subscribe(e => {
-      if (e instanceof NavigationStart) {
-        this.tags = TagEncodingHelper.decode(e.url.split('/')[2]);
-        this._loading.next(true);
-      } else if (e instanceof NavigationEnd) {
-        this.loadFacts()
+      if (e instanceof NavigationStart || e instanceof NavigationEnd) {
+        let urlSplit = e.url.split('/');
+        if (urlSplit[1] === 'q') {
+          if (e instanceof NavigationStart) {
+            this.tags = TagEncodingHelper.decode(urlSplit[2]);
+            this._loading.next(true);
+          } else if (e instanceof NavigationEnd) {
+            this.loadFacts()
+          }
+        }
       }
     });
   }
