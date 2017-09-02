@@ -2,8 +2,10 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { Fact, VoteApiClient, FlagApiClient } from '../../core/api';
 import { NULOBE_ENV_SETTINGS } from '../../../environments/environment';
+import { IPermissionsResolver } from '../../core/abstractions';
+import { Fact, VoteApiClient, FlagApiClient } from '../../core/api';
+import { AuthService } from '../../features/auth';
 
 @Component({
   selector: 'app-fact-list',
@@ -13,13 +15,19 @@ import { NULOBE_ENV_SETTINGS } from '../../../environments/environment';
 export class FactListComponent implements OnInit {
   @Input() facts$: Observable<Fact>;
 
+  private permissionsResolver: IPermissionsResolver;
+
   constructor(
     private voteApiClient: VoteApiClient,
     private flagApiClient: FlagApiClient,
+    private authService: AuthService,
     private router: Router
   ) { }
 
   ngOnInit() {
+    this.permissionsResolver = {
+      resolve: () => this.authService.isAuthenticated() 
+    };
   }
 
   navigateToTag(tag: string) {

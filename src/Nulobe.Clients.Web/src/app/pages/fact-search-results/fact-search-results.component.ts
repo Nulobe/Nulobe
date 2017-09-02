@@ -28,7 +28,7 @@ export class FactSearchResultsComponent implements OnInit {
   private facts$: Observable<Fact[]> = this._facts.asObservable();
   private tags: string[] = [];
   private editingTags: string[] = [];
-  private permissionsResolver: IPermissionsResolver;
+  
   private isEditingTags = false;
   
   @ViewChild(TagSelectorComponent) tagSelector: TagSelectorComponent;
@@ -58,10 +58,6 @@ export class FactSearchResultsComponent implements OnInit {
     this.tags = tags;
     this.loadFacts();
 
-    this.permissionsResolver = {
-      resolve: () => this.authService.isAuthenticated() 
-    };
-
     let urlTree = this.urlSerializer.parse(this.router.url);
     if (urlTree.queryParams.export) {
       let targetStr = ExportTarget[parseInt(urlTree.queryParams.export)];
@@ -81,7 +77,7 @@ export class FactSearchResultsComponent implements OnInit {
             this.tags = TagEncodingHelper.decode(urlSplit[2]);
             this._loading.next(true);
           } else if (e instanceof NavigationEnd) {
-            this.loadFacts()
+            this.loadFacts();
           }
         }
       }
