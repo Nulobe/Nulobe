@@ -67,7 +67,7 @@ export class TagSelectorComponent implements OnInit {
 
       return Observable.fromPromise(apiSuggestions.then(r => r
         .filter(tag => {
-          let existing = this.tags.find(tagString => tagString.substring(1).toLowerCase() === tag.text.toLowerCase());
+          let existing = this.tags.find(tagString => tagString.toLowerCase() === tag.text.toLowerCase());
           return !existing;
         })
         .map(t => t.text)))
@@ -82,7 +82,7 @@ export class TagSelectorComponent implements OnInit {
   }
 
   private tagInput_updated = () => {
-    this.tags = this.tagInput_tags.map(t => t.value.substring(1, t.value.length));
+    this.tags = this.tagInput_tags.map(t => t.value);
     this.onTagsUpdated.emit(this.tags);
   }
 
@@ -103,8 +103,8 @@ export class TagSelectorComponent implements OnInit {
 
   private createTagModel(text: string): TagModel {
     return {
-      display: `#${text}`,
-      value: `#${text}`
+      display: `${text}`,
+      value: `${text}`
     };
   }
 }
