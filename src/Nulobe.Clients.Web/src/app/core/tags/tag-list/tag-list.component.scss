@@ -1,3 +1,4 @@
+@import "../../../../assets/scss/variables";
 
 .core-tag-list {
 
@@ -22,6 +23,11 @@
 
         &:hover {
             background: #e2e2e2;
+        }
+
+        &:focus {
+            background: $primary-color;
+            color: #fff;
         }
     }
 }

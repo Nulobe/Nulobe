@@ -62,7 +62,7 @@
                             cursor: pointer;
                             margin-left: 5px;
 
-                            &:hover {
+                            &:hover, &:focus {
                                 color: $primary-color;
                             }
                         }
