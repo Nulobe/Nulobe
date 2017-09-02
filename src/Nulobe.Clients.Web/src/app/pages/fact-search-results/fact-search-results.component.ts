@@ -5,7 +5,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 
 import { Fact } from '../../core/api';
 import { FactQueryService, FactQueryModel } from '../../core/facts';
-import { IPermissionsResolver } from '../../core/abstractions';
+import { IPermissionsResolver, PageModel } from '../../core/abstractions';
 import { AuthService } from '../../features/auth';
 import { TagSelectorComponent } from '../../core/tags';
 
@@ -133,14 +133,22 @@ export class FactSearchResultsComponent implements OnInit {
   private loadFacts() {
     let factsUpdated$ = this.factQueryService.query({
       tags: this.tags.join(',')
-    });
+    }).share();
     
-    factsUpdated$.subscribe(factPage => this._facts.next(factPage.items));
+    factsUpdated$.subscribe(factPage => {
+      this._facts.next(factPage.items);
+    });
 
     // Delay emitting loading = false intelligently:
     let delay = Observable.timer(500);
     Observable.combineLatest([factsUpdated$, delay])
-      .subscribe(() => this._loading.next(false));
+      .subscribe(([factPage]) => {
+        this._loading.next(false);
+
+        if (factPage.count === 0) {
+          this.beginEditTags();
+        }
+      });
   }
 
   @HostListener('document:keyup', ['$event'])
