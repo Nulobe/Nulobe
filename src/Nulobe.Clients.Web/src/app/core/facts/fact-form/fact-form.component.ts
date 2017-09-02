@@ -7,7 +7,7 @@ import { FactCreate, Source } from '../../api';
 interface FactFormValue {
   title: string;
   definition: string;
-  notes: string;
+  notesMarkdown: string;
   indexedSources: Source[];
 }
 
@@ -34,7 +34,7 @@ export class FactFormComponent implements OnInit {
     this.fact = this.fact || <FactCreate>{
       title: '',
       definition: '',
-      notes: '',
+      notesMarkdown: '',
       sources: [],
       tags: []
     };
@@ -44,7 +44,7 @@ export class FactFormComponent implements OnInit {
     this.form = fb.group({
       title: fb.control(this.fact.title, Validators.required),
       definition: fb.control(this.fact.definition, Validators.required),
-      notes: fb.control(this.fact.notes),
+      notesMarkdown: fb.control(this.fact.notesMarkdown),
       indexedSources: fb.array(this.fact.sources.map(s => this.createIndexedSource(s)))
     });
 
@@ -105,7 +105,7 @@ export class FactFormComponent implements OnInit {
       title: formValue.title || '',
       definition: formValue.definition || '',
       sources: formValue.indexedSources,
-      notes: formValue.notes,
+      notesMarkdown: formValue.notesMarkdown,
       tags: this.tags
     };
     this.factChanges.emit(this.fact);

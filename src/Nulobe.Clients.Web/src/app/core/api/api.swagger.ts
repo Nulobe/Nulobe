@@ -563,7 +563,7 @@ export interface Fact {
     id?: string | undefined;
     title?: string | undefined;
     definition?: string | undefined;
-    notes?: string | undefined;
+    notesMarkdown?: string | undefined;
     sources?: Source[] | undefined;
     tags?: string[] | undefined;
     credit?: string | undefined;

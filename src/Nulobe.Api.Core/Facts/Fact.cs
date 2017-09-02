@@ -16,7 +16,7 @@ namespace Nulobe.Api.Core.Facts
 
         public string Definition { get; set; }
 
-        public string Notes { get; set; }
+        public string NotesMarkdown { get; set; }
 
         public IEnumerable<Source> Sources { get; set; }
 
