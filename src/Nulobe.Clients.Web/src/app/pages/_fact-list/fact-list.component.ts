@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { Fact, VoteApiClient, FlagApiClient } from '../../core/api';
+import { NULOBE_ENV_SETTINGS } from '../../../environments/environment';
 
 @Component({
   selector: 'app-fact-list',
@@ -39,4 +40,66 @@ export class FactListComponent implements OnInit {
     this.router.navigate([`/LOBE/admin/edit/${fact.id}`]);
   }
 
+  linkFact(fact: Fact) {
+    let factSlugSplit = fact.slug.split('-');
+    let factPathComponents = [
+      NULOBE_ENV_SETTINGS.baseUrl,
+      "n",
+      factSlugSplit[0],
+      factSlugSplit.slice(1, factSlugSplit.length).join('-')
+    ];
+    let factUrl = factPathComponents.join('/');
+    copyText(factUrl);
+  }
+}
+
+function createNode(text) {
+  var node = document.createElement('textarea');
+  node.style.position = 'absolute';
+  node.style.fontSize = '12pt';
+  node.style.border = '0';
+  node.style.padding = '0';
+  node.style.margin = '0';
+  node.style.left = '-10000px';
+  node.style.top = (window.pageYOffset || document.documentElement.scrollTop) + 'px';
+  node.textContent = text;
+  return node;
+}
+
+function copyNode(node) {
+  try {
+    // Set inline style to override css styles
+    document.body.style.webkitUserSelect = 'initial';
+
+    var selection = document.getSelection();
+    selection.removeAllRanges();
+
+    var range = document.createRange();
+    range.selectNodeContents(node);
+    selection.addRange(range);
+    // This makes it work in all desktop browsers (Chrome)
+    node.select();
+    // This makes it work on Mobile Safari
+    node.setSelectionRange(0, 999999);
+
+    if (!document.execCommand('copy')) {
+      throw ('failure copy');
+    }
+    selection.removeAllRanges();
+  } finally {
+    // Reset inline style
+    document.body.style.webkitUserSelect = '';
+  }
+}
+
+function copyText(text) {
+  var left = window.pageXOffset || document.documentElement.scrollLeft;
+  var top = window.pageYOffset || document.documentElement.scrollTop;
+
+  var node = createNode(text);
+  document.body.appendChild(node);
+  copyNode(node);
+
+  window.scrollTo(left, top);
+  document.body.removeChild(node);
 }

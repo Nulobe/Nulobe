@@ -83,6 +83,10 @@ export class FactSearchResultsComponent implements OnInit {
     });
   }
 
+  navigateToTag(tag: string) {
+    this.router.navigate([`q/${tag}/force`]);
+  }
+
   beginEditTags() {
     this.editingTags = [...this.tags];
     setTimeout(() => {

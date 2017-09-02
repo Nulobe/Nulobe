@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { FactCreate } from '../../api/api.swagger';
+import { Fact } from '../../api/api.swagger';
 import { IPermissionsResolver } from '../../abstractions';
 
 export interface FactLinkResolver {
-  resolve(fact: FactCreate): string;
+  resolve(fact: Fact): string;
 }
 
 @Component({
@@ -13,13 +13,14 @@ export interface FactLinkResolver {
   styleUrls: ['./fact-list.component.scss']
 })
 export class FactListComponent implements OnInit {
-  @Input() facts: FactCreate[];
+  @Input() facts: Fact[];
   @Input() factLinkResolver: FactLinkResolver;
   @Input() permissionsResolver: IPermissionsResolver;
   @Output() onTagSelect = new EventEmitter<string>();
-  @Output() onVote = new EventEmitter<FactCreate>();
-  @Output() onFlag = new EventEmitter<FactCreate>();
-  @Output() onEdit = new EventEmitter<FactCreate>();
+  @Output() onVote = new EventEmitter<Fact>();
+  @Output() onFlag = new EventEmitter<Fact>();
+  @Output() onEdit = new EventEmitter<Fact>();
+  @Output() onLink = new EventEmitter<Fact>();
 
   private canEdit: boolean = false;
 
@@ -28,7 +29,7 @@ export class FactListComponent implements OnInit {
   ngOnInit() {
     if (!this.factLinkResolver) {
       this.factLinkResolver = {
-       resolve: (f: FactCreate) => '#' 
+       resolve: (f: Fact) => '#' 
       };
     }
 
@@ -41,15 +42,19 @@ export class FactListComponent implements OnInit {
     this.onTagSelect.emit(tag);
   }
 
-  voteClicked(fact: FactCreate) {
+  voteClicked(fact: Fact) {
     this.onVote.emit(fact);
   }
 
-  flagClicked(fact: FactCreate) {
+  flagClicked(fact: Fact) {
     this.onFlag.emit(fact);
   }
 
-  editClicked(fact: FactCreate) {
+  linkClicked(fact: Fact) {
+    this.onLink.emit(fact);
+  }
+
+  editClicked(fact: Fact) {
     this.onEdit.emit(fact);
   }
 }
