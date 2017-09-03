@@ -5,17 +5,19 @@
     <TargetFrameworks>net452</TargetFrameworks>
     <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
     <UserSecretsId>Nulobe-4cafb89d-dd40-46a8-8482-cbbf8ba9f5c3</UserSecretsId>
+    <Platform>x64</Platform>
   </PropertyGroup>
 
   <Import Sdk="Microsoft.NET.Sdk.Web" Project="Sdk.targets" />
   <PropertyGroup>
-    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(ProjectDir)\Pre-Build.ps1" $(SolutionDir) $(ProjectDir) $(NSwagExe)</PreBuildEvent>
+    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(MSBuildProjectDirectory)\Pre-Build.ps1" $(MSBuildProjectDirectory)\..\.. $(MSBuildProjectDirectory) $(NSwagExe)</PreBuildEvent>
+    <TargetFramework>net452</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="wwwroot\**" />
-    <Content Remove="wwwroot\**" />
-    <EmbeddedResource Remove="wwwroot\**" />
-    <None Remove="wwwroot\**" />
+    <Compile Remove="NewFolder\**" />
+    <Content Remove="NewFolder\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
+    <None Remove="NewFolder\**" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Pre-Build.ps1" />

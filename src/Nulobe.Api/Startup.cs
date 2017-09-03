@@ -19,15 +19,19 @@ using Nulobe.Api.Middleware;
 using System.Diagnostics;
 using Microsoft.Azure.Documents.Client;
 using System.IO;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Nulobe.Api
 {
     public class Startup
     {
-        private IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
         public Startup(IHostingEnvironment hostingEnvironment)
         {
+            _hostingEnvironment = hostingEnvironment;
+
             var builder = new ConfigurationBuilder().AddConfigurationSources<Startup>(hostingEnvironment);
             _configuration = builder.Build();
         }
@@ -37,6 +41,14 @@ namespace Nulobe.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.Configure<MvcOptions>(options =>
+            {
+                if (!_hostingEnvironment.IsDevelopment())
+                {
+                    options.Filters.Add(new RequireHttpsAttribute());
+                }
+            });
+
             services.AddAutoMapper(conf =>
             {
                 conf.AddCoreApiMapperConfigurations();
@@ -69,20 +81,16 @@ namespace Nulobe.Api
         {
             loggerFactory.AddConsole();
 
-            if (env.IsDevelopment())
+            using (var client = documentClientFactory.Create(documentDbOptions.Value))
             {
-                using (var client = documentClientFactory.Create(documentDbOptions.Value))
-                {
-                    client.EnsureCollectionAsync(documentDbOptions.Value, factServiceOptions.Value.FactCollectionName).Wait();
-                    client.EnsureCollectionAsync(documentDbOptions.Value, factServiceOptions.Value.FactAuditCollectionName).Wait();
-                    client.EnsureCollectionAsync(documentDbOptions.Value, eventServiceOptions.Value.EventCollectionName).Wait();
-                }
-
-                EnsureDocumentDbRunningAsync().Wait();
+                client.EnsureCollectionAsync(documentDbOptions.Value, factServiceOptions.Value.FactCollectionName).Wait();
+                client.EnsureCollectionAsync(documentDbOptions.Value, factServiceOptions.Value.FactAuditCollectionName).Wait();
+                client.EnsureCollectionAsync(documentDbOptions.Value, eventServiceOptions.Value.EventCollectionName).Wait();
             }
 
             if (env.IsDevelopment())
             {
+                EnsureDocumentDbRunningAsync().Wait();
                 app.UseDeveloperExceptionPage();
             }
 

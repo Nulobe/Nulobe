@@ -5,13 +5,15 @@
     <TargetFrameworks>net452</TargetFrameworks>
     <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
     <UserSecretsId>Nulobe-4cafb89d-dd40-46a8-8482-cbbf8ba9f5c3</UserSecretsId>
+    <Platform>x64</Platform>
   </PropertyGroup>
 
   <Import Sdk="Microsoft.NET.Sdk.Web" Project="Sdk.targets" />
   <PropertyGroup>
-    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(SolutionDir)\Copy-Files.ps1" $(SolutionDir) $(MSBuildProjectDirectory)</PreBuildEvent>
-    <PostBuildEvent>"$(NSwagExe)" webapi2swagger /assembly:"$(TargetPath)" /output:"$(ProjectDir)swagger.json" /defaultPropertyNameHandling:"CamelCase"</PostBuildEvent>
+    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(MSBuildProjectDirectory)\..\..\Copy-Files.ps1" $(MSBuildProjectDirectory)\..\.. $(MSBuildProjectDirectory)</PreBuildEvent>
+    <PostBuildEvent>"$(NSwagExe)" webapi2swagger /assembly:"$(TargetPath)" /output:"$(MSBuildProjectDirectory)\swagger.json" /defaultPropertyNameHandling:"CamelCase"</PostBuildEvent>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <TargetFramework>net452</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="wwwroot\**" />

@@ -25,6 +25,8 @@ namespace Microsoft.Extensions.Configuration
                 builder.AddUserSecrets<TMarker>();
             }
 
+            builder.AddEnvironmentVariables();
+
             return builder;
         }
     }

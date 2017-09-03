@@ -22,10 +22,13 @@ namespace Nulobe.Clients.Web.Host
 {
     public class Startup
     {
-        private readonly IConfigurationRoot _configuration;
+        private readonly IConfiguration _configuration;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
         public Startup(IHostingEnvironment hostingEnvironment)
         {
+            _hostingEnvironment = hostingEnvironment;
+
             var builder = new ConfigurationBuilder().AddConfigurationSources<Startup>(hostingEnvironment);
             _configuration = builder.Build();
         }
