@@ -14,10 +14,10 @@ import { FactPreviewDialogService } from '../fact-preview-dialog/fact-preview-di
 })
 export class EditFactComponent implements OnInit {
 
-  private masterFact: Fact;
+  fact: Fact;
 
+  private masterFact: Fact;
   private factId: string;
-  private fact: Fact;
   private valid: boolean = true;
   private error: any = null;
   private hasError: boolean = false;

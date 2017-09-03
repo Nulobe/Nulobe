@@ -17,9 +17,9 @@ export class FactTableComponent implements OnInit {
   @Output() onEdit = new EventEmitter<Fact>();
 
   @ViewChild(MdPaginator) paginator: MdPaginator;
-  private dataSource: FactDataSource;
-  private displayedColumns = ['title', 'definition', 'tags', 'controls'];
-  private factCount = -1;
+  dataSource: FactDataSource;
+  displayedColumns = ['title', 'definition', 'tags', 'controls'];
+  factCount = -1;
 
   constructor() { }
 

@@ -2,7 +2,7 @@ import { Injectable, FactoryProvider } from "@angular/core";
 import { ConnectionBackend, RequestOptions, Request, RequestOptionsArgs, Response, Http, Headers, XHRBackend } from "@angular/http";
 import { Observable } from "rxjs/Rx";
 
-import { NULOBE_ENV_SETTINGS } from '../environments/environment';
+import { NULOBE_ENV_SETTINGS } from './app.settings';
 import { AuthService } from './features/auth';
 
 export function authHttpFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, authService: AuthService): Http {

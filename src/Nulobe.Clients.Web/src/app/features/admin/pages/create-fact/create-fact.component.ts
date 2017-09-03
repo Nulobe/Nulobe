@@ -14,10 +14,10 @@ import { FactPreviewDialogService } from '../fact-preview-dialog/fact-preview-di
 })
 export class CreateFactComponent implements OnInit {
 
-  private fact: FactCreate;
-  private valid: boolean;
-  private error: any = null;
-  private hasError: boolean = false;
+  fact: FactCreate;
+  valid: boolean;
+  error: any = null;
+  hasError: boolean = false;
 
   constructor(
     private factApiClient: FactApiClient,

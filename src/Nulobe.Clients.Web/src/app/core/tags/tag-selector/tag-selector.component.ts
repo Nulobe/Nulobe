@@ -22,9 +22,9 @@ export class TagSelectorComponent implements OnInit {
   @Output() onInputFocusUpdated = new EventEmitter<boolean>();
   @Output() onSubmit = new EventEmitter();
 
-  private tagInput_tags: TagModel[] = [];
-  private tagInput_isFocused = false;
-  private tagInput_currentText = '';
+  tagInput_tags: TagModel[] = [];
+  tagInput_isFocused = false;
+  tagInput_currentText = '';
   private tagInput_lastApiCallText: string = null;
   private tagInput_lastApiCall: Promise<Tag[]>;
 
@@ -46,7 +46,7 @@ export class TagSelectorComponent implements OnInit {
     this.tagInput_focusUpdated(true);
   }
 
-  private tagInput_getSuggestions = (text: string): Observable<Tag[]> => {
+  tagInput_getSuggestions = (text: string): Observable<Tag[]> => {
     if (text === '') {
       return Observable.of([]);
     } else {
@@ -76,21 +76,21 @@ export class TagSelectorComponent implements OnInit {
     }
   }
 
-  private tagInput_matchingFunc = (): boolean => true;
+  tagInput_matchingFunc = (): boolean => true;
 
-  private tagInput_addHash = (text: string | Tag): Observable<TagModel> => {
+  tagInput_addHash = (text: string | Tag): Observable<TagModel> => {
     if (typeof(text) === 'object') {
       text = text.text;
     }
     return Observable.of(this.createTagModel(text));
   }
 
-  private tagInput_updated = () => {
+  tagInput_updated = () => {
     this.tags = this.tagInput_tags.map(t => t.value);
     this.onTagsUpdated.emit(this.tags);
   }
 
-  private tagInput_focusUpdated = (value) => {
+  tagInput_focusUpdated = (value) => {
     let currentValue = this.tagInput_isFocused;
     if (currentValue !== value) {
       this.tagInput_isFocused = value;
@@ -99,13 +99,13 @@ export class TagSelectorComponent implements OnInit {
   }
 
   @HostListener('document:keypress', ['$event'])
-  private host_handleKeyboardEvent(event: KeyboardEvent) {
+  host_handleKeyboardEvent(event: KeyboardEvent) {
     if (event.keyCode === 13 && this.tagInput_isFocused && !this.tagInput_currentText && this.tags.length) {
       this.onSubmit.emit();
     }
   }
 
-  private createTagModel(text: string): TagModel {
+  createTagModel(text: string): TagModel {
     return {
       display: `${text}`,
       value: `${text}`

@@ -21,7 +21,8 @@ export class FactFormComponent implements OnInit {
   @Output() factChanges = new EventEmitter<FactCreate>();
   @Output() factValidChanges = new EventEmitter<boolean>();
 
-  private form: FormGroup;
+  form: FormGroup;
+
   private tags: string[] = [];
   private sourceCount$: Observable<number>;
   private lastFormValid: boolean;
@@ -66,7 +67,7 @@ export class FactFormComponent implements OnInit {
     });
 
     this.sourceCount$.subscribe(sourceCount => {
-      let indexedSources = this.form.get('indexedSources') as FormArray;
+      let indexedSources = this.getIndexedSources();
       let existingSourceCount = indexedSources.controls.length;
       
       let sourceCountDiff = sourceCount - existingSourceCount;
@@ -94,9 +95,13 @@ export class FactFormComponent implements OnInit {
     });
   }
 
-  private updateTags(tags: string[]) {
+  updateTags(tags: string[]) {
     this.tags = tags;
     this.triggerFactChanges();
+  }
+
+  getIndexedSources(): FormArray {
+    return this.form.get('indexedSources') as FormArray;
   }
 
   private triggerFactChanges() {

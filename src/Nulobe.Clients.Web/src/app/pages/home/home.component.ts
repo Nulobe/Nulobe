@@ -13,8 +13,8 @@ import { TagEncodingHelper } from '../fact-search-results';
 })
 export class HomeComponent implements OnInit {
 
-  private placeholder = 'Search via tags e.g. "dairy"';
-  private searchTags: string[] = [];
+  placeholder = 'Search via tags e.g. "dairy"';
+  searchTags: string[] = [];
 
   @ViewChild(TagSelectorComponent) tagSelector: TagSelectorComponent;
 

@@ -23,8 +23,9 @@ export class FactSearchResultsComponent implements OnInit {
 
   private _loading: BehaviorSubject<boolean> = new BehaviorSubject(true);
   private _facts = new BehaviorSubject<Fact[]>([]);
+  
+  loading$: Observable<boolean> = this._loading.asObservable();
 
-  private loading$: Observable<boolean> = this._loading.asObservable();
   private facts$: Observable<Fact[]> = this._facts.asObservable();
   private tags: string[] = [];
   private editingTags: string[] = [];

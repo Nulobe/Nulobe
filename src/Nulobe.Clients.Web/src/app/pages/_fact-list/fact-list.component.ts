@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { NULOBE_ENV_SETTINGS } from '../../../environments/environment';
+import { NULOBE_ENV_SETTINGS } from '../../app.settings';
 import { IPermissionsResolver } from '../../core/abstractions';
 import { Fact, VoteApiClient, FlagApiClient } from '../../core/api';
 import { AuthService } from '../../features/auth';
@@ -15,7 +15,7 @@ import { AuthService } from '../../features/auth';
 export class FactListComponent implements OnInit {
   @Input() facts$: Observable<Fact>;
 
-  private permissionsResolver: IPermissionsResolver;
+  permissionsResolver: IPermissionsResolver;
 
   constructor(
     private voteApiClient: VoteApiClient,

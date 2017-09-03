@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  private isHome$: Observable<boolean>;
+  
+  isHome$: Observable<boolean>;
 
   constructor(
     private router: Router

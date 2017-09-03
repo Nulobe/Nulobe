@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { FactApiClient, TagApiClient, FlagApiClient, VoteApiClient, QuizletApiClient, API_BASE_URL } from './api.swagger';
 
-import { NULOBE_ENV_SETTINGS } from '../../../environments/environment';
+import { NULOBE_ENV_SETTINGS } from '../../app.settings';
 
 @NgModule({
   imports: [

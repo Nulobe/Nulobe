@@ -1,6 +1,6 @@
 import * as auth0 from 'auth0-js';
 
-import { NULOBE_ENV_SETTINGS } from '../../../../environments/environment';
+import { NULOBE_ENV_SETTINGS } from '../../../app.settings';
 
 import { AUTH_CONSTANTS } from '../auth.constants';
 import { AuthConfig } from './auth-config';

@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
 
-import { NULOBE_ENV_SETTINGS } from '../../../../environments/environment';
+import { NULOBE_ENV_SETTINGS } from '../../../app.settings';
 
 import { AUTH_CONSTANTS } from './../auth.constants';
 import { AuthHanderFactory } from './auth-handler.factory';

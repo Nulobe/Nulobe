@@ -12,7 +12,7 @@ import { Fact } from '../../core/api';
 })
 export class FactComponent implements OnInit {
 
-  private facts$: Observable<Fact[]>;
+  facts$: Observable<Fact[]>;
 
   constructor(
     private factQueryService: FactQueryService,

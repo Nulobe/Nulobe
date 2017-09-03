@@ -3,7 +3,7 @@ import { StoreModule, combineReducers, compose, ActionReducer } from '@ngrx/stor
 import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-import { NULOBE_ENV } from '../../environments/environment';
+import { NULOBE_ENV } from '../app.settings';
 import { AppStore } from './app-store';
 
 const reducers = {

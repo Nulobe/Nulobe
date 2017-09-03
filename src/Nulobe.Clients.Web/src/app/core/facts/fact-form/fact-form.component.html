@@ -12,7 +12,7 @@
     </div>
     <div class="sources">
       <div class="indexed-sources">
-        <div class="source" formArrayName="indexedSources" *ngFor="let indexedSourceControl of form.get('indexedSources').controls; let i = index;">
+        <div class="source" formArrayName="indexedSources" *ngFor="let indexedSourceControl of getIndexedSources().controls; let i = index;">
           <div class="index">{{ i + 1 }}.</div>
           <div class="source-details" [formGroupName]="i">
             <div class="description">
@@ -38,8 +38,7 @@
       <core-tag-selector
           [tags]="fact.tags"
           [secondaryPlaceholder]="'Tags'"
-          (onTagsUpdated)="updateTags($event)"
-          (onSubmit)="search()">
+          (onTagsUpdated)="updateTags($event)">
       </core-tag-selector>
     </div>
   </form>

@@ -76,8 +76,7 @@ namespace Nulobe.Clients.Web.Host
                             }
                             catch (Exception ex)
                             {
-                                var webException = ex.InnerException as WebException;
-                                if (webException != null && webException.Status == WebExceptionStatus.ConnectFailure)
+                                if (ex.InnerException is WebException webException && webException.Status == WebExceptionStatus.ConnectFailure)
                                 {
                                     context.Response.StatusCode = 404;
                                     return;

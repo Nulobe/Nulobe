@@ -16,6 +16,9 @@ using Nulobe.Api.Core.Facts;
 using Nulobe.Api.Core.Events;
 using AutoMapper;
 using Nulobe.Api.Middleware;
+using System.Diagnostics;
+using Microsoft.Azure.Documents.Client;
+using System.IO;
 
 namespace Nulobe.Api
 {
@@ -66,11 +69,16 @@ namespace Nulobe.Api
         {
             loggerFactory.AddConsole();
 
-            using (var client = documentClientFactory.Create(documentDbOptions.Value))
+            if (env.IsDevelopment())
             {
-                client.EnsureCollectionAsync(documentDbOptions.Value, factServiceOptions.Value.FactCollectionName).Wait();
-                client.EnsureCollectionAsync(documentDbOptions.Value, factServiceOptions.Value.FactAuditCollectionName).Wait();
-                client.EnsureCollectionAsync(documentDbOptions.Value, eventServiceOptions.Value.EventCollectionName).Wait();
+                using (var client = documentClientFactory.Create(documentDbOptions.Value))
+                {
+                    client.EnsureCollectionAsync(documentDbOptions.Value, factServiceOptions.Value.FactCollectionName).Wait();
+                    client.EnsureCollectionAsync(documentDbOptions.Value, factServiceOptions.Value.FactAuditCollectionName).Wait();
+                    client.EnsureCollectionAsync(documentDbOptions.Value, eventServiceOptions.Value.EventCollectionName).Wait();
+                }
+
+                EnsureDocumentDbRunningAsync().Wait();
             }
 
             if (env.IsDevelopment())
@@ -105,6 +113,61 @@ namespace Nulobe.Api
                 });
 
             app.UseMvc();
+        }
+
+        private const string DocumentDbEmulatorExePath = @"C:\Program Files\Azure Cosmos DB Emulator\CosmosDB.Emulator.exe";
+
+        private static async Task EnsureDocumentDbRunningAsync()
+        {
+            var existingProcess = Process.GetProcessesByName("CosmosDB.Emulator").FirstOrDefault();
+            if (existingProcess == null || !(await TestConnectionAsync(existingProcess)))
+            {
+                Console.WriteLine("DocumentDB Emulator is not running, attempting to start");
+
+                if (File.Exists(DocumentDbEmulatorExePath))
+                {
+                    var process = Process.Start(new ProcessStartInfo()
+                    {
+                        FileName = DocumentDbEmulatorExePath,
+                        CreateNoWindow = true
+                    });
+                }
+                else
+                {
+                    throw new Exception($"DocumentDB emulator is not installed at path {DocumentDbEmulatorExePath}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("DocumentDB Emulator is already running");
+            }
+        }
+
+        private static async Task<bool> TestConnectionAsync(Process process)
+        {
+            using (var client = new DocumentClient(new Uri("https://localhost:8081"), "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="))
+            {
+                var id = Guid.NewGuid().ToString();
+                try
+                {
+                    var createDbTask = client.CreateDatabaseIfNotExistsAsync(new Microsoft.Azure.Documents.Database() { Id = id });
+                    if (await Task.WhenAny(createDbTask, Task.Delay(TimeSpan.FromSeconds(10))) != createDbTask)
+                    {
+                        throw new TimeoutException("DocumentDB test timed out after 10 seconds");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Failed to create DocumentDB database, killing process");
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                    process.Kill();
+                    process.WaitForExit();
+                    return false;
+                }
+                await client.DeleteDatabaseAsync($"dbs/{id}");
+                return true;
+            }
         }
     }
 }

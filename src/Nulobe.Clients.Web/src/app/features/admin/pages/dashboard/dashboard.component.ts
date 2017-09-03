@@ -14,7 +14,7 @@ import { FactPageProvider, FactPageOptions } from '../../components/fact-table';
 })
 export class DashboardComponent implements OnInit {
 
-  private factPageProvider: FactPageProvider;
+  factPageProvider: FactPageProvider;
 
   constructor(
     private factQueryService: FactQueryService,
