@@ -43,10 +43,6 @@ namespace Nulobe.Api.Controllers
         [ProducesResponseType(typeof(Fact), 201)]
         public async Task<IActionResult> Create([FromBody] FactCreate create, [FromQuery(Name = "dryRun")] bool? dryRunNullable = null)
         {
-            //bool dryRun = false;
-            //StringValues dryRunStr;
-            //if (Request.Query.TryGetValue("dryRun", out dryRunStr) && bool.TryParse(dryRunStr, out dryRun)) { }
-
             var dryRun = dryRunNullable ?? false;
             var result = await _factService.CreateFactAsync(create, dryRunNullable ?? false);
             if (dryRun)
