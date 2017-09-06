@@ -34,6 +34,12 @@
         <textarea mdInput formControlName="notesMarkdown" placeholder="Notes" rows="5"></textarea>
       </md-input-container>
     </div>
+    <div class="country">
+      <md-select placeholder="Country" formControlName="country" floatPlaceholder="never">
+        <md-option [value]="null">(No locality)</md-option>
+        <md-option *ngFor="let country of countries" [value]="country.name">{{ country.displayName }}</md-option>
+      </md-select>
+    </div>
     <div class="tag-selector-container">
       <core-tag-selector
           [tags]="fact.tags"

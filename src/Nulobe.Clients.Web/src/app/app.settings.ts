@@ -8,10 +8,16 @@ export interface AuthSettingsCollection {
   quizlet: AuthSettings;
 }
 
+export interface CountryData {
+  name: string,
+  displayName: string
+}
+
 export interface EnvironmentSettings {
   baseUrl: string;
   apiBaseUrl: string;
   auth: AuthSettingsCollection;
+  countries: CountryData[];
 }
 
 export const NULOBE_ENV: string = window["NULOBE_ENV"];

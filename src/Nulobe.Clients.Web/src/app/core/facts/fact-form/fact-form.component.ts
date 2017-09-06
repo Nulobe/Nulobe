@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
+import { NULOBE_ENV_SETTINGS } from '../../../app.settings';
 import { FactCreate, Source } from '../../api';
 
 interface FactFormValue {
@@ -9,6 +10,7 @@ interface FactFormValue {
   definition: string;
   notesMarkdown: string;
   indexedSources: Source[];
+  country: string;
 }
 
 @Component({
@@ -22,6 +24,7 @@ export class FactFormComponent implements OnInit {
   @Output() factValidChanges = new EventEmitter<boolean>();
 
   form: FormGroup;
+  countries = NULOBE_ENV_SETTINGS.countries;
 
   private tags: string[] = [];
   private sourceCount$: Observable<number>;
@@ -46,7 +49,8 @@ export class FactFormComponent implements OnInit {
       title: fb.control(this.fact.title, Validators.required),
       definition: fb.control(this.fact.definition, Validators.required),
       notesMarkdown: fb.control(this.fact.notesMarkdown),
-      indexedSources: fb.array(this.fact.sources.map(s => this.createIndexedSource(s)))
+      indexedSources: fb.array(this.fact.sources.map(s => this.createIndexedSource(s))),
+      country: fb.control(this.fact.country)
     });
 
     this.sourceCount$ = this.form.valueChanges.map((formValue: FactFormValue) => {
@@ -111,7 +115,8 @@ export class FactFormComponent implements OnInit {
       definition: formValue.definition || '',
       sources: formValue.indexedSources,
       notesMarkdown: formValue.notesMarkdown,
-      tags: this.tags
+      tags: this.tags,
+      country: formValue.country
     };
     this.factChanges.emit(this.fact);
   }

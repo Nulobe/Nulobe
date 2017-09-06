@@ -174,7 +174,14 @@ namespace Nulobe.Clients.Web.Host
                 {
                     auth0 = GetPublicAuthOptions(auth0Options),
                     quizlet = GetPublicAuthOptions(quizletOptions)
-                }
+                },
+                countries = countryOptions
+                    .Select(kvp => new
+                    {
+                        name = kvp.Key,
+                        displayName = kvp.Value.DisplayName
+                    })
+                    .OrderBy(c => c.displayName)
             };
 
             var environmentName = hostingEnvironment.EnvironmentName;

@@ -1,6 +1,13 @@
 @import "../../../../assets/scss/mixins";
 
 :host {
+
+    form {
+        :not(:first-child) {
+            margin-top: 30px;
+        }
+    }
+    
     
     .title {
         md-input-container {
@@ -48,6 +55,13 @@
                     }
                 }
             }
+        }
+    }
+
+    .country {
+        md-select {
+            @include font-family-default();
+            width: 50%;
         }
     }
 }
