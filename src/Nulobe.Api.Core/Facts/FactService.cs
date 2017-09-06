@@ -141,7 +141,7 @@ namespace Nulobe.Api.Core.Facts
                 }
 
                 await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactAuditCollectionName, factAudit);
-                await client.ReplaceDocumentAsync(_documentDbOptions, _factServiceOptions.FactCollectionName, id, create);
+                await client.ReplaceDocumentAsync(_documentDbOptions, _factServiceOptions.FactCollectionName, id, fact);
             }
 
             return _mapper.MapWithServices<FactData, Fact>(fact, _serviceProvider);
