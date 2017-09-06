@@ -22,7 +22,7 @@ export const API_BASE_URL = new OpaqueToken('API_BASE_URL');
 
 export interface IFactApiClient {
     list(tags: string | undefined, slug: string | undefined, pattern: string | undefined, fields: string | undefined, orderBy: string | undefined, pageNumber: string | undefined, pageSize: string | undefined): Observable<Fact[] | null>;
-    create(create: FactCreate | undefined): Observable<Fact | null>;
+    create(create: FactCreate | undefined, dryRun: boolean | undefined): Observable<Fact | null>;
     get(id: string): Observable<Fact | null>;
     update(id: string, create: FactCreate | undefined): Observable<Fact | null>;
     delete(id: string): Observable<void>;
@@ -94,8 +94,10 @@ export class FactApiClient implements IFactApiClient {
         return Observable.of<Fact[] | null>(<any>null);
     }
 
-    create(create: FactCreate | undefined): Observable<Fact | null> {
-        let url_ = this.baseUrl + "/facts";
+    create(create: FactCreate | undefined, dryRun: boolean | undefined): Observable<Fact | null> {
+        let url_ = this.baseUrl + "/facts?";
+        if (dryRun !== undefined)
+            url_ += "dryRun=" + encodeURIComponent("" + dryRun) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(create);
@@ -566,19 +568,14 @@ export interface Fact {
     notesMarkdown?: string | undefined;
     sources?: Source[] | undefined;
     tags?: string[] | undefined;
+    readOnlyTags?: string[] | undefined;
     credit?: string | undefined;
     slug?: string | undefined;
-    slugHistory?: SlugAudit[] | undefined;
 }
 
 export interface Source {
     url: string;
     description?: string | undefined;
-}
-
-export interface SlugAudit {
-    slug?: string | undefined;
-    created: Date;
 }
 
 export interface FactCreate {

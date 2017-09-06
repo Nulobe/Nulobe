@@ -9,7 +9,7 @@ namespace Nulobe.Api.Core.Facts
     {
         Task<Fact> GetFactAsync(string id);
 
-        Task<Fact> CreateFactAsync(FactCreate create);
+        Task<Fact> CreateFactAsync(FactCreate create, bool dryRun = false);
 
         Task<Fact> UpdateFactAsync(string id, FactCreate create);
 

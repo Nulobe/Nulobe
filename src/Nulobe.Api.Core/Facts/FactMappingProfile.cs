@@ -17,13 +17,18 @@ namespace Nulobe.Api.Core.Facts
 
             CreateMap<FactData, Fact>()
                 .EnsureServices()
-                .ForMember(f => f.SlugHistory, opts => opts.Ignore())
+                .BeforeMap((factData, fact) =>
+                {
+                    fact.ReadOnlyTags = Enumerable.Empty<string>();
+                })
                 .AfterMap((factData, fact, context) =>
                 {
                     var countryOptions = context.GetRequiredService<IOptions<CountryOptions>>().Value;
                     if (!string.IsNullOrEmpty(factData.Country))
                     {
-                        fact.Tags = fact.Tags.Concat(countryOptions[factData.Country].Tag);
+                        var countryTag = countryOptions[factData.Country].Tag;
+                        fact.Tags = fact.Tags.Concat(countryTag);
+                        fact.ReadOnlyTags = fact.ReadOnlyTags.Concat(countryTag);
                     }
                 });
         }

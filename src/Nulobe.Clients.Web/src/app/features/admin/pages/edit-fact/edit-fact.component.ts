@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
-import { FactApiClient, Fact, SwaggerException } from '../../../../core/api';
+import { FactApiClient, Fact, FactCreate, SwaggerException } from '../../../../core/api';
 
 import { FactPreviewDialogService } from '../fact-preview-dialog/fact-preview-dialog.service';
 
@@ -39,7 +39,8 @@ export class EditFactComponent implements OnInit {
       this.factId = factId;
     });
 
-    this.route.data.map(d => d.fact).subscribe(f => {
+    this.route.data.map(d => <Fact>(d.fact)).subscribe(f => {
+      f.tags = f.tags.filter(t => f.readOnlyTags.indexOf(t) < 0);
       this.masterFact = f;
       this.fact = f;
     });

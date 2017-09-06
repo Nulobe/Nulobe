@@ -64,7 +64,7 @@ namespace Nulobe.Api.Core.Facts
             }
         }
 
-        public async Task<Fact> CreateFactAsync(FactCreate create)
+        public async Task<Fact> CreateFactAsync(FactCreate create, bool dryRun = false)
         {
             AssertAuthenticated();
             Validator.ValidateNotNull(create, nameof(create));
@@ -84,11 +84,14 @@ namespace Nulobe.Api.Core.Facts
                 }
             };
 
-            fact.Id = Guid.NewGuid().ToString();
-            using (var client = _documentClientFactory.Create(_documentDbOptions))
+            if (!dryRun)
             {
-                await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactCollectionName, fact);
-                await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactAuditCollectionName, factAudit);
+                fact.Id = Guid.NewGuid().ToString();
+                using (var client = _documentClientFactory.Create(_documentDbOptions))
+                {
+                    await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactCollectionName, fact);
+                    await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactAuditCollectionName, factAudit);
+                }
             }
 
             return _mapper.MapWithServices<FactData, Fact>(fact, _serviceProvider);

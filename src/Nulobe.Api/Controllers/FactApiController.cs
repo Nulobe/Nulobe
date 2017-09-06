@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Nulobe.Api.Core;
 using Nulobe.Api.Core.Facts;
+using Microsoft.Extensions.Primitives;
 
 namespace Nulobe.Api.Controllers
 {
@@ -40,13 +41,25 @@ namespace Nulobe.Api.Controllers
         [HttpPost("")]
         [Authorize]
         [ProducesResponseType(typeof(Fact), 201)]
-        public async Task<IActionResult> Create([FromBody] FactCreate create)
+        public async Task<IActionResult> Create([FromBody] FactCreate create, [FromQuery(Name = "dryRun")] bool? dryRunNullable = null)
         {
-            var result = await _factService.CreateFactAsync(create);
-            return CreatedAtAction(
-                nameof(Get),
-                new { id = result.Id },
-                result);
+            //bool dryRun = false;
+            //StringValues dryRunStr;
+            //if (Request.Query.TryGetValue("dryRun", out dryRunStr) && bool.TryParse(dryRunStr, out dryRun)) { }
+
+            var dryRun = dryRunNullable ?? false;
+            var result = await _factService.CreateFactAsync(create, dryRunNullable ?? false);
+            if (dryRun)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return CreatedAtAction(
+                    nameof(Get),
+                    new { id = result.Id },
+                    result);
+            }
         }
 
         [HttpPut("{id}")]

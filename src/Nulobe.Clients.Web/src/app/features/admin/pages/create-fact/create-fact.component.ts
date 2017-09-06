@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { FactApiClient, FactCreate, SwaggerException } from '../../../../core/api';
+import { FactApiClient, Fact, SwaggerException } from '../../../../core/api';
 
 import { FactPreviewDialogComponent } from '../fact-preview-dialog/fact-preview-dialog.component';
 import { FactPreviewDialogService } from '../fact-preview-dialog/fact-preview-dialog.service';
@@ -14,7 +14,7 @@ import { FactPreviewDialogService } from '../fact-preview-dialog/fact-preview-di
 })
 export class CreateFactComponent implements OnInit {
 
-  fact: FactCreate;
+  fact: Fact;
   valid: boolean;
   error: any = null;
   hasError: boolean = false;
@@ -44,7 +44,7 @@ export class CreateFactComponent implements OnInit {
     this.hasError = false;
 
     if (window.confirm('Are you sure you want to publish this fact?')) {
-      this.factApiClient.create(this.fact)
+      this.factApiClient.create(this.fact, false)
         .catch((err: SwaggerException) => {
           this.hasError = true;
           if (err.response) {
