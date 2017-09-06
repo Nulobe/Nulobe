@@ -9,33 +9,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents.Client;
+using AutoMapper;
 
 namespace Nulobe.Api.Core.Facts
 {
     public class FactQueryService : IFactQueryService
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly FactServiceOptions _factServiceOptions;
         private readonly DocumentDbOptions _documentDbOptions;
         private readonly IClaimsPrincipalAccessor _claimsPrincipalAccessor;
         private readonly IDocumentClientFactory _documentClientFactory;
+        private readonly IMapper _mapper;
 
         public FactQueryService(
+            IServiceProvider serviceProvider,
             IOptions<FactServiceOptions> factServiceOptions,
             IOptions<DocumentDbOptions> documentDbOptions,
             IClaimsPrincipalAccessor claimsPrincipalAccessor,
-            IDocumentClientFactory documentClientFactory)
+            IDocumentClientFactory documentClientFactory,
+            IMapper mapper)
         {
+            _serviceProvider = serviceProvider;
             _factServiceOptions = factServiceOptions.Value;
             _documentDbOptions = documentDbOptions.Value;
             _claimsPrincipalAccessor = claimsPrincipalAccessor;
             _documentClientFactory = documentClientFactory;
+            _mapper = mapper;
         }
 
         public Task<FactQueryResult> QueryFactsAsync(FactQuery query)
         {
             using (var client = _documentClientFactory.Create(_documentDbOptions))
             {
-                IEnumerable<Fact> result = null;
+                IEnumerable<FactData> result = null;
                 if (!string.IsNullOrEmpty(query.Tags))
                 {
                     result = GetTagFactQueryable(client, query.Tags, query.GetFieldPropertyNames());
@@ -60,6 +67,7 @@ namespace Nulobe.Api.Core.Facts
                         .Skip((pageNumber - 1) * pageSize)
                         .Take(pageSize)
                         .AsEnumerable()
+                        .Select(f => _mapper.MapWithServices<FactData, Fact>(f, _serviceProvider))
                 });
             }
         }
@@ -67,7 +75,7 @@ namespace Nulobe.Api.Core.Facts
 
         #region Helpers
 
-        private IEnumerable<Fact> GetTagFactQueryable(DocumentClient client, string tagsStr, IEnumerable<string> fieldPropertyNames)
+        private IEnumerable<FactData> GetTagFactQueryable(DocumentClient client, string tagsStr, IEnumerable<string> fieldPropertyNames)
         {
             var sqlQueryText = GetBaseSqlQuery(fieldPropertyNames);
 
@@ -87,21 +95,21 @@ namespace Nulobe.Api.Core.Facts
             return GetFactQueryable(client, sqlQueryText, sqlParameters);
         }
 
-        private IEnumerable<Fact> GetSlugFactQueryable(DocumentClient client, string slug, IEnumerable<string> fieldPropertyNames)
+        private IEnumerable<FactData> GetSlugFactQueryable(DocumentClient client, string slug, IEnumerable<string> fieldPropertyNames)
         {
             var sqlQueryText = GetBaseSqlQuery(fieldPropertyNames) + " WHERE f.Slug = @slug";
             var sqlParameters = new SqlParameterCollection(new SqlParameter[] { new SqlParameter("@slug", slug) });
             return GetFactQueryable(client, sqlQueryText, sqlParameters);
         }
 
-        private IEnumerable<Fact> GetBaseFactQueryable(DocumentClient client, IEnumerable<string> fieldPropertNames)
+        private IEnumerable<FactData> GetBaseFactQueryable(DocumentClient client, IEnumerable<string> fieldPropertNames)
         {
             return GetFactQueryable(client, GetBaseSqlQuery(fieldPropertNames));
         }
 
-        private IEnumerable<Fact> GetFactQueryable(DocumentClient client, string sqlQueryText, SqlParameterCollection sqlParameters = null)
+        private IEnumerable<FactData> GetFactQueryable(DocumentClient client, string sqlQueryText, SqlParameterCollection sqlParameters = null)
         {
-            return client.CreateDocumentQuery<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, new SqlQuerySpec()
+            return client.CreateDocumentQuery<FactData>(_documentDbOptions, _factServiceOptions.FactCollectionName, new SqlQuerySpec()
             {
                 QueryText = sqlQueryText,
                 Parameters = sqlParameters ?? new SqlParameterCollection()

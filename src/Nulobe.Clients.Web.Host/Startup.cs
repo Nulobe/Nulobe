@@ -29,7 +29,9 @@ namespace Nulobe.Clients.Web.Host
         {
             _hostingEnvironment = hostingEnvironment;
 
-            var builder = new ConfigurationBuilder().AddConfigurationSources<Startup>(hostingEnvironment);
+            var builder = new ConfigurationBuilder()
+                .AddConfigurationSources<Startup>(hostingEnvironment)
+                .AddCountriesJsonFile();
             _configuration = builder.Build();
         }
 
@@ -37,6 +39,7 @@ namespace Nulobe.Clients.Web.Host
         {
             services.ConfigureAuth0(_configuration);
             services.ConfigureQuizlet(_configuration);
+            services.ConfigureCountries(_configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -161,6 +164,7 @@ namespace Nulobe.Clients.Web.Host
             var hostingEnvironment = serviceProvider.GetRequiredService<IHostingEnvironment>();
             var auth0Options = serviceProvider.GetRequiredService<IOptions<Auth0Options>>().Value;
             var quizletOptions = serviceProvider.GetRequiredService<IOptions<QuizletOptions>>().Value;
+            var countryOptions = serviceProvider.GetRequiredService<IOptions<CountryOptions>>().Value;
 
             var environmentSettings = new
             {

@@ -52,8 +52,8 @@ namespace Nulobe.Api.Controllers
         [HttpPut("{id}")]
         [Authorize]
         [ProducesResponseType(typeof(Fact), 200)]
-        public async Task<IActionResult> Update(string id, [FromBody] Fact fact)
-            => Ok(await _factService.UpdateFactAsync(id, fact));
+        public async Task<IActionResult> Update(string id, [FromBody] FactCreate create)
+            => Ok(await _factService.UpdateFactAsync(id, create));
 
         [HttpDelete("{id}")]
         [Authorize]

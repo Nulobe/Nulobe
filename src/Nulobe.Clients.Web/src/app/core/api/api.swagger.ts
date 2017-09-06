@@ -24,7 +24,7 @@ export interface IFactApiClient {
     list(tags: string | undefined, slug: string | undefined, pattern: string | undefined, fields: string | undefined, orderBy: string | undefined, pageNumber: string | undefined, pageSize: string | undefined): Observable<Fact[] | null>;
     create(create: FactCreate | undefined): Observable<Fact | null>;
     get(id: string): Observable<Fact | null>;
-    update(id: string, fact: Fact | undefined): Observable<Fact | null>;
+    update(id: string, create: FactCreate | undefined): Observable<Fact | null>;
     delete(id: string): Observable<void>;
 }
 
@@ -182,14 +182,14 @@ export class FactApiClient implements IFactApiClient {
         return Observable.of<Fact | null>(<any>null);
     }
 
-    update(id: string, fact: Fact | undefined): Observable<Fact | null> {
+    update(id: string, create: FactCreate | undefined): Observable<Fact | null> {
         let url_ = this.baseUrl + "/facts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(fact);
+        const content_ = JSON.stringify(create);
         
         let options_ = {
             body: content_,
@@ -581,7 +581,14 @@ export interface SlugAudit {
     created: Date;
 }
 
-export interface FactCreate extends Fact {
+export interface FactCreate {
+    title?: string | undefined;
+    definition?: string | undefined;
+    notesMarkdown?: string | undefined;
+    sources?: Source[] | undefined;
+    tags?: string[] | undefined;
+    credit?: string | undefined;
+    country?: string | undefined;
 }
 
 export interface FlagCreate {

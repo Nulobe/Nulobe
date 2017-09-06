@@ -36,5 +36,12 @@ namespace System.Linq
 
             return -1;
         }
+
+        public static IEnumerable<T> Concat<T>(
+            this IEnumerable<T> source,
+            T item)
+        {
+            return source.Concat(new T[] { item });
+        }
     }
 }

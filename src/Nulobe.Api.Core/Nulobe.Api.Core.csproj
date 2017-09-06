@@ -136,6 +136,8 @@
     <Compile Include="Facts\Fact.cs" />
     <Compile Include="Facts\FactAudit.cs" />
     <Compile Include="Facts\FactCreate.cs" />
+    <Compile Include="Facts\FactData.cs" />
+    <Compile Include="Facts\FactDataSlugAudit.cs" />
     <Compile Include="Facts\FactMappingProfile.cs" />
     <Compile Include="Facts\FactQuery.cs" />
     <Compile Include="Facts\FactQueryResult.cs" />
@@ -154,6 +156,10 @@
     <Compile Include="Tags\TagQueryService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\util\Nulobe.AutoMapper\Nulobe.AutoMapper.csproj">
+      <Project>{4ceef981-6eed-42aa-aa9f-92a70791ceba}</Project>
+      <Name>Nulobe.AutoMapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\util\Nulobe.DocumentDb.Client\Nulobe.DocumentDb.Client.csproj">
       <Project>{779f6f7e-0eae-45a8-bd9d-069d8f75c0a3}</Project>
       <Name>Nulobe.DocumentDb.Client</Name>

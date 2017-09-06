@@ -30,5 +30,12 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             return services.Configure<DocumentDbOptions>(configuration.GetSection("Nulobe:DocumentDb"));
         }
+
+        public static IServiceCollection ConfigureCountries(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            return services.Configure<CountryOptions>(configuration.GetSection("Countries"));
+        }
     }
 }

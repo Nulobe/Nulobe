@@ -9,9 +9,9 @@ namespace Nulobe.Api.Core.Facts
 {
     public class FactAudit : IAuditableAction
     {
-        public Fact CurrentValue { get; set; }
+        public FactData CurrentValue { get; set; }
 
-        public Fact PreviousValue { get; set; }
+        public FactData PreviousValue { get; set; }
 
         public string ActionName { get; set; }
 

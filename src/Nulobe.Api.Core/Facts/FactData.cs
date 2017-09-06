@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Nulobe.Utility.Validation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +7,18 @@ using System.Threading.Tasks;
 
 namespace Nulobe.Api.Core.Facts
 {
-    public class FactCreate
+    public class FactData
     {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
         public string Title { get; set; }
 
         public string Definition { get; set; }
 
         public string NotesMarkdown { get; set; }
+
+        public string Country { get; set; }
 
         public IEnumerable<Source> Sources { get; set; }
 
@@ -22,6 +26,8 @@ namespace Nulobe.Api.Core.Facts
 
         public string Credit { get; set; }
 
-        public string Country { get; set; }
+        public string Slug { get; set; }
+
+        public IEnumerable<FactDataSlugAudit> SlugHistory { get; set; }
     }
 }

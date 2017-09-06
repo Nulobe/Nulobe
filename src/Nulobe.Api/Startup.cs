@@ -32,7 +32,9 @@ namespace Nulobe.Api
         {
             _hostingEnvironment = hostingEnvironment;
 
-            var builder = new ConfigurationBuilder().AddConfigurationSources<Startup>(hostingEnvironment);
+            var builder = new ConfigurationBuilder()
+                .AddConfigurationSources<Startup>(hostingEnvironment)
+                .AddCountriesJsonFile();
             _configuration = builder.Build();
         }
 
@@ -60,6 +62,7 @@ namespace Nulobe.Api
 
             services.AddCoreApiServices(_configuration);
             services.AddQuizletApiServices();
+            services.ConfigureCountries(_configuration);
 
             services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IClaimsPrincipalAccessor, HttpClaimsPrincipalAccessor>();

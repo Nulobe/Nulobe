@@ -19,23 +19,29 @@ namespace Nulobe.Api.Core.Facts
     {
         private static readonly Regex SourceReferenceRegex = new Regex(@"\[(\d+)\]");
 
+        private readonly IServiceProvider _serviceProvider;
         private readonly FactServiceOptions _factServiceOptions;
         private readonly DocumentDbOptions _documentDbOptions;
+        private readonly CountryOptions _countryOptions;
         private readonly IClaimsPrincipalAccessor _claimsPrincipalAccessor;
         private readonly Auditor _auditor;
         private readonly IDocumentClientFactory _documentClientFactory;
         private readonly IMapper _mapper;
 
         public FactService(
+            IServiceProvider serviceProvider,
             IOptions<FactServiceOptions> factServiceOptions,
             IOptions<DocumentDbOptions> documentDbOptions,
+            IOptions<CountryOptions> countryOptions,
             IClaimsPrincipalAccessor claimsPrincipalAccessor,
             Auditor auditor,
             IDocumentClientFactory documentClientFactory,
             IMapper mapper)
         {
+            _serviceProvider = serviceProvider;
             _factServiceOptions = factServiceOptions.Value;
             _documentDbOptions = documentDbOptions.Value;
+            _countryOptions = countryOptions.Value;
             _claimsPrincipalAccessor = claimsPrincipalAccessor;
             _auditor = auditor;
             _documentClientFactory = documentClientFactory;
@@ -48,7 +54,8 @@ namespace Nulobe.Api.Core.Facts
             {
                 try
                 {
-                    return await client.ReadDocumentAsync<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
+                    var fact = await client.ReadDocumentAsync<FactData>(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
+                    return _mapper.MapWithServices<FactData, Fact>(fact, _serviceProvider);
                 }
                 catch (DocumentNotFoundException ex)
                 {
@@ -57,19 +64,20 @@ namespace Nulobe.Api.Core.Facts
             }
         }
 
-        public async Task<Fact> CreateFactAsync(Fact fact)
+        public async Task<Fact> CreateFactAsync(FactCreate create)
         {
             AssertAuthenticated();
-            Validator.ValidateNotNull(fact, nameof(fact));
-            ValidateFact(fact);
+            Validator.ValidateNotNull(create, nameof(create));
+            ValidateFactCreate(create);
 
+            var fact = _mapper.Map<FactData>(create);
             var factAudit = new FactAudit() { CurrentValue = fact };
             _auditor.AuditAction(nameof(CreateFactAsync), factAudit);
-            
+
             fact.Slug = GenerateSlug(fact);
-            fact.SlugHistory = new SlugAudit[]
+            fact.SlugHistory = new FactDataSlugAudit[]
             {
-                new SlugAudit()
+                new FactDataSlugAudit()
                 {
                     Slug = fact.Slug,
                     Created = factAudit.Actioned
@@ -82,7 +90,58 @@ namespace Nulobe.Api.Core.Facts
                 await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactCollectionName, fact);
                 await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactAuditCollectionName, factAudit);
             }
-            return fact;
+
+            return _mapper.MapWithServices<FactData, Fact>(fact, _serviceProvider);
+        }
+
+        public async Task<Fact> UpdateFactAsync(string id, FactCreate create)
+        {
+            AssertAuthenticated();
+            Validator.ValidateNotNull(create, nameof(create));
+            ValidateFactCreate(create);
+
+            var fact = _mapper.Map<FactData>(create);
+            using (var client = _documentClientFactory.Create(_documentDbOptions))
+            {
+                var existingFact = await client.ReadDocumentAsync<FactData>(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
+                if (existingFact == null)
+                {
+                    throw new ClientEntityNotFoundException(typeof(FactData), id);
+                }
+                
+                fact.Id = id;
+                var factAudit = new FactAudit()
+                {
+                    CurrentValue = fact,
+                    PreviousValue = existingFact
+                };
+                _auditor.AuditAction(nameof(UpdateFactAsync), factAudit);
+
+                if (fact.Title.Equals(existingFact.Title, StringComparison.OrdinalIgnoreCase))
+                {
+                    fact.Slug = existingFact.Slug;
+                    fact.SlugHistory = existingFact.SlugHistory;
+                }
+                else
+                {
+                    fact.Slug = GenerateSlug(fact);
+                    fact.SlugHistory = Enumerable.Empty<FactDataSlugAudit>()
+                        .Concat(existingFact.SlugHistory)
+                        .Concat(new FactDataSlugAudit[]
+                        {
+                            new FactDataSlugAudit()
+                            {
+                                Slug = fact.Slug,
+                                Created = factAudit.Actioned
+                            }
+                        });
+                }
+
+                await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactAuditCollectionName, factAudit);
+                await client.ReplaceDocumentAsync(_documentDbOptions, _factServiceOptions.FactCollectionName, id, create);
+            }
+
+            return _mapper.MapWithServices<FactData, Fact>(fact, _serviceProvider);
         }
 
         public async Task DeleteFactAsync(string id)
@@ -92,7 +151,7 @@ namespace Nulobe.Api.Core.Facts
 
             using (var client = _documentClientFactory.Create(_documentDbOptions))
             {
-                var fact = await client.ReadDocumentAsync<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
+                var fact = await client.ReadDocumentAsync<FactData>(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
                 if (fact == null)
                 {
                     throw new ClientEntityNotFoundException(typeof(Fact), id);
@@ -106,55 +165,6 @@ namespace Nulobe.Api.Core.Facts
             }
         }
 
-        public async Task<Fact> UpdateFactAsync(string id, Fact fact)
-        {
-            AssertAuthenticated();
-            Validator.ValidateNotNull(fact, nameof(fact));
-            ValidateFact(fact);
-
-            fact.Id = id;
-
-            using (var client = _documentClientFactory.Create(_documentDbOptions))
-            {
-                var existingFact = await client.ReadDocumentAsync<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
-                if (existingFact == null)
-                {
-                    throw new ClientEntityNotFoundException(typeof(Fact), id);
-                }
-
-                var factAudit = new FactAudit() {
-                    CurrentValue = fact,
-                    PreviousValue = existingFact
-                };
-                _auditor.AuditAction(nameof(UpdateFactAsync), factAudit);
-
-                if (fact.Title == existingFact.Title)
-                {
-                    fact.Slug = existingFact.Slug;
-                    fact.SlugHistory = existingFact.SlugHistory;
-                }
-                else
-                {
-                    fact.Slug = GenerateSlug(fact);
-                    fact.SlugHistory = Enumerable.Empty<SlugAudit>()
-                        .Concat(existingFact.SlugHistory)
-                        .Concat(new SlugAudit[]
-                        {
-                            new SlugAudit()
-                            {
-                                Slug = fact.Slug,
-                                Created = factAudit.Actioned
-                            }
-                        });
-                }
-
-                await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactAuditCollectionName, factAudit);
-                await client.ReplaceDocumentAsync(_documentDbOptions, _factServiceOptions.FactCollectionName, id, fact);
-            }
-
-            return fact;
-        }
-
 
         #region Helpers
 
@@ -166,13 +176,13 @@ namespace Nulobe.Api.Core.Facts
             }
         }
 
-        private void ValidateFact(Fact fact)
+        private void ValidateFactCreate(FactCreate create)
         {
-            var (isValid, modelErrors) = Validator.IsValid(fact);
+            var (isValid, modelErrors) = Validator.IsValid(create);
 
             if (modelErrors.IsMemberValid(nameof(FactCreate.Definition)))
             {
-                var indexSequence = SourceReferenceRegex.Matches(fact.Definition)
+                var indexSequence = SourceReferenceRegex.Matches(create.Definition)
                     .Cast<Match>()
                     .Select(m =>
                     {
@@ -186,10 +196,10 @@ namespace Nulobe.Api.Core.Facts
 
                 if (indexSequence.Any())
                 {
-                    if (indexSequence.Max() != fact.Sources.Count())
+                    if (indexSequence.Max() != create.Sources.Count())
                     {
                         modelErrors.Add(
-                            $"Expected number of sources ({fact.Sources.Count()}) to equal the number referenced in {nameof(FactCreate.Definition)} ({indexSequence.Max()})",
+                            $"Expected number of sources ({create.Sources.Count()}) to equal the number referenced in {nameof(FactCreate.Definition)} ({indexSequence.Max()})",
                             nameof(FactCreate.Definition));
                     }
 
@@ -203,14 +213,19 @@ namespace Nulobe.Api.Core.Facts
                 }
             }
 
-            var sources = fact.Sources.ToList();
+            var sources = create.Sources.ToList();
             for (var i = 0; i < sources.Count(); i++)
             {
                 var (isSourceValid, sourceModelErrors) = Validator.IsValid(sources[i]);
                 if (!isSourceValid)
                 {
-                    modelErrors.Add(sourceModelErrors, $"{nameof(fact.Sources)}[{i}]");
+                    modelErrors.Add(sourceModelErrors, $"{nameof(create.Sources)}[{i}]");
                 }
+            }
+
+            if (!string.IsNullOrEmpty(create.Country) && !_countryOptions.ContainsKey(create.Country))
+            {
+                modelErrors.Add($"{create.Country} is not an available country", nameof(create.Country));
             }
 
             if (modelErrors.Errors.Count() > 0)
@@ -219,7 +234,7 @@ namespace Nulobe.Api.Core.Facts
             }
         }
 
-        private string GenerateSlug(Fact fact)
+        private string GenerateSlug(FactData fact)
         {
             var slugBuilder = new SlugBuilderFactory().Create();
             slugBuilder.Add(new Random().Next(10000, 99999));

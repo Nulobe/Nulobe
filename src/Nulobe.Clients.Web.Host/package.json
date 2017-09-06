@@ -6,6 +6,7 @@
   },
   "scripts": {
     "install": "cd ../Nulobe.Clients.Web && yarn install",
-    "start": "cd ../Nulobe.Clients.Web && yarn run start"
+    "start": "cd ../Nulobe.Clients.Web && yarn run start",
+    "build": "cd ../Nulobe.Clients.Web &&  ng build --prod --aot --output-path \"../Nulobe.Clients.Web.Host/wwwroot\""
   }
 }
