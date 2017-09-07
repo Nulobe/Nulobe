@@ -14,9 +14,13 @@ namespace Nulobe.Api.Core.Facts
 
         public string Title { get; set; }
 
+        public string TitleLocalized { get; set; }
+
         public string Definition { get; set; }
 
         public string NotesMarkdown { get; set; }
+
+        public string Country { get; set; }
 
         public IEnumerable<Source> Sources { get; set; }
 

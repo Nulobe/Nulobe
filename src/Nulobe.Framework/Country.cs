@@ -10,6 +10,8 @@ namespace Nulobe.Framework
     {
         public string DisplayName { get; set; }
 
+        public string ShortDisplayName { get; set; }
+
         public string Tag { get; set; }
     }
 }

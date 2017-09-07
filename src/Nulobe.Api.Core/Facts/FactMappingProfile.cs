@@ -26,9 +26,16 @@ namespace Nulobe.Api.Core.Facts
                     var countryOptions = context.GetRequiredService<IOptions<CountryOptions>>().Value;
                     if (!string.IsNullOrEmpty(factData.Country))
                     {
-                        var countryTag = countryOptions[factData.Country].Tag;
-                        fact.Tags = fact.Tags.Concat(countryTag);
-                        fact.ReadOnlyTags = fact.ReadOnlyTags.Concat(countryTag);
+                        var country = countryOptions[factData.Country];
+                        
+                        fact.Tags = fact.Tags.Concat(country.Tag);
+                        fact.ReadOnlyTags = fact.ReadOnlyTags.Concat(country.Tag);
+
+                        fact.TitleLocalized = $"{fact.Title} ({country.ShortDisplayName ?? country.DisplayName})";
+                    }
+                    else
+                    {
+                        fact.TitleLocalized = fact.Title;
                     }
                 });
         }

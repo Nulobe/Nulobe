@@ -26,7 +26,6 @@ export class FactFormComponent implements OnInit {
   form: FormGroup;
   countries = NULOBE_ENV_SETTINGS.countries;
 
-  private tags: string[] = [];
   private sourceCount$: Observable<number>;
   private lastFormValid: boolean;
   private lastValid: boolean;
@@ -100,7 +99,7 @@ export class FactFormComponent implements OnInit {
   }
 
   updateTags(tags: string[]) {
-    this.tags = tags;
+    this.fact.tags = tags;
     this.triggerFactChanges();
   }
 
@@ -115,7 +114,7 @@ export class FactFormComponent implements OnInit {
       definition: formValue.definition || '',
       sources: formValue.indexedSources,
       notesMarkdown: formValue.notesMarkdown,
-      tags: this.tags,
+      tags: this.fact.tags,
       country: formValue.country
     };
     this.factChanges.emit(this.fact);
@@ -130,7 +129,7 @@ export class FactFormComponent implements OnInit {
   }
 
   private isValid() {
-    return this.tags.length && this.form.valid;
+    return this.fact.tags.length && this.form.valid;
   }
 
   private createIndexedSource(source?: Source): FormGroup {

@@ -1,7 +1,7 @@
 <div>
   <h3 class="title">
-    <span *ngIf="fact.title">{{ fact.title }}</span>
-    <i *ngIf="!fact.title">(Add a title)</i>
+    <span *ngIf="fact.titleLocalized">{{ fact.titleLocalized }}</span>
+    <i *ngIf="!fact.titleLocalized">(Add a title)</i>
   </h3>
   <div class="definition">
     <span *ngIf="fact.definition">{{ fact.definition }}</span>

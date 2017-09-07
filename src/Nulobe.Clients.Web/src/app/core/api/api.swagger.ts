@@ -564,8 +564,10 @@ export class VoteApiClient implements IVoteApiClient {
 export interface Fact {
     id?: string | undefined;
     title?: string | undefined;
+    titleLocalized?: string | undefined;
     definition?: string | undefined;
     notesMarkdown?: string | undefined;
+    country?: string | undefined;
     sources?: Source[] | undefined;
     tags?: string[] | undefined;
     readOnlyTags?: string[] | undefined;
