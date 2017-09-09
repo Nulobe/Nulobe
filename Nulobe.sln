@@ -45,6 +45,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nulobe.Utility", "util\Nulo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nulobe.AutoMapper", "util\Nulobe.AutoMapper\Nulobe.AutoMapper.csproj", "{4CEEF981-6EED-42AA-AA9F-92A70791CEBA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nulobe.Jobs.BlobStorageBackup", "src\Nulobe.Jobs.BlobStorageBackup\Nulobe.Jobs.BlobStorageBackup.csproj", "{85AB39AE-552E-442E-9AF9-8FCB06E22C4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nulobe.CosmosDataMigration", "util\Nulobe.CosmosDataMigration\Nulobe.CosmosDataMigration.csproj", "{3C3D2457-06A9-4F10-9BEC-E26EADD0B4C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -103,6 +107,14 @@ Global
 		{4CEEF981-6EED-42AA-AA9F-92A70791CEBA}.Debug|x64.Build.0 = Debug|x64
 		{4CEEF981-6EED-42AA-AA9F-92A70791CEBA}.Release|x64.ActiveCfg = Release|x64
 		{4CEEF981-6EED-42AA-AA9F-92A70791CEBA}.Release|x64.Build.0 = Release|x64
+		{85AB39AE-552E-442E-9AF9-8FCB06E22C4F}.Debug|x64.ActiveCfg = Debug|x64
+		{85AB39AE-552E-442E-9AF9-8FCB06E22C4F}.Debug|x64.Build.0 = Debug|x64
+		{85AB39AE-552E-442E-9AF9-8FCB06E22C4F}.Release|x64.ActiveCfg = Release|x64
+		{85AB39AE-552E-442E-9AF9-8FCB06E22C4F}.Release|x64.Build.0 = Release|x64
+		{3C3D2457-06A9-4F10-9BEC-E26EADD0B4C7}.Debug|x64.ActiveCfg = Debug|x64
+		{3C3D2457-06A9-4F10-9BEC-E26EADD0B4C7}.Debug|x64.Build.0 = Debug|x64
+		{3C3D2457-06A9-4F10-9BEC-E26EADD0B4C7}.Release|x64.ActiveCfg = Release|x64
+		{3C3D2457-06A9-4F10-9BEC-E26EADD0B4C7}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -121,5 +133,7 @@ Global
 		{2862DAAD-8EEA-497D-B0D3-EFA0DF94DED4} = {FAD21DEF-BB75-4E10-9CE9-0F63F904A05E}
 		{6EC7606C-E64B-4729-A11C-CF7F1D445779} = {FAD21DEF-BB75-4E10-9CE9-0F63F904A05E}
 		{4CEEF981-6EED-42AA-AA9F-92A70791CEBA} = {FAD21DEF-BB75-4E10-9CE9-0F63F904A05E}
+		{85AB39AE-552E-442E-9AF9-8FCB06E22C4F} = {7730D72A-C982-4C1F-8D9E-AFB746108F31}
+		{3C3D2457-06A9-4F10-9BEC-E26EADD0B4C7} = {FAD21DEF-BB75-4E10-9CE9-0F63F904A05E}
 	EndGlobalSection
 EndGlobal
