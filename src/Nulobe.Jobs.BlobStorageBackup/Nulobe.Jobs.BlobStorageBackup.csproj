@@ -188,9 +188,6 @@
     <None Include="appsettings.Shared.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="appsettings.Shared.Production.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\nulobe-api - Web Deploy.pubxml" />
     <None Include="Properties\webjob-publish-settings.json" />

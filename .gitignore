@@ -309,3 +309,4 @@ appsettings.Shared.Production.json
 src/Nulobe.Api/swagger.json
 src/Nulobe.Clients.Web/src/app/api/api.swagger.ts
 src/Nulobe.Clients.Web.Host/wwwroot/
+src/Nulobe.Clients.Web/src/app/core/api/api.swagger.ts
