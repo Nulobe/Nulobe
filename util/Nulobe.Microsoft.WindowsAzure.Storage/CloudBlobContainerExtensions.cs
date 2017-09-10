@@ -23,8 +23,8 @@ namespace Nulobe.Microsoft.WindowsAzure.Storage
             this CloudBlobContainer container,
             string path)
         {
-            var relativePath = string.Concat((new Uri(path)).Segments.Skip(2));
-            var blockBlob = container.GetBlockBlobReference(relativePath);
+            //var relativePath = string.Concat((new Uri(path)).Segments.Skip(2));
+            var blockBlob = container.GetBlockBlobReference(path);
             var stream = await blockBlob.OpenReadAsync();
 
             return new CloudBlob()

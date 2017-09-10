@@ -13,7 +13,7 @@ namespace Nulobe.Microsoft.WindowsAzure.Storage
         public static async Task<CloudBlobContainer> GetCloudBlobContainerAsync(
             this CloudBlobClient client,
             string containerName,
-            BlobContainerPublicAccessType accessType)
+            BlobContainerPublicAccessType? accessType = null)
         {
             if (!new Regex("[a-z]+").IsMatch(containerName))
             {
@@ -23,10 +23,13 @@ namespace Nulobe.Microsoft.WindowsAzure.Storage
             var container = client.GetContainerReference(containerName);
             if (await container.CreateIfNotExistsAsync())
             {
-                await container.SetPermissionsAsync(new BlobContainerPermissions()
+                if (accessType.HasValue)
                 {
-                    PublicAccess = accessType
-                });
+                    await container.SetPermissionsAsync(new BlobContainerPermissions()
+                    {
+                        PublicAccess = accessType.Value
+                    });
+                }
             }
 
             return container;

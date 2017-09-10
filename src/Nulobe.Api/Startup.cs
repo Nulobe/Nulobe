@@ -20,6 +20,7 @@ using System.Diagnostics;
 using Microsoft.Azure.Documents.Client;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Documents;
 
 namespace Nulobe.Api
 {
@@ -161,7 +162,7 @@ namespace Nulobe.Api
                 var id = Guid.NewGuid().ToString();
                 try
                 {
-                    var createDbTask = client.CreateDatabaseIfNotExistsAsync(new Microsoft.Azure.Documents.Database() { Id = id });
+                    var createDbTask = client.CreateDatabaseIfNotExistsAsync(new Database() { Id = id });
                     if (await Task.WhenAny(createDbTask, Task.Delay(TimeSpan.FromSeconds(10))) != createDbTask)
                     {
                         throw new TimeoutException("DocumentDB test timed out after 10 seconds");
