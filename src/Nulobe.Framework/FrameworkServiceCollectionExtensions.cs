@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Nulobe.Framework;
+using Nulobe.Microsoft.WindowsAzure.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,13 @@ namespace Microsoft.Extensions.DependencyInjection
             IConfiguration configuration)
         {
             return services.Configure<CountryOptions>(configuration.GetSection("Countries"));
+        }
+
+        public static IServiceCollection ConfigureStorage(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            return services.Configure<StorageOptions>(configuration.GetSection("AzureStorage"));
         }
     }
 }

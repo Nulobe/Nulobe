@@ -31,7 +31,7 @@ namespace Nulobe.Jobs.BlobStorageBackup
 
         public async Task<string> UploadAsync(FileStorageData fileStorageData)
         {
-            _logger.LogInformation("Uploading name {0} to container {1}", fileStorageData.Name, "ProdCopy");
+            _logger.LogInformation("Uploading name {0} to container {1}", fileStorageData.Name, "prodcopy");
 
             CloudBlobContainer container;
             try
@@ -50,14 +50,14 @@ namespace Nulobe.Jobs.BlobStorageBackup
             var bytes = fileStorageData.Stream;
             await blockBlob.UploadFromStreamAsync(fileStorageData.Stream);
 
-            _logger.LogInformation("Uploaded name {0} to container {1}, full path {2}", fileStorageData.Name, "ProdCopy", blockBlob.Uri);
+            _logger.LogInformation("Uploaded name {0} to container {1}, full path {2}", fileStorageData.Name, "prodcopy", blockBlob.Uri);
 
             return blockBlob.Uri.ToString();
         }
 
         public async Task<FileStorageData> GetAsync(string filePath)
         {
-            _logger.LogInformation("Retrieve file from path {0} in container {1}", filePath, "ProdCopy");
+            _logger.LogInformation("Retrieve file from path {0} in container {1}", filePath, "prodcopy");
 
             var relativePath = string.Concat((new Uri(filePath)).Segments.Skip(2));
 
@@ -74,7 +74,7 @@ namespace Nulobe.Jobs.BlobStorageBackup
             fileStorageData.ContentType = blockBlob.Properties.ContentType;
             fileStorageData.Length = blockBlob.Properties.Length;
 
-            _logger.LogInformation("Retrieved file {0} from container {1}, full path {2}", fileStorageData.Name, "ProdCopy", blockBlob.Uri);
+            _logger.LogInformation("Retrieved file {0} from container {1}, full path {2}", fileStorageData.Name, "prodcopy", blockBlob.Uri);
 
             return fileStorageData;
         }

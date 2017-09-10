@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Nulobe.CosmosDataMigration;
 using Nulobe.Framework;
+using Nulobe.Microsoft.WindowsAzure.Storage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,21 +14,24 @@ namespace Nulobe.Jobs.BlobStorageBackup
 {
     public class BlobStorageBackupService
     {
-        private readonly AzureStorageOptions _storageOptions;
+        private readonly StorageOptions _storageOptions;
         private readonly DocumentDbOptions _documentDbOptions;
         private readonly AzureBlobStorageService _azureBlobStorageService;
         private readonly CosmosDataMigrationToolClient _cosmosDataMigrationToolClient;
+        private readonly ICloudBlobClientFactory _cloudBlobClientFactory;
 
         public BlobStorageBackupService(
-            IOptions<AzureStorageOptions> storageOptions,
+            IOptions<StorageOptions> storageOptions,
             IOptions<DocumentDbOptions> documentDbOptions,
             AzureBlobStorageService azureBlobStorageService,
-            CosmosDataMigrationToolClient cosmosDataMigrationToolClient)
+            CosmosDataMigrationToolClient cosmosDataMigrationToolClient,
+            ICloudBlobClientFactory cloudBlobClientFactory)
         {
             _storageOptions = storageOptions.Value;
             _documentDbOptions = documentDbOptions.Value;
             _azureBlobStorageService = azureBlobStorageService;
             _cosmosDataMigrationToolClient = cosmosDataMigrationToolClient;
+            _cloudBlobClientFactory = cloudBlobClientFactory;
         }
 
         public async Task RunAsync()
@@ -48,13 +53,20 @@ namespace Nulobe.Jobs.BlobStorageBackup
 
             using (var fs = File.OpenRead(outputPath))
             {
+                var containerClient = _cloudBlobClientFactory.Create();
+                var container = await containerClient.GetCloudBlobContainerAsync("prodcopy", BlobContainerPublicAccessType.Blob);
+
                 var now = DateTime.UtcNow;
-                await _azureBlobStorageService.UploadAsync(new FileStorageData()
+                await container.UploadAsync(new Microsoft.WindowsAzure.Storage.CloudBlob()
                 {
+                    Path = Path.Combine(new object[]
+                    {
+                        now.Year,
+                        now.Month,
+                        now.Day,
+                        "Nulobe.Facts.json"
+                    }.Select(o => o.ToString()).ToArray()),
                     ContentType = "application/json",
-                    KeyParts = new object[] { now.Year, now.Month, now.Day }.Select(k => k.ToString()),
-                    Length = fs.Length,
-                    Name = "Nulobe.Facts.json",
                     Stream = fs
                 });
             }

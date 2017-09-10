@@ -198,6 +198,10 @@
       <Project>{1ed50f87-b739-4391-9ac4-3b1d7aa2ba7b}</Project>
       <Name>Nulobe.Microsoft.Extensions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\util\Nulobe.Microsoft.WindowsAzure.Storage\Nulobe.Microsoft.WindowsAzure.Storage.csproj">
+      <Project>{ca2da480-7855-4980-95fb-868994f43ebd}</Project>
+      <Name>Nulobe.Microsoft.WindowsAzure.Storage</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\util\Nulobe.System\Nulobe.System.csproj">
       <Project>{d8e0a60f-9f35-44a7-83a5-c0d3fadd1f83}</Project>
       <Name>Nulobe.System</Name>

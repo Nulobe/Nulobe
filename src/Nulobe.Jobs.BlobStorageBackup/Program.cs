@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.DependencyInjection;
 using Nulobe.CosmosDataMigration;
+using Nulobe.Microsoft.WindowsAzure.Storage;
 
 namespace Nulobe.Jobs.BlobStorageBackup
 {
@@ -29,9 +30,11 @@ namespace Nulobe.Jobs.BlobStorageBackup
             services.AddLogging();
             services.AddOptions();
             services.ConfigureDocumentDb(configuration);
+            services.ConfigureStorage(configuration);
             services.Configure<AzureStorageOptions>(configuration.GetSection("AzureStorage"));
 
             services.AddTransient<CosmosDataMigrationToolClient>();
+            services.AddTransient<ICloudBlobClientFactory, CloudBlobClientFactory>();
             services.AddTransient<AzureBlobStorageService>();
 
             var serviceProvider = services.BuildServiceProvider();
