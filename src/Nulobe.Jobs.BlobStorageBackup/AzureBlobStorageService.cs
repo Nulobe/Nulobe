@@ -103,10 +103,7 @@ namespace Nulobe.Jobs.BlobStorageBackup
         {
             if (_cloudBlobClient == null)
             {
-                var authOptions = _azureStorageAccountOptions.Auth;
-                var storageAccount = CloudStorageAccount.Parse("UseDevelopmentStorage=true;");
-                //var storageAccount = CloudStorageAccount.Parse(_azureStorageAccountOptions.ConnectionString);
-                //var storageAccount = new CloudStorageAccount(new StorageCredentials(authOptions.AccountName, authOptions.AccountKey), false);
+                var storageAccount = CloudStorageAccount.Parse(_azureStorageAccountOptions.ConnectionString);
                 _logger.LogInformation($"Creating blob client at uri {storageAccount.BlobEndpoint}");
                 _cloudBlobClient = storageAccount.CreateCloudBlobClient();
             }
