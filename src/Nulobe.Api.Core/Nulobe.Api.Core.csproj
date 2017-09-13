@@ -139,7 +139,6 @@
     <Compile Include="CoreApiMapperConfigurationExpressionsExtensions.cs" />
     <Compile Include="CoreApiServiceCollectionExtensions.cs" />
     <Compile Include="Events\EventService.cs" />
-    <Compile Include="Events\EventServiceOptions.cs" />
     <Compile Include="Events\Event.cs" />
     <Compile Include="Events\FlagEventService.cs" />
     <Compile Include="Events\IEventCreate.cs" />

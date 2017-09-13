@@ -64,7 +64,7 @@ namespace Nulobe.Api.Core.Facts
 
                 var documentQuery = client.CreateDocumentQuery<FactData>(
                     _documentDbOptions,
-                    _factServiceOptions.FactCollectionName,
+                    Constants.FactCollectionName,
                     querySpec,
                     feedOptions).AsDocumentQuery();
 

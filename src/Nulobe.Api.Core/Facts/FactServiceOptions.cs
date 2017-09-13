@@ -8,10 +8,6 @@ namespace Nulobe.Api.Core.Facts
 {
     public class FactServiceOptions
     {
-        public string FactCollectionName { get; set; }
-
-        public string FactAuditCollectionName { get; set; }
-
         public int MaxSourceCount { get; set; }
     }
 }

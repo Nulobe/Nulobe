@@ -67,7 +67,7 @@ namespace Nulobe.Api.Core.Tags
             IEnumerable<Fact> facts = null;
             using (var client = _documentClientFactory.Create(_documentDbOptions))
             {
-                facts = client.CreateDocumentQuery<Fact>(_documentDbOptions, _factServiceOptions.FactCollectionName, sqlQuery).ToList();
+                facts = client.CreateDocumentQuery<Fact>(_documentDbOptions, Constants.FactCollectionName, sqlQuery).ToList();
             }
 
             var tags = facts

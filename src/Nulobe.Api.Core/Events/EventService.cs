@@ -17,7 +17,6 @@ namespace Nulobe.Api.Core.Events
     public class EventService<TEventCreate> : IEventService<TEventCreate> where TEventCreate : IEventCreate
     {
         private readonly DocumentDbOptions _documentDbOptions;
-        private readonly FactServiceOptions _factOptions;
         private readonly IRemoteIpAddressAccessor _remoteIpAddressAccessor;
         private readonly IDocumentClientFactory _documentClientFactory;
         private readonly ICloudStorageClientFactory _cloudStorageClientFactory;

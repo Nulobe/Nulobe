@@ -82,16 +82,13 @@ namespace Nulobe.Api
             IDocumentClientFactory documentClientFactory,
             IOptions<DocumentDbOptions> documentDbOptions,
             IOptions<FactServiceOptions> factServiceOptions,
-            IOptions<EventServiceOptions> eventServiceOptions,
             IOptions<Auth0Options> auth0Options)
         {
             loggerFactory.AddConsole();
 
             using (var client = documentClientFactory.Create(documentDbOptions.Value))
             {
-                client.EnsureCollectionAsync(documentDbOptions.Value, factServiceOptions.Value.FactCollectionName).Wait();
-                client.EnsureCollectionAsync(documentDbOptions.Value, factServiceOptions.Value.FactAuditCollectionName).Wait();
-                client.EnsureCollectionAsync(documentDbOptions.Value, eventServiceOptions.Value.EventCollectionName).Wait();
+                client.EnsureCollectionAsync(documentDbOptions.Value, Core.Facts.Constants.FactCollectionName).Wait();
             }
 
             if (env.IsDevelopment())

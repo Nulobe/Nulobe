@@ -30,7 +30,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<ICloudStorageClientFactory, CloudStorageClientFactory>();
 
             services.Configure<FactServiceOptions>(configuration.GetSection("Nulobe:FactService"));
-            services.Configure<EventServiceOptions>(configuration.GetSection("Nulobe:EventService"));
 
             return services;
         }
