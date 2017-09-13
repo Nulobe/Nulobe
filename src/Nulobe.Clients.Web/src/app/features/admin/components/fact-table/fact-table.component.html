@@ -12,10 +12,14 @@
     <md-cell *cdkCellDef="let fact">{{ fact.title }}</md-cell>
   </ng-container>
 
-  <ng-container cdkColumnDef="definition">
+  <!-- <ng-container cdkColumnDef="definition">
     <md-header-cell *cdkHeaderCellDef>Definition</md-header-cell>
-    <md-cell *cdkCellDef="let fact">{{ fact.definition }}</md-cell>
-  </ng-container>
+    <md-cell *cdkCellDef="let fact">
+      <div class="definition-text">
+        {{ fact.definition }}
+      </div>
+    </md-cell>
+  </ng-container> -->
 
   <ng-container cdkColumnDef="tags">
     <md-header-cell *cdkHeaderCellDef>Tags</md-header-cell>
