@@ -3,8 +3,8 @@ import { Location } from '@angular/common';
 import { Router, UrlSerializer, NavigationStart, NavigationEnd } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 
-import { Fact } from '../../core/api';
-import { FactQueryService, FactQueryModel } from '../../core/facts';
+import { Fact, FactQuery } from '../../core/api';
+import { FactQueryService } from '../../core/facts';
 import { IPermissionsResolver, PageModel } from '../../core/abstractions';
 import { AuthService } from '../../features/auth';
 import { TagSelectorComponent } from '../../core/tags';
@@ -132,12 +132,12 @@ export class FactSearchResultsComponent implements OnInit {
   }
 
   private loadFacts() {
-    let factsUpdated$ = this.factQueryService.query({
+    let factsUpdated$ = this.factQueryService.query(<FactQuery>{
       tags: this.tags.join(',')
     }).share();
     
     factsUpdated$.subscribe(factPage => {
-      this._facts.next(factPage.items);
+      this._facts.next(factPage.results);
     });
 
     // Delay emitting loading = false intelligently:
@@ -146,7 +146,7 @@ export class FactSearchResultsComponent implements OnInit {
       .subscribe(([factPage]) => {
         this._loading.next(false);
 
-        if (factPage.count === 0) {
+        if (factPage.results.length === 0) {
           this.beginEditTags();
         }
       });

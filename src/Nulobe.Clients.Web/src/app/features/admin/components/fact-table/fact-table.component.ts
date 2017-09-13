@@ -4,7 +4,7 @@ import { DataSource, CollectionViewer } from '@angular/cdk';
 import { Observable, BehaviorSubject } from 'rxjs';
 
 import { Fact } from '../../../../core/api';
-import { PageModel } from '../../../../core/abstractions';
+import { ContinuableResultsModel } from '../../../../core/abstractions';
 import { FactPageProvider, FactPageOptions } from './fact-page.provider';
 
 @Component({
@@ -25,17 +25,15 @@ export class FactTableComponent implements OnInit {
 
   ngOnInit() {
     let factPageProvider = {
-      getFactPage: (pageIndex: number, pageSize: number, options?: FactPageOptions): Observable<PageModel<Fact>> => {
-        let factPage$: Observable<PageModel<Fact>> = this.factPageProvider ?
+      getFactPage: (pageIndex: number, pageSize: number, options?: FactPageOptions): Observable<ContinuableResultsModel<Fact>> => {
+        let factPage$: Observable<ContinuableResultsModel<Fact>> = this.factPageProvider ?
           this.factPageProvider.getFactPage(pageIndex, pageSize, options) :
-          Observable.of(<PageModel<Fact>>{
-            items: [],
-            count: 0,
-            pageNumber: 1
+          Observable.of(<ContinuableResultsModel<Fact>>{
+            results: []
           });
 
         return factPage$.do(p => {
-          this.factCount = p.count;
+          this.factCount = p.results.length;
         });
       }
     };
@@ -72,7 +70,7 @@ class FactDataSource implements DataSource<Fact> {
       let { pageIndex, pageSize } = this.paginator;
       return this.factPageProvider.getFactPage(pageIndex, pageSize, {
         tags: this.tags.join(',')
-      }).map(p => p.items);
+      }).map(p => p.results);
     });
   }
 

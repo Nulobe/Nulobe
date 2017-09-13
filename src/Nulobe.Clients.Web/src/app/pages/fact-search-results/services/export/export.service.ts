@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { QuizletApiClient, QuizletSet } from '../../../../core/api';
+import { QuizletApiClient, QuizletSet, FactQuery } from '../../../../core/api';
 import { AuthService, AUTH_CONSTANTS } from '../../../../features/auth';
 
 import { ExportTarget } from './export-target';
@@ -28,9 +28,8 @@ export class ExportService {
     }
 
     return this.quizletApiClient
-      .createSet({
+      .createSet(<FactQuery>{
         tags: tags.join(','),
-        pageSize: '50'
       })
       .toPromise();
   }

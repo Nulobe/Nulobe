@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { FactQueryService } from '../../core/facts';
-import { Fact } from '../../core/api';
+import { Fact, FactQuery } from '../../core/api';
 
 @Component({
   selector: 'app-fact',
@@ -22,14 +22,14 @@ export class FactComponent implements OnInit {
 
   ngOnInit() {
     this.facts$ = this.activatedRoute.params
-      .flatMap(params => this.factQueryService.query({
+      .flatMap(params => this.factQueryService.query(<FactQuery>{
           slug: `${params.slugNuance}-${params.slugTitle}`
       }))
       .do(r => {
-        if (r.count === 0) {
+        if (r.results.length === 0) {
           this.router.navigate(['404']);
         }
       })
-      .map(r => r.items);
+      .map(r => r.results);
   }
 }

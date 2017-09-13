@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents.Client;
 using AutoMapper;
+using Microsoft.Azure.Documents.Linq;
 
 namespace Nulobe.Api.Core.Facts
 {
@@ -38,44 +39,48 @@ namespace Nulobe.Api.Core.Facts
             _mapper = mapper;
         }
 
-        public Task<FactQueryResult> QueryFactsAsync(FactQuery query)
+        public async Task<FactQueryResult> QueryFactsAsync(FactQuery query)
         {
             using (var client = _documentClientFactory.Create(_documentDbOptions))
             {
-                IEnumerable<FactData> result = null;
+                SqlQuerySpec querySpec = null;
                 if (!string.IsNullOrEmpty(query.Tags))
                 {
-                    result = GetTagFactQueryable(client, query.Tags, query.GetFieldPropertyNames());
+                    querySpec = GetTagFactQuerySpec(query.Tags, query.GetFieldPropertyNames());
                 }
                 else if (!string.IsNullOrEmpty(query.Slug))
                 {
-                    result = GetSlugFactQueryable(client, query.Slug, query.GetFieldPropertyNames());
+                    querySpec = GetSlugFactQuerySpec(query.Slug, query.GetFieldPropertyNames());
                 }
                 else
                 {
-                    result = GetBaseFactQueryable(client, query.GetFieldPropertyNames());
+                    querySpec = GetBaseFactQuerySpec(query.GetFieldPropertyNames());
                 }
 
-                var pageNumber = query.GetPageNumber();
-                var pageSize = query.GetPageSize();
-                return Task.FromResult(new FactQueryResult()
+                var feedOptions = new FeedOptions()
                 {
-                    Count = result.Count(),
-                    PageNumber = pageNumber,
-                    PageSize = pageSize,
-                    Facts = result
-                        .Skip((pageNumber - 1) * pageSize)
-                        .Take(pageSize)
-                        .AsEnumerable()
-                        .Select(f => _mapper.MapWithServices<FactData, Fact>(f, _serviceProvider))
-                });
+                    MaxItemCount = query.PageSize
+                };
+
+                var documentQuery = client.CreateDocumentQuery<FactData>(
+                    _documentDbOptions,
+                    _factServiceOptions.FactCollectionName,
+                    querySpec,
+                    feedOptions).AsDocumentQuery();
+
+                var results = await documentQuery.ExecuteNextAsync<FactData>();
+                return new FactQueryResult()
+                {
+                    Facts = results.Select(f => _mapper.MapWithServices<FactData, Fact>(f, _serviceProvider)),
+                    ContinuationToken = results.ResponseContinuation
+                };
             }
         }
 
 
         #region Helpers
 
-        private IEnumerable<FactData> GetTagFactQueryable(DocumentClient client, string tagsStr, IEnumerable<string> fieldPropertyNames)
+        private SqlQuerySpec GetTagFactQuerySpec(string tagsStr, IEnumerable<string> fieldPropertyNames)
         {
             var sqlQueryText = GetBaseSqlQuery(fieldPropertyNames);
 
@@ -92,28 +97,31 @@ namespace Nulobe.Api.Core.Facts
 
             var sqlParameters = new SqlParameterCollection(tags.Select((t, i) => new SqlParameter($"@tag{i}", t)));
 
-            return GetFactQueryable(client, sqlQueryText, sqlParameters);
+            return new SqlQuerySpec()
+            {
+                QueryText = sqlQueryText,
+                Parameters = sqlParameters
+            };
         }
 
-        private IEnumerable<FactData> GetSlugFactQueryable(DocumentClient client, string slug, IEnumerable<string> fieldPropertyNames)
+        private SqlQuerySpec GetSlugFactQuerySpec(string slug, IEnumerable<string> fieldPropertyNames)
         {
             var sqlQueryText = GetBaseSqlQuery(fieldPropertyNames) + " WHERE f.Slug = @slug";
             var sqlParameters = new SqlParameterCollection(new SqlParameter[] { new SqlParameter("@slug", slug) });
-            return GetFactQueryable(client, sqlQueryText, sqlParameters);
-        }
-
-        private IEnumerable<FactData> GetBaseFactQueryable(DocumentClient client, IEnumerable<string> fieldPropertNames)
-        {
-            return GetFactQueryable(client, GetBaseSqlQuery(fieldPropertNames));
-        }
-
-        private IEnumerable<FactData> GetFactQueryable(DocumentClient client, string sqlQueryText, SqlParameterCollection sqlParameters = null)
-        {
-            return client.CreateDocumentQuery<FactData>(_documentDbOptions, _factServiceOptions.FactCollectionName, new SqlQuerySpec()
+            return new SqlQuerySpec()
             {
                 QueryText = sqlQueryText,
-                Parameters = sqlParameters ?? new SqlParameterCollection()
-            }).ToList();
+                Parameters = sqlParameters
+            };
+        }
+
+        private SqlQuerySpec GetBaseFactQuerySpec(IEnumerable<string> fieldPropertyNames)
+        {
+            return new SqlQuerySpec()
+            {
+                QueryText = GetBaseSqlQuery(fieldPropertyNames),
+                Parameters = new SqlParameterCollection()
+            };
         }
 
         private string GetBaseSqlQuery(IEnumerable<string> fieldPropertyNames)

@@ -2,7 +2,7 @@
 
 namespace Nulobe.Api.Core.Facts
 {
-    public class FactQuery : IPageQuery, IFieldQuery<Fact>
+    public class FactQuery : IFieldQuery<Fact>
     {
         public string Tags { get; set; }
 
@@ -14,8 +14,6 @@ namespace Nulobe.Api.Core.Facts
 
         public string OrderBy { get; set; } = $"{nameof(Fact.Title)}";
 
-        public string PageNumber { get; set; }
-
-        public string PageSize { get; set; }
+        public int PageSize { get; set; } = 100;
     }
 }

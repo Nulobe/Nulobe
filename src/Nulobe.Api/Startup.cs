@@ -105,7 +105,7 @@ namespace Nulobe.Api
                 .AllowAnyMethod()
                 .AllowAnyOrigin() // Can make this more secure
                 .AllowCredentials()
-                .WithExposedHeaders("X-Total-Count"));
+                .WithExposedHeaders("X-Continuation-Token"));
 
             app.MapWhen(
                 context =>

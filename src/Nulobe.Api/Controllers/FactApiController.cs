@@ -29,7 +29,7 @@ namespace Nulobe.Api.Controllers
         public async Task<IActionResult> List([FromQuery] FactQuery query)
         {
             var result = await _factQueryService.QueryFactsAsync(query);
-            Response.Headers.Add("X-Total-Count", result.Count.ToString());
+            Response.Headers.Add("X-Continuation-Token", result.ContinuationToken);
             return Ok(result.Facts);
         }
 

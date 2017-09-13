@@ -44,7 +44,7 @@ namespace Nulobe.Runner
             var serviceProvider = services.BuildServiceProvider();
 
             var factQueryService = serviceProvider.GetRequiredService<IFactQueryService>();
-            var facts = factQueryService.QueryFactsAsync(new FactQuery() { Tags = "dairy" });
+            var facts = factQueryService.QueryFactsAsync(new FactQuery() { Tags = "pigs" });
                 
             var factService = serviceProvider.GetRequiredService<IFactService>();
             //var fact = factService.GetFactAsync("e646e51b-bcc9-4690-af02-053e82298b66").Result;

@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, ReplaySubject } from 'rxjs';
 
-import { Fact } from '../../../../core/api';
-import { FactQueryService, FactQueryModel } from '../../../../core/facts';
-import { PageModel } from '../../../../core/abstractions';
+import { Fact, FactQuery } from '../../../../core/api';
+import { FactQueryService } from '../../../../core/facts';
+import { ContinuableResultsModel } from '../../../../core/abstractions';
 import { FactPageProvider, FactPageOptions } from '../../components/fact-table';
 
 @Component({
@@ -23,9 +23,8 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.factPageProvider = {
-      getFactPage: (pageIndex: number, pageSize: number, options?: FactPageOptions): Observable<PageModel<Fact>> => {
-        return this.factQueryService.query({
-          pageNumber: pageIndex + 1,
+      getFactPage: (pageIndex: number, pageSize: number, options?: FactPageOptions): Observable<ContinuableResultsModel<Fact>> => {
+        return this.factQueryService.query(<FactQuery>{
           pageSize: pageSize,
           tags: options.tags
         });
