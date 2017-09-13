@@ -6,7 +6,6 @@
     <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
     <UserSecretsId>Nulobe-4cafb89d-dd40-46a8-8482-cbbf8ba9f5c3</UserSecretsId>
     <Platform>x64</Platform>
-    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <Import Sdk="Microsoft.NET.Sdk.Web" Project="Sdk.targets" />
