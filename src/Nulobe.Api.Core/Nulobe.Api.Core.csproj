@@ -150,6 +150,7 @@
     <Compile Include="Events\IVoteEventService.cs" />
     <Compile Include="Events\VoteCreate.cs" />
     <Compile Include="Events\VoteEventService.cs" />
+    <Compile Include="Facts\Constants.cs" />
     <Compile Include="Facts\Fact.cs" />
     <Compile Include="Facts\FactAudit.cs" />
     <Compile Include="Facts\FactCreate.cs" />

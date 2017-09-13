@@ -12,6 +12,9 @@ using Nulobe.Utility.Validation;
 using System.Text.RegularExpressions;
 using Nulobe.System.Collections.Generic;
 using Nulobe.Utility.SlugBuilder;
+using Newtonsoft.Json;
+using Microsoft.WindowsAzure.Storage.Table;
+using Nulobe.Microsoft.WindowsAzure.Storage;
 
 namespace Nulobe.Api.Core.Facts
 {
@@ -26,6 +29,7 @@ namespace Nulobe.Api.Core.Facts
         private readonly IClaimsPrincipalAccessor _claimsPrincipalAccessor;
         private readonly Auditor _auditor;
         private readonly IDocumentClientFactory _documentClientFactory;
+        private readonly ICloudStorageClientFactory _cloudStorageClientFactory;
         private readonly IMapper _mapper;
 
         public FactService(
@@ -36,6 +40,7 @@ namespace Nulobe.Api.Core.Facts
             IClaimsPrincipalAccessor claimsPrincipalAccessor,
             Auditor auditor,
             IDocumentClientFactory documentClientFactory,
+            ICloudStorageClientFactory cloudStorageClientFactory,
             IMapper mapper)
         {
             _serviceProvider = serviceProvider;
@@ -45,6 +50,7 @@ namespace Nulobe.Api.Core.Facts
             _claimsPrincipalAccessor = claimsPrincipalAccessor;
             _auditor = auditor;
             _documentClientFactory = documentClientFactory;
+            _cloudStorageClientFactory = cloudStorageClientFactory;
             _mapper = mapper;
         }
 
@@ -54,7 +60,7 @@ namespace Nulobe.Api.Core.Facts
             {
                 try
                 {
-                    var fact = await client.ReadDocumentAsync<FactData>(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
+                    var fact = await client.ReadDocumentAsync<FactData>(_documentDbOptions, Constants.FactCollectionName, id);
                     return _mapper.MapWithServices<FactData, Fact>(fact, _serviceProvider);
                 }
                 catch (DocumentNotFoundException ex)
@@ -71,26 +77,23 @@ namespace Nulobe.Api.Core.Facts
             ValidateFactCreate(create);
 
             var fact = _mapper.Map<FactData>(create);
-            var factAudit = new FactAudit() { CurrentValue = fact };
-            _auditor.AuditAction(nameof(CreateFactAsync), factAudit);
-
+            fact.Id = Guid.NewGuid().ToString();
             fact.Slug = GenerateSlug(fact);
             fact.SlugHistory = new FactDataSlugAudit[]
             {
                 new FactDataSlugAudit()
                 {
                     Slug = fact.Slug,
-                    Created = factAudit.Actioned
+                    Created = DateTime.UtcNow
                 }
             };
 
             if (!dryRun)
             {
-                fact.Id = Guid.NewGuid().ToString();
+                await AuditAsync(nameof(CreateFactAsync), fact);
                 using (var client = _documentClientFactory.Create(_documentDbOptions))
                 {
-                    await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactCollectionName, fact);
-                    await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactAuditCollectionName, factAudit);
+                    await client.CreateDocumentAsync(_documentDbOptions, Constants.FactCollectionName, fact);
                 }
             }
 
@@ -106,19 +109,12 @@ namespace Nulobe.Api.Core.Facts
             var fact = _mapper.Map<FactData>(create);
             using (var client = _documentClientFactory.Create(_documentDbOptions))
             {
-                var existingFact = await client.ReadDocumentAsync<FactData>(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
+                var existingFact = await client.ReadDocumentAsync<FactData>(_documentDbOptions, Constants.FactCollectionName, id);
                 if (existingFact == null)
                 {
                     throw new ClientEntityNotFoundException(typeof(FactData), id);
                 }
-                
-                fact.Id = id;
-                var factAudit = new FactAudit()
-                {
-                    CurrentValue = fact,
-                    PreviousValue = existingFact
-                };
-                _auditor.AuditAction(nameof(UpdateFactAsync), factAudit);
+                fact.Id = existingFact.Id;
 
                 if (fact.Title.Equals(existingFact.Title, StringComparison.OrdinalIgnoreCase))
                 {
@@ -135,13 +131,13 @@ namespace Nulobe.Api.Core.Facts
                             new FactDataSlugAudit()
                             {
                                 Slug = fact.Slug,
-                                Created = factAudit.Actioned
+                                Created = DateTime.UtcNow
                             }
                         });
                 }
 
-                await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactAuditCollectionName, factAudit);
-                await client.ReplaceDocumentAsync(_documentDbOptions, _factServiceOptions.FactCollectionName, id, fact);
+                await AuditAsync(nameof(UpdateFactAsync), fact, existingFact);
+                await client.ReplaceDocumentAsync(_documentDbOptions, Constants.FactCollectionName, id, fact);
             }
 
             return _mapper.MapWithServices<FactData, Fact>(fact, _serviceProvider);
@@ -154,17 +150,14 @@ namespace Nulobe.Api.Core.Facts
 
             using (var client = _documentClientFactory.Create(_documentDbOptions))
             {
-                var fact = await client.ReadDocumentAsync<FactData>(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
+                var fact = await client.ReadDocumentAsync<FactData>(_documentDbOptions, Constants.FactCollectionName, id);
                 if (fact == null)
                 {
                     throw new ClientEntityNotFoundException(typeof(Fact), id);
                 }
 
-                var factAudit = new FactAudit() { PreviousValue = fact };
-                _auditor.AuditAction(nameof(DeleteFactAsync), factAudit);
-
-                await client.CreateDocumentAsync(_documentDbOptions, _factServiceOptions.FactAuditCollectionName, factAudit);
-                await client.DeleteDocumentAsync(_documentDbOptions, _factServiceOptions.FactCollectionName, id);
+                await AuditAsync(nameof(UpdateFactAsync), null, fact);
+                await client.DeleteDocumentAsync(_documentDbOptions, Constants.FactCollectionName, id);
             }
         }
 
@@ -243,6 +236,27 @@ namespace Nulobe.Api.Core.Facts
             slugBuilder.Add(new Random().Next(10000, 99999));
             slugBuilder.Add(fact.Title);
             return slugBuilder.ToString();
+        }
+
+        private async Task AuditAsync(string actionName, FactData currentValue = null, FactData previousValue = null)
+        {
+            string getJson(FactData data) => data == null ? null : JsonConvert.SerializeObject(data);
+
+            var factAudit = new FactAudit()
+            {
+                PartitionKey = currentValue?.Id ?? previousValue?.Id,
+                RowKey = Guid.NewGuid().ToString(),
+                CurrentValueJson = getJson(currentValue),
+                PreviousValueJson = getJson(previousValue)
+            };
+
+            _auditor.AuditAction(actionName, factAudit);
+
+            var tableClient = _cloudStorageClientFactory.CreateTableClient();
+            var table = tableClient.GetTableReference("factaudits");
+            await table.CreateIfNotExistsAsync();
+
+            await table.ExecuteAsync(TableOperation.Insert(factAudit));
         }
 
         #endregion
