@@ -6,6 +6,7 @@
     <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
     <UserSecretsId>Nulobe-4cafb89d-dd40-46a8-8482-cbbf8ba9f5c3</UserSecretsId>
     <Platform>x64</Platform>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <Import Sdk="Microsoft.NET.Sdk.Web" Project="Sdk.targets" />
@@ -40,6 +41,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\util\Nulobe.DocumentDb.Client\Nulobe.DocumentDb.Client.csproj" />
     <ProjectReference Include="..\..\util\Nulobe.Microsoft.Extensions\Nulobe.Microsoft.Extensions.csproj" />
+    <ProjectReference Include="..\..\util\Nulobe.Microsoft.WindowsAzure.Storage\Nulobe.Microsoft.WindowsAzure.Storage.csproj" />
     <ProjectReference Include="..\Nulobe.Api.Core\Nulobe.Api.Core.csproj" />
     <ProjectReference Include="..\Nulobe.Api.Quizlet\Nulobe.Api.Quizlet.csproj" />
     <ProjectReference Include="..\Nulobe.Framework\Nulobe.Framework.csproj" />

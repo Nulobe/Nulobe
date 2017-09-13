@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,18 +12,21 @@ namespace Nulobe.Api.Core.Events
     {
         public EventMappingProfile()
         {
+            CreateMap<IEventCreate, Event>()
+                .ForMember(dest => dest.RowKey, opts => opts.ResolveUsing(src => Guid.NewGuid().ToString()))
+                .ForMember(dest => dest.PartitionKey, opts => opts.ResolveUsing(src => src.FactId));
+
             CreateMap<FlagCreate, Event>()
-                .ForMember(dest => dest.Type, opts => opts.UseValue(EventType.Flag))
-                .AfterMap((src, dest) =>
+                .IncludeBase<IEventCreate, Event>()
+                .ForMember(dest => dest.EventType, opts => opts.UseValue("flag"))
+                .ForMember(dest => dest.DataJson, opts => opts.ResolveUsing(src => JsonConvert.SerializeObject(new
                 {
-                    dest.Data = new
-                    {
-                        Desription = src.Description
-                    };
-                });
+                    Desription = src.Description
+                })));
 
             CreateMap<VoteCreate, Event>()
-                .ForMember(dest => dest.Type, opts => opts.UseValue(EventType.Like));
+                .IncludeBase<IEventCreate, Event>()
+                .ForMember(dest => dest.EventType, opts => opts.UseValue("like"));
         }
     }
 }

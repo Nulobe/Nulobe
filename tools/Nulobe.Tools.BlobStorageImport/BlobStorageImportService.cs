@@ -18,12 +18,12 @@ namespace Nulobe.Tools.BlobStorageImport
 {
     public class BlobStorageImportService
     {
-        private readonly ICloudBlobClientFactory _cloudBlobClientFactory;
+        private readonly ICloudStorageClientFactory _cloudBlobClientFactory;
         private readonly IDocumentClientFactory _documentDbClientFactory;
         private readonly DocumentDbOptions _documentDbOptions;
 
         public BlobStorageImportService(
-            ICloudBlobClientFactory cloudBlobClientFactory,
+            ICloudStorageClientFactory cloudBlobClientFactory,
             IDocumentClientFactory documentDbClientFactory,
             IOptions<DocumentDbOptions> documentDbOptions)
         {
@@ -63,7 +63,7 @@ namespace Nulobe.Tools.BlobStorageImport
 
         private async Task<dynamic[]> GetLatestFactsAsync()
         {
-            var client = await _cloudBlobClientFactory.Create().GetCloudBlobContainerAsync("prodcopy");
+            var client = await _cloudBlobClientFactory.CreateBlobClient().GetCloudBlobContainerAsync("prodcopy");
 
             var dts = EnumerableSeedExtensions.Seed(10, prev => prev.AddDays(-1), DateTime.UtcNow);
             foreach (var dt in dts)

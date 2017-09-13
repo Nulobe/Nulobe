@@ -595,19 +595,24 @@ export interface FlagCreate {
     description?: string | undefined;
 }
 
-export interface Event {
-    id?: string | undefined;
-    factId?: string | undefined;
-    type: EventType;
-    created: Date;
-    createdByIp?: string | undefined;
-    data?: any | undefined;
+/** Represents the base object type for a table entity in the Table service. */
+export interface TableEntity {
+    /** Gets or sets the entity's partition key. */
+    partitionKey?: string | undefined;
+    /** Gets or sets the entity's row key. */
+    rowKey?: string | undefined;
+    /** Gets or sets the entity's timestamp. */
+    timestamp: Date;
+    /** Gets or sets the entity's ETag. Set this value to '*' in order to force an overwrite to an entity as part of an update operation. */
+    eTag?: string | undefined;
 }
 
-export enum EventType {
-    Unknown = 0, 
-    Flag = 1, 
-    Like = 2, 
+export interface Event extends TableEntity {
+    factId?: string | undefined;
+    eventType?: string | undefined;
+    created: Date;
+    createdByIp?: string | undefined;
+    dataJson?: string | undefined;
 }
 
 export interface QuizletTokenRequest {

@@ -3,6 +3,7 @@ using Nulobe.Api.Core.Events;
 using Nulobe.Api.Core.Facts;
 using Nulobe.Api.Core.Tags;
 using Nulobe.DocumentDb.Client;
+using Nulobe.Microsoft.WindowsAzure.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,8 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<ITagMemoryRepository, TagMemoryRepository>();
             services.AddTransient<IFlagEventService, FlagEventService>();
             services.AddTransient<IVoteEventService, VoteEventService>();
+
+            services.AddTransient<ICloudStorageClientFactory, CloudStorageClientFactory>();
 
             services.Configure<FactServiceOptions>(configuration.GetSection("Nulobe:FactService"));
             services.Configure<EventServiceOptions>(configuration.GetSection("Nulobe:EventService"));

@@ -33,7 +33,7 @@ namespace Nulobe.Jobs.BlobStorageBackup
             services.ConfigureStorage(configuration);
 
             services.AddTransient<CosmosDataMigrationToolClient>();
-            services.AddTransient<ICloudBlobClientFactory, CloudBlobClientFactory>();
+            services.AddTransient<ICloudStorageClientFactory, CloudStorageClientFactory>();
             services.AddTransient<AzureBlobStorageService>();
 
             var serviceProvider = services.BuildServiceProvider();

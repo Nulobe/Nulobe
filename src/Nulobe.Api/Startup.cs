@@ -21,6 +21,7 @@ using Microsoft.Azure.Documents.Client;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents;
+using Nulobe.Microsoft.WindowsAzure.Storage;
 
 namespace Nulobe.Api
 {
@@ -60,10 +61,11 @@ namespace Nulobe.Api
             services.ConfigureAuth0(_configuration);
             services.ConfigureQuizlet(_configuration);
             services.ConfigureDocumentDb(_configuration);
+            services.ConfigureStorage(_configuration);
+            services.ConfigureCountries(_configuration);
 
             services.AddCoreApiServices(_configuration);
             services.AddQuizletApiServices();
-            services.ConfigureCountries(_configuration);
 
             services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IClaimsPrincipalAccessor, HttpClaimsPrincipalAccessor>();

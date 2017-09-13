@@ -34,7 +34,7 @@ namespace Nulobe.Tools.BlobStorageImport
             services.ConfigureStorage(configuration);
 
             services.AddTransient<CosmosDataMigrationToolClient>();
-            services.AddTransient<ICloudBlobClientFactory, CloudBlobClientFactory>();
+            services.AddTransient<ICloudStorageClientFactory, CloudStorageClientFactory>();
             services.AddTransient<IDocumentClientFactory, DocumentClientFactory>();
 
             var serviceProvider = services.BuildServiceProvider();

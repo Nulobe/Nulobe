@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,19 +8,16 @@ using System.Threading.Tasks;
 
 namespace Nulobe.Api.Core.Events
 {
-    public class Event
+    public class Event : TableEntity
     {
-        [JsonProperty("id")]
-        public string Id { get; set; }
-
         public string FactId { get; set; }
 
-        public EventType Type { get; set; }
+        public string EventType { get; set; }
 
         public DateTime Created { get; set; }
 
         public string CreatedByIp { get; set; }
 
-        public object Data { get; set; }
+        public string DataJson { get; set; }
     }
 }

@@ -165,7 +165,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AzureBlobStorageService.cs" />
-    <Compile Include="AzureStorageOptions.cs" />
     <Compile Include="BlobStorageBackupService.cs" />
     <Compile Include="FileStorageData.cs" />
     <Compile Include="Program.cs" />

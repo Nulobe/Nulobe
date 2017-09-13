@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Nulobe.Microsoft.WindowsAzure.Storage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,20 +15,18 @@ namespace Nulobe.Jobs.BlobStorageBackup
 {
     public class AzureBlobStorageService
     {
-        private readonly AzureStorageOptions _azureStorageAccountOptions;
+        private readonly StorageOptions _storageOptions;
         private readonly ILogger _logger;
         
         private CloudBlobClient _cloudBlobClient;
 
         public AzureBlobStorageService(
-            IOptions<AzureStorageOptions> azureStorageAccountOptions,
+            IOptions<StorageOptions> storageOptions,
             ILogger<AzureBlobStorageService> logger)
         {
-            _azureStorageAccountOptions = azureStorageAccountOptions.Value;
+            _storageOptions = storageOptions.Value;
             _logger = logger;
         }
-
-        public string StorageName { get; set; }
 
         public async Task<string> UploadAsync(FileStorageData fileStorageData)
         {
@@ -103,7 +102,7 @@ namespace Nulobe.Jobs.BlobStorageBackup
         {
             if (_cloudBlobClient == null)
             {
-                var storageAccount = CloudStorageAccount.Parse(_azureStorageAccountOptions.ConnectionString);
+                var storageAccount = CloudStorageAccount.Parse(_storageOptions.ConnectionString);
                 _logger.LogInformation($"Creating blob client at uri {storageAccount.BlobEndpoint}");
                 _cloudBlobClient = storageAccount.CreateCloudBlobClient();
             }

@@ -18,14 +18,14 @@ namespace Nulobe.Jobs.BlobStorageBackup
         private readonly DocumentDbOptions _documentDbOptions;
         private readonly AzureBlobStorageService _azureBlobStorageService;
         private readonly CosmosDataMigrationToolClient _cosmosDataMigrationToolClient;
-        private readonly ICloudBlobClientFactory _cloudBlobClientFactory;
+        private readonly ICloudStorageClientFactory _cloudBlobClientFactory;
 
         public BlobStorageBackupService(
             IOptions<StorageOptions> storageOptions,
             IOptions<DocumentDbOptions> documentDbOptions,
             AzureBlobStorageService azureBlobStorageService,
             CosmosDataMigrationToolClient cosmosDataMigrationToolClient,
-            ICloudBlobClientFactory cloudBlobClientFactory)
+            ICloudStorageClientFactory cloudBlobClientFactory)
         {
             _storageOptions = storageOptions.Value;
             _documentDbOptions = documentDbOptions.Value;
@@ -53,7 +53,7 @@ namespace Nulobe.Jobs.BlobStorageBackup
 
             using (var fs = File.OpenRead(outputPath))
             {
-                var containerClient = _cloudBlobClientFactory.Create();
+                var containerClient = _cloudBlobClientFactory.CreateBlobClient();
                 var container = await containerClient.GetCloudBlobContainerAsync("prodcopy", BlobContainerPublicAccessType.Blob);
 
                 var now = DateTime.UtcNow;
