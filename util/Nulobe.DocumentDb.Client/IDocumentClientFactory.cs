@@ -9,6 +9,8 @@ namespace Nulobe.DocumentDb.Client
 {
     public interface IDocumentClientFactory
     {
-        DocumentClient Create(IDocumentDbConnectionSpec connectionSpec);
+        DocumentClient Create(IDocumentDbConnectionSpec connectionSpec, bool readOnly = false);
+
+        DocumentClient Create(bool readOnly = false);
     }
 }

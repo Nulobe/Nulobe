@@ -11,6 +11,7 @@ namespace Nulobe.Framework
     {
         public Uri ServiceEndpoint { get; set; }
         public string AuthorizationKey { get; set; }
+        public string ReadOnlyAuthorizationKey { get; set; }
         public string DatabaseName { get; set; }
     }
 }

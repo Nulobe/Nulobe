@@ -21,16 +21,13 @@ namespace Nulobe.Api.Core.Tags
         private DateTime _cachedTagsAge = DateTime.MinValue;
 
         private readonly DocumentDbOptions _documentDbOptions;
-        private readonly FactServiceOptions _factServiceOptions;
         private readonly IDocumentClientFactory _documentClientFactory;
 
         public TagMemoryRepository(
             IOptions<DocumentDbOptions> documentDbOptions,
-            IOptions<FactServiceOptions> factServiceOptions,
             IDocumentClientFactory documentClientFactory)
         {
             _documentDbOptions = documentDbOptions.Value;
-            _factServiceOptions = factServiceOptions.Value;
             _documentClientFactory = documentClientFactory;
         }
 

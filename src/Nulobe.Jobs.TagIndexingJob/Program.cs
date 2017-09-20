@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+using Nulobe.Microsoft.WindowsAzure.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.DependencyInjection;
-using Nulobe.CosmosDataMigration;
-using Nulobe.Microsoft.WindowsAzure.Storage;
 
-namespace Nulobe.Jobs.BlobStorageBackup
+namespace Nulobe.Jobs.TagIndexingJob
 {
     class Program
     {
@@ -31,12 +30,11 @@ namespace Nulobe.Jobs.BlobStorageBackup
             services.AddOptions();
             services.ConfigureDocumentDb(configuration);
             services.ConfigureStorage(configuration);
-
-            services.AddTransient<CosmosDataMigrationToolClient>();
+            
             services.AddTransient<ICloudStorageClientFactory, CloudStorageClientFactory>();
 
             var serviceProvider = services.BuildServiceProvider();
-            var blobStorageBackup = ActivatorUtilities.CreateInstance<BlobStorageBackupService>(serviceProvider);
+            var blobStorageBackup = ActivatorUtilities.CreateInstance<TagIndexingJob>(serviceProvider);
             blobStorageBackup.RunAsync().Wait();
         }
 

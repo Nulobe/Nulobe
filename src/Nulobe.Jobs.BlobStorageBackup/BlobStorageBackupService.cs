@@ -16,20 +16,17 @@ namespace Nulobe.Jobs.BlobStorageBackup
     {
         private readonly StorageOptions _storageOptions;
         private readonly DocumentDbOptions _documentDbOptions;
-        private readonly AzureBlobStorageService _azureBlobStorageService;
         private readonly CosmosDataMigrationToolClient _cosmosDataMigrationToolClient;
         private readonly ICloudStorageClientFactory _cloudBlobClientFactory;
 
         public BlobStorageBackupService(
             IOptions<StorageOptions> storageOptions,
             IOptions<DocumentDbOptions> documentDbOptions,
-            AzureBlobStorageService azureBlobStorageService,
             CosmosDataMigrationToolClient cosmosDataMigrationToolClient,
             ICloudStorageClientFactory cloudBlobClientFactory)
         {
             _storageOptions = storageOptions.Value;
             _documentDbOptions = documentDbOptions.Value;
-            _azureBlobStorageService = azureBlobStorageService;
             _cosmosDataMigrationToolClient = cosmosDataMigrationToolClient;
             _cloudBlobClientFactory = cloudBlobClientFactory;
         }

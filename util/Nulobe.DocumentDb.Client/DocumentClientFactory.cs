@@ -18,5 +18,15 @@ namespace Nulobe.DocumentDb.Client
         {
             return new DocumentClient(connectionSpec.ServiceEndpoint, connectionSpec.AuthorizationKey);
         }
+
+        DocumentClient IDocumentClientFactory.Create(IDocumentDbConnectionSpec connectionSpec, bool readOnly)
+        {
+            return new DocumentClient(connectionSpec.ServiceEndpoint, connectionSpec.AuthorizationKey);
+        }
+
+        DocumentClient IDocumentClientFactory.Create(bool readOnly)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

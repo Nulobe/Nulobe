@@ -151,6 +151,7 @@
     <Compile Include="CloudBlobClientExtensions.cs" />
     <Compile Include="CloudStorageClientFactory.cs" />
     <Compile Include="CloudBlobContainerExtensions.cs" />
+    <Compile Include="CloudTableExtensions.cs" />
     <Compile Include="ICloudStorageClientFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StorageOptions.cs" />
