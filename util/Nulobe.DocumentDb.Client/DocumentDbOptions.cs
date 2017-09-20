@@ -4,10 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nulobe.CosmosDataMigration
+namespace Nulobe.DocumentDb.Client
 {
-    public class CosmosSinkOptions
+    public class DocumentDbOptions
     {
         public string ConnectionString { get; set; }
+
+        public string ReadOnlyConnectionString { get; set; }
+
+        public string DatabaseName { get; set; }
     }
 }

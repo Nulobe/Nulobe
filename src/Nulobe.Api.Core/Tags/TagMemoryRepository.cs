@@ -1,8 +1,5 @@
-﻿using Microsoft.Azure.Documents;
-using Microsoft.Extensions.Options;
-using Nulobe.Api.Core.Facts;
-using Nulobe.DocumentDb.Client;
-using Nulobe.Framework;
+﻿using Microsoft.WindowsAzure.Storage.Table;
+using Nulobe.Microsoft.WindowsAzure.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,16 +16,13 @@ namespace Nulobe.Api.Core.Tags
         private readonly SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
         private IEnumerable<Tag> _cachedTags = Enumerable.Empty<Tag>();
         private DateTime _cachedTagsAge = DateTime.MinValue;
-
-        private readonly DocumentDbOptions _documentDbOptions;
-        private readonly IDocumentClientFactory _documentClientFactory;
+        
+        private readonly ICloudStorageClientFactory _cloudStorageClientFactory;
 
         public TagMemoryRepository(
-            IOptions<DocumentDbOptions> documentDbOptions,
-            IDocumentClientFactory documentClientFactory)
+            ICloudStorageClientFactory cloudStorageClientFactory)
         {
-            _documentDbOptions = documentDbOptions.Value;
-            _documentClientFactory = documentClientFactory;
+            _cloudStorageClientFactory = cloudStorageClientFactory;
         }
 
         public async Task<IEnumerable<Tag>> GetTagsAsync()
@@ -41,7 +35,7 @@ namespace Nulobe.Api.Core.Tags
 
                     if (DateTime.UtcNow > _cachedTagsAge + MaxTagsAge)
                     {
-                        _cachedTags = await GetTagsFromDatabaseAsync();
+                        _cachedTags = await GetTagsFromTableAsync();
                     }
                 }
                 finally
@@ -52,31 +46,34 @@ namespace Nulobe.Api.Core.Tags
             return _cachedTags;
         }
 
-        private Task<IEnumerable<Tag>> GetTagsFromDatabaseAsync()
+        private async Task<IEnumerable<Tag>> GetTagsFromTableAsync()
         {
-            var sqlQuery = new SqlQuerySpec()
-            {
-                QueryText = @"
-                    SELECT f.Tags
-                    FROM Facts f"
-            };
+            var tableClient = _cloudStorageClientFactory.CreateTableClient();
+            var tagTableRef = tableClient.GetTagsTableReference();
 
-            IEnumerable<Fact> facts = null;
-            using (var client = _documentClientFactory.Create(_documentDbOptions))
+            await tagTableRef.CreateIfNotExistsAsync();
+
+            var tagEntities = await tagTableRef.ListAsync<TagEntity>();
+            return tagEntities.Select(e => new Tag
             {
-                facts = client.CreateDocumentQuery<Fact>(_documentDbOptions, Constants.FactCollectionName, sqlQuery).ToList();
+                Text = e.Text,
+                UsageCount = e.UsageCount
+            });
+        }
+
+        private class TagEntity : TableEntity
+        {
+            public TagEntity()
+            {
             }
 
-            var tags = facts
-                .SelectMany(f => f.Tags)
-                .GroupBy(t => t, StringComparer.InvariantCultureIgnoreCase)
-                .Select(g => new Tag()
-                {
-                    Text = g.Key,
-                    UsageCount = g.Count()
-                });
+            public TagEntity(string text) : base("NOT-PARTITIONED", text.ToUpperInvariant())
+            {
+                Text = text;
+            }
 
-            return Task.FromResult(tags);
+            public string Text { get; set; }
+            public int UsageCount { get; set; }
         }
     }
 }

@@ -192,6 +192,10 @@
       <Project>{3c3d2457-06a9-4f10-9bec-e26eadd0b4c7}</Project>
       <Name>Nulobe.CosmosDataMigration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\util\Nulobe.DocumentDb.Client\Nulobe.DocumentDb.Client.csproj">
+      <Project>{779F6F7E-0EAE-45A8-BD9D-069D8F75C0A3}</Project>
+      <Name>Nulobe.DocumentDb.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\util\Nulobe.Microsoft.Extensions\Nulobe.Microsoft.Extensions.csproj">
       <Project>{1ed50f87-b739-4391-9ac4-3b1d7aa2ba7b}</Project>
       <Name>Nulobe.Microsoft.Extensions</Name>

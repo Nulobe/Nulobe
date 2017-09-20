@@ -29,7 +29,7 @@ namespace Nulobe.Jobs.BlobStorageBackup
             var services = new ServiceCollection();
             services.AddLogging();
             services.AddOptions();
-            services.ConfigureDocumentDb(configuration);
+            services.AddDocumentDb(configuration);
             services.ConfigureStorage(configuration);
 
             services.AddTransient<CosmosDataMigrationToolClient>();

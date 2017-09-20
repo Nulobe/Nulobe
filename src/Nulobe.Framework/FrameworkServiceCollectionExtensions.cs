@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Nulobe.DocumentDb.Client;
 using Nulobe.Framework;
 using Nulobe.Microsoft.WindowsAzure.Storage;
 using System;
@@ -25,11 +26,13 @@ namespace Microsoft.Extensions.DependencyInjection
             return services.Configure<QuizletOptions>(configuration.GetSection("Nulobe:Quizlet"));
         }
 
-        public static IServiceCollection ConfigureDocumentDb(
+        public static IServiceCollection AddDocumentDb(
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            return services.Configure<DocumentDbOptions>(configuration.GetSection("Nulobe:DocumentDb"));
+            return services
+                .Configure<DocumentDbOptions>(configuration.GetSection("DocumentDb"))
+                .AddTransient<IDocumentClientFactory, DocumentClientFactory>();
         }
 
         public static IServiceCollection ConfigureCountries(

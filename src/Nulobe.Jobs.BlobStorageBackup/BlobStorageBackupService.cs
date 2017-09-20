@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Nulobe.CosmosDataMigration;
+using Nulobe.DocumentDb.Client;
 using Nulobe.Framework;
 using Nulobe.Microsoft.WindowsAzure.Storage;
 using System;
@@ -36,8 +37,7 @@ namespace Nulobe.Jobs.BlobStorageBackup
             _cosmosDataMigrationToolClient.Transfer(
                 new CosmosSink(new CosmosSinkOptions()
                 {
-                    ServiceEndpoint = _documentDbOptions.ServiceEndpoint,
-                    AuthorizationKey = _documentDbOptions.AuthorizationKey
+                    ConnectionString = _documentDbOptions.ConnectionString
                 }),
                 new JsonFileDataSink(new JsonFileDataSinkOptions()
                 {

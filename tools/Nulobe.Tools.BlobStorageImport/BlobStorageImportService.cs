@@ -35,10 +35,9 @@ namespace Nulobe.Tools.BlobStorageImport
         public async Task RunAsync()
         {
             var facts = await GetLatestFactsAsync();
-            using (var documentClient = _documentDbClientFactory.Create(_documentDbOptions))
+            using (var documentClient = _documentDbClientFactory.Create())
             {
-                var databaseUri = UriFactoryExtensions.CreateDocumentDatabaseUri(_documentDbOptions);
-
+                var databaseUri = UriFactory.CreateDatabaseUri("Nulobe");
                 try
                 {
                     await documentClient.DeleteDatabaseAsync(databaseUri);
@@ -51,10 +50,10 @@ namespace Nulobe.Tools.BlobStorageImport
                     }
                 }
 
-                await documentClient.EnsureCollectionAsync(_documentDbOptions, "Facts");
+                await documentClient.EnsureFactCollectionAsync();
                 foreach (var fact in facts)
                 {
-                    await DocumentClientExtensions.CreateDocumentAsync(documentClient, _documentDbOptions, "Facts", fact);
+                    await FrameworkDocumentClientExtensions.CreateFactDocumentAsync(documentClient, fact);
                 }
             }
         }

@@ -18,7 +18,6 @@ namespace Nulobe.Api.Core.Facts
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly FactServiceOptions _factServiceOptions;
-        private readonly DocumentDbOptions _documentDbOptions;
         private readonly IClaimsPrincipalAccessor _claimsPrincipalAccessor;
         private readonly IDocumentClientFactory _documentClientFactory;
         private readonly IMapper _mapper;
@@ -26,14 +25,12 @@ namespace Nulobe.Api.Core.Facts
         public FactQueryService(
             IServiceProvider serviceProvider,
             IOptions<FactServiceOptions> factServiceOptions,
-            IOptions<DocumentDbOptions> documentDbOptions,
             IClaimsPrincipalAccessor claimsPrincipalAccessor,
             IDocumentClientFactory documentClientFactory,
             IMapper mapper)
         {
             _serviceProvider = serviceProvider;
             _factServiceOptions = factServiceOptions.Value;
-            _documentDbOptions = documentDbOptions.Value;
             _claimsPrincipalAccessor = claimsPrincipalAccessor;
             _documentClientFactory = documentClientFactory;
             _mapper = mapper;
@@ -41,7 +38,7 @@ namespace Nulobe.Api.Core.Facts
 
         public async Task<FactQueryResult> QueryFactsAsync(FactQuery query)
         {
-            using (var client = _documentClientFactory.Create(_documentDbOptions))
+            using (var client = _documentClientFactory.Create(readOnly: true))
             {
                 SqlQuerySpec querySpec = null;
                 if (!string.IsNullOrEmpty(query.Tags))
@@ -62,12 +59,7 @@ namespace Nulobe.Api.Core.Facts
                     MaxItemCount = query.PageSize
                 };
 
-                var documentQuery = client.CreateDocumentQuery<FactData>(
-                    _documentDbOptions,
-                    Constants.FactCollectionName,
-                    querySpec,
-                    feedOptions).AsDocumentQuery();
-
+                var documentQuery = client.CreateFactDocumentQuery<FactData>(querySpec, feedOptions).AsDocumentQuery();
                 var results = await documentQuery.ExecuteNextAsync<FactData>();
                 return new FactQueryResult()
                 {

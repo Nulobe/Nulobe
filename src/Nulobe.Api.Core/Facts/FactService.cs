@@ -56,11 +56,11 @@ namespace Nulobe.Api.Core.Facts
 
         public async Task<Fact> GetFactAsync(string id)
         {
-            using (var client = _documentClientFactory.Create(_documentDbOptions))
+            using (var client = _documentClientFactory.Create(readOnly: true))
             {
                 try
                 {
-                    var fact = await client.ReadDocumentAsync<FactData>(_documentDbOptions, Constants.FactCollectionName, id);
+                    var fact = await client.ReadFactDocumentAsync<FactData>(id);
                     return _mapper.MapWithServices<FactData, Fact>(fact, _serviceProvider);
                 }
                 catch (DocumentNotFoundException ex)
@@ -91,9 +91,9 @@ namespace Nulobe.Api.Core.Facts
             if (!dryRun)
             {
                 await AuditAsync(nameof(CreateFactAsync), fact);
-                using (var client = _documentClientFactory.Create(_documentDbOptions))
+                using (var client = _documentClientFactory.Create())
                 {
-                    await client.CreateDocumentAsync(_documentDbOptions, Constants.FactCollectionName, fact);
+                    await client.CreateDocumentAsync(Constants.FactCollectionName, fact);
                 }
             }
 
@@ -107,9 +107,9 @@ namespace Nulobe.Api.Core.Facts
             ValidateFactCreate(create);
 
             var fact = _mapper.Map<FactData>(create);
-            using (var client = _documentClientFactory.Create(_documentDbOptions))
+            using (var client = _documentClientFactory.Create())
             {
-                var existingFact = await client.ReadDocumentAsync<FactData>(_documentDbOptions, Constants.FactCollectionName, id);
+                var existingFact = await client.ReadFactDocumentAsync<FactData>(id);
                 if (existingFact == null)
                 {
                     throw new ClientEntityNotFoundException(typeof(FactData), id);
@@ -137,7 +137,7 @@ namespace Nulobe.Api.Core.Facts
                 }
 
                 await AuditAsync(nameof(UpdateFactAsync), fact, existingFact);
-                await client.ReplaceDocumentAsync(_documentDbOptions, Constants.FactCollectionName, id, fact);
+                await client.ReplaceFactDocumentAsync(id, fact);
             }
 
             return _mapper.MapWithServices<FactData, Fact>(fact, _serviceProvider);
@@ -148,16 +148,16 @@ namespace Nulobe.Api.Core.Facts
             AssertAuthenticated();
             Validator.ValidateStringNotNullOrEmpty(id, nameof(id));
 
-            using (var client = _documentClientFactory.Create(_documentDbOptions))
+            using (var client = _documentClientFactory.Create())
             {
-                var fact = await client.ReadDocumentAsync<FactData>(_documentDbOptions, Constants.FactCollectionName, id);
+                var fact = await client.ReadFactDocumentAsync<FactData>(id);
                 if (fact == null)
                 {
                     throw new ClientEntityNotFoundException(typeof(Fact), id);
                 }
 
                 await AuditAsync(nameof(UpdateFactAsync), null, fact);
-                await client.DeleteDocumentAsync(_documentDbOptions, Constants.FactCollectionName, id);
+                await client.DeleteFactDocumentAsync(id);
             }
         }
 

@@ -39,9 +39,9 @@ namespace Nulobe.Api.Core.Events
         async Task<Event> IEventService<TEventCreate>.CreateEventAsync(TEventCreate create)
         {
             // TODO: Validate TEventCreate
-            using (var client = _documentClientFactory.Create(_documentDbOptions))
+            using (var client = _documentClientFactory.Create(readOnly: true))
             {
-                var fact = await client.ReadDocumentAsync<Fact>(_documentDbOptions, "Facts", create.FactId);
+                var fact = await client.ReadFactDocumentAsync<Fact>(create.FactId);
                 if (fact == null)
                 {
                     throw new ClientException($"Fact with ID {create.FactId} could not be found");

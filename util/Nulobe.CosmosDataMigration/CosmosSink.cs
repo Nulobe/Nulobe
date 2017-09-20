@@ -26,8 +26,7 @@ namespace Nulobe.CosmosDataMigration
             {
                 { "ConnectionString", string.Join(";", new Dictionary<string, string>()
                     {
-                        { "AccountEndpoint", _options.ServiceEndpoint.ToString() },
-                        { "AccountKey", _options.AuthorizationKey },
+                        { "ConnectionString", _options.ConnectionString },
                         { "Database", databaseName }
                     }
                     .Select(kvp => $"{kvp.Key}={kvp.Value}")) },

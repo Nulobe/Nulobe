@@ -15,16 +15,13 @@ namespace Nulobe.Jobs.TagIndexingJob
 {
     public class TagIndexingJob
     {
-        private readonly DocumentDbOptions _documentDbOptions;
         private readonly IDocumentClientFactory _documentClientFactory;
         private readonly ICloudStorageClientFactory _cloudStorageClientFactory;
 
         public TagIndexingJob(
-            IOptions<DocumentDbOptions> documentDbOptions,
             IDocumentClientFactory documentClientFactory,
             ICloudStorageClientFactory cloudStorageClientFactory)
         {
-            _documentDbOptions = documentDbOptions.Value;
             _documentClientFactory = documentClientFactory;
             _cloudStorageClientFactory = cloudStorageClientFactory;
         }
@@ -39,9 +36,14 @@ namespace Nulobe.Jobs.TagIndexingJob
             };
 
             IEnumerable<Fact> facts = null;
-            using (var client = _documentClientFactory.Create(_documentDbOptions))
+            using (var client = _documentClientFactory.Create(readOnly: true))
             {
-                facts = client.CreateDocumentQuery<Fact>(_documentDbOptions, "Facts", sqlQuery).ToList();
+                facts = client.CreateFactDocumentQuery<Fact>(new SqlQuerySpec()
+                {
+                    QueryText = @"
+                    SELECT f.Tags
+                    FROM Facts f"
+                }).ToList();
             }
 
             var tags = facts
@@ -63,7 +65,7 @@ namespace Nulobe.Jobs.TagIndexingJob
         private async Task<IEnumerable<Tag>> GetRemovedTagsAsync(CloudTable tagTableRef, IEnumerable<Tag> newTags)
         {
             var existingTags = await tagTableRef.ListAsync<Tag>();
-            return existingTags.ExceptBy(newTags, t => t.PartitionKey, StringComparer.InvariantCultureIgnoreCase);
+            return existingTags.ExceptBy(newTags, t => t.Text, StringComparer.InvariantCultureIgnoreCase);
         }
 
         private class Fact
@@ -77,8 +79,9 @@ namespace Nulobe.Jobs.TagIndexingJob
             {
             }
 
-            public Tag(string text) : base(text, text)
+            public Tag(string text) : base("NOT-PARTITIONED", text.ToUpperInvariant())
             {
+                Text = text;
             }
 
             public string Text { get; set; }

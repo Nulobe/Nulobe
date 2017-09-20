@@ -60,7 +60,7 @@ namespace Nulobe.Api
 
             services.ConfigureAuth0(_configuration);
             services.ConfigureQuizlet(_configuration);
-            services.ConfigureDocumentDb(_configuration);
+            services.AddDocumentDb(_configuration);
             services.ConfigureStorage(_configuration);
             services.ConfigureCountries(_configuration);
 
@@ -80,15 +80,13 @@ namespace Nulobe.Api
             IHostingEnvironment env,
             ILoggerFactory loggerFactory,
             IDocumentClientFactory documentClientFactory,
-            IOptions<DocumentDbOptions> documentDbOptions,
-            IOptions<FactServiceOptions> factServiceOptions,
             IOptions<Auth0Options> auth0Options)
         {
             loggerFactory.AddConsole();
 
-            using (var client = documentClientFactory.Create(documentDbOptions.Value))
+            using (var client = documentClientFactory.Create())
             {
-                client.EnsureCollectionAsync(documentDbOptions.Value, Core.Facts.Constants.FactCollectionName).Wait();
+                client.EnsureFactCollectionAsync().Wait();
             }
 
             if (env.IsDevelopment())

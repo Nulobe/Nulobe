@@ -34,7 +34,7 @@ namespace Nulobe.Runner
 
             services.AddCoreApiServices(configuration);
             services.AddQuizletApiServices();
-            services.ConfigureDocumentDb(configuration);
+            services.AddDocumentDb(configuration);
 
             services.ConfigureQuizlet(configuration);
             services.AddTransient<IRemoteIpAddressAccessor, StubbedRemoteIpAddressAccessor>();
