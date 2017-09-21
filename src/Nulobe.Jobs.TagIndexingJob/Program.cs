@@ -33,8 +33,8 @@ namespace Nulobe.Jobs.TagIndexingJob
             services.AddTransient<ICloudStorageClientFactory, CloudStorageClientFactory>();
 
             var serviceProvider = services.BuildServiceProvider();
-            var blobStorageBackup = ActivatorUtilities.CreateInstance<TagIndexingJob>(serviceProvider);
-            blobStorageBackup.RunAsync().Wait();
+            var BlobStorageBackupJob = ActivatorUtilities.CreateInstance<TagIndexingJob>(serviceProvider);
+            BlobStorageBackupJob.RunAsync().Wait();
         }
 
         private class MockHostingEnvironment : IHostingEnvironment

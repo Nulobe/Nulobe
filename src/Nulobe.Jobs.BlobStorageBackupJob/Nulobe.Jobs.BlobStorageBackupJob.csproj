@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{85AB39AE-552E-442E-9AF9-8FCB06E22C4F}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Nulobe.Jobs.BlobStorageBackup</RootNamespace>
-    <AssemblyName>Nulobe.Jobs.BlobStorageBackup</AssemblyName>
+    <RootNamespace>Nulobe.Jobs.BlobStorageBackupJob</RootNamespace>
+    <AssemblyName>Nulobe.Jobs.BlobStorageBackupJob</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -164,7 +164,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BlobStorageBackupService.cs" />
+    <Compile Include="BlobStorageBackupJob.cs" />
     <Compile Include="FileStorageData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -215,7 +215,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>robocopy $(SolutionDir)exe\dt-1.7 $(TargetDir)dt-1.7 * /E if %25errorlevel%25 leq 1 exit 0 else exit %25errorlevel%25</PostBuildEvent>
+    <PostBuildEvent>robocopy $(SolutionDir)exe\dt-1.7 $(TargetDir)dt-1.7 * /E exit 0</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\..\packages\Microsoft.Extensions.Configuration.UserSecrets.1.1.2\build\netstandard1.0\Microsoft.Extensions.Configuration.UserSecrets.targets" Condition="Exists('..\..\packages\Microsoft.Extensions.Configuration.UserSecrets.1.1.2\build\netstandard1.0\Microsoft.Extensions.Configuration.UserSecrets.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

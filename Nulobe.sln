@@ -45,7 +45,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nulobe.Utility", "util\Nulo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nulobe.AutoMapper", "util\Nulobe.AutoMapper\Nulobe.AutoMapper.csproj", "{4CEEF981-6EED-42AA-AA9F-92A70791CEBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nulobe.Jobs.BlobStorageBackup", "src\Nulobe.Jobs.BlobStorageBackup\Nulobe.Jobs.BlobStorageBackup.csproj", "{85AB39AE-552E-442E-9AF9-8FCB06E22C4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nulobe.Jobs.BlobStorageBackupJob", "src\Nulobe.Jobs.BlobStorageBackupJob\Nulobe.Jobs.BlobStorageBackupJob.csproj", "{85AB39AE-552E-442E-9AF9-8FCB06E22C4F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nulobe.CosmosDataMigration", "util\Nulobe.CosmosDataMigration\Nulobe.CosmosDataMigration.csproj", "{3C3D2457-06A9-4F10-9BEC-E26EADD0B4C7}"
 EndProject

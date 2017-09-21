@@ -11,16 +11,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nulobe.Jobs.BlobStorageBackup
+namespace Nulobe.Jobs.BlobStorageBackupJob
 {
-    public class BlobStorageBackupService
+    public class BlobStorageBackupJob
     {
         private readonly StorageOptions _storageOptions;
         private readonly DocumentDbOptions _documentDbOptions;
         private readonly CosmosDataMigrationToolClient _cosmosDataMigrationToolClient;
         private readonly ICloudStorageClientFactory _cloudBlobClientFactory;
 
-        public BlobStorageBackupService(
+        public BlobStorageBackupJob(
             IOptions<StorageOptions> storageOptions,
             IOptions<DocumentDbOptions> documentDbOptions,
             CosmosDataMigrationToolClient cosmosDataMigrationToolClient,
@@ -34,19 +34,20 @@ namespace Nulobe.Jobs.BlobStorageBackup
 
         public async Task RunAsync()
         {
+            var outputPath = Path.Combine(Directory.GetCurrentDirectory(), "Nulobe.Facts.json");
+            File.Delete(outputPath);
+
             _cosmosDataMigrationToolClient.Transfer(
                 new CosmosSink(new CosmosSinkOptions()
                 {
-                    ConnectionString = _documentDbOptions.ConnectionString
+                    ConnectionString = _documentDbOptions.ReadOnlyConnectionString
                 }),
                 new JsonFileDataSink(new JsonFileDataSinkOptions()
                 {
                     Directory = Directory.GetCurrentDirectory()
                 }),
-                _documentDbOptions.DatabaseName,
+                "Nulobe",
                 "Facts");
-
-            var outputPath = Path.Combine(Directory.GetCurrentDirectory(), "Nulobe.Facts.json");
 
             using (var fs = File.OpenRead(outputPath))
             {

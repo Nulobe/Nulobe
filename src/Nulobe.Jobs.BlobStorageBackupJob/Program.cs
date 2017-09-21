@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Nulobe.CosmosDataMigration;
 using Nulobe.Microsoft.WindowsAzure.Storage;
 
-namespace Nulobe.Jobs.BlobStorageBackup
+namespace Nulobe.Jobs.BlobStorageBackupJob
 {
     class Program
     {
@@ -36,8 +36,8 @@ namespace Nulobe.Jobs.BlobStorageBackup
             services.AddTransient<ICloudStorageClientFactory, CloudStorageClientFactory>();
 
             var serviceProvider = services.BuildServiceProvider();
-            var blobStorageBackup = ActivatorUtilities.CreateInstance<BlobStorageBackupService>(serviceProvider);
-            blobStorageBackup.RunAsync().Wait();
+            var blobStorageBackupJob = ActivatorUtilities.CreateInstance<BlobStorageBackupJob>(serviceProvider);
+            blobStorageBackupJob.RunAsync().Wait();
         }
 
         private class MockHostingEnvironment : IHostingEnvironment

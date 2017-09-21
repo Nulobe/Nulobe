@@ -38,6 +38,10 @@ export class TagSelectorComponent implements OnInit {
     this.tagInput_tags = this.tags.map(t => this.createTagModel(t));
     this.placeholder = this.placeholder || "+ Tag";
     this.secondaryPlaceholder  = this.secondaryPlaceholder || "Enter a new tag";
+
+    // Ensure production API warms up as soon as possible.
+    this.tagInput_lastApiCallText = '';
+    this.tagInput_lastApiCall = this.getApiSuggestions('');
   }
 
   focus() {
@@ -51,7 +55,7 @@ export class TagSelectorComponent implements OnInit {
       return Observable.of([]);
     } else {
       let apiSuggestions: Promise<Tag[]> = null;
-      if (this.tagInput_lastApiCallText && text.includes(this.tagInput_lastApiCallText)) {
+      if (this.tagInput_lastApiCallText === '' || (this.tagInput_lastApiCallText && text.includes(this.tagInput_lastApiCallText))) {
         // Retrieve a subset of the last API results
         let normalizeText = text.toLowerCase();
         apiSuggestions = this.tagInput_lastApiCall.then(tags =>
@@ -59,11 +63,7 @@ export class TagSelectorComponent implements OnInit {
 
       } else {
         this.tagInput_lastApiCallText = text;
-
-        apiSuggestions = this.tagApiClient
-          .list(text, "text,usagecount", "usagecount")
-          .toPromise();
-
+        apiSuggestions = this.getApiSuggestions(text);
         this.tagInput_lastApiCall = apiSuggestions;
       }
 
@@ -110,5 +110,11 @@ export class TagSelectorComponent implements OnInit {
       display: `${text}`,
       value: `${text}`
     };
+  }
+
+  getApiSuggestions(text: string) {
+    return this.tagApiClient
+      .list(text, "text,usagecount", "usagecount")
+      .toPromise();
   }
 }

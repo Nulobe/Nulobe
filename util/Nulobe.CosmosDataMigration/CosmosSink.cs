@@ -24,12 +24,7 @@ namespace Nulobe.CosmosDataMigration
         private DataSinkArgumentCollection GetSinkArguments(string databaseName, string collectionName) =>
             new DataSinkArgumentCollection(new Dictionary<string, string>()
             {
-                { "ConnectionString", string.Join(";", new Dictionary<string, string>()
-                    {
-                        { "ConnectionString", _options.ConnectionString },
-                        { "Database", databaseName }
-                    }
-                    .Select(kvp => $"{kvp.Key}={kvp.Value}")) },
+                { "ConnectionString", $"{_options.ConnectionString};Database={databaseName}" },
                 { "Collection", collectionName }
             });
     }

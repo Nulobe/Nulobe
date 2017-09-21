@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nulobe.Jobs.BlobStorageBackup
+namespace Nulobe.Jobs.BlobStorageBackupJob
 {
     public class FileStorageData
     {
