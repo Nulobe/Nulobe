@@ -14,8 +14,7 @@
       <a class="url" *ngIf="source.url" href="{{ source.url }}">{{ source.url }}</a>
     </li>
     <li class="notes" *ngIf="fact.notesMarkdown">
-      <span>&#8224;</span>
-      <markdown>{{ fact.notesMarkdown }}</markdown>
+      <markdown>&#8224; {{ fact.notesMarkdown }}</markdown>
     </li>
   </ul>
   <div class="tags-list-container">

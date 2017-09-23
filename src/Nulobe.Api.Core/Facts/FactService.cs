@@ -93,7 +93,7 @@ namespace Nulobe.Api.Core.Facts
                 await AuditAsync(nameof(CreateFactAsync), fact);
                 using (var client = _documentClientFactory.Create())
                 {
-                    await client.CreateDocumentAsync(Constants.FactCollectionName, fact);
+                    await client.CreateFactDocumentAsync(fact);
                 }
             }
 
