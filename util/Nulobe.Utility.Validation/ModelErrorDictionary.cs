@@ -10,20 +10,18 @@ namespace Nulobe.Utility.Validation
     {
         public IEnumerable<string> Errors { get; private set; }
 
+        public ModelErrorDictionary(string member, string error)
+            : this(new Dictionary<string, IEnumerable<string>>() { { member, new string[] { error } } }) { }
+
         public ModelErrorDictionary(
-            IEnumerable<string> modelErrors = null,
-            Dictionary<string, IEnumerable<string>> errorsByMember = null) : base(errorsByMember ?? new Dictionary<string, IEnumerable<string>>())
+            Dictionary<string, IEnumerable<string>> errorsByMember,
+            IEnumerable<string> modelErrors = null) : base(errorsByMember)
         {
-            Errors = Enumerable.Empty<string>();
+            Errors = errorsByMember.SelectMany(kvp => kvp.Value);
 
             if (modelErrors != null)
             {
                 Errors = Errors.Concat(modelErrors);
-            }
-
-            if (errorsByMember != null)
-            {
-                Errors = Errors.Concat(errorsByMember.SelectMany(kvp => kvp.Value));
             }
         }
 

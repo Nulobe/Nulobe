@@ -568,23 +568,18 @@ export interface Fact {
     definition?: string | undefined;
     notesMarkdown?: string | undefined;
     country?: string | undefined;
-    sources?: Source[] | undefined;
+    sources?: any[] | undefined;
     tags?: string[] | undefined;
     readOnlyTags?: string[] | undefined;
     credit?: string | undefined;
     slug?: string | undefined;
 }
 
-export interface Source {
-    url: string;
-    description?: string | undefined;
-}
-
 export interface FactCreate {
     title?: string | undefined;
     definition?: string | undefined;
     notesMarkdown?: string | undefined;
-    sources?: Source[] | undefined;
+    sources?: any[] | undefined;
     tags?: string[] | undefined;
     credit?: string | undefined;
     country?: string | undefined;

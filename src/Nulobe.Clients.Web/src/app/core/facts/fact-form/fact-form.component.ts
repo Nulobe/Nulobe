@@ -3,13 +3,13 @@ import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@ang
 import { Observable } from 'rxjs';
 
 import { NULOBE_ENV_SETTINGS } from '../../../app.settings';
-import { FactCreate, Source } from '../../api';
+import { FactCreate } from '../../api';
 
 interface FactFormValue {
   title: string;
   definition: string;
   notesMarkdown: string;
-  indexedSources: Source[];
+  indexedSources: any[];
   country: string;
 }
 
@@ -132,7 +132,7 @@ export class FactFormComponent implements OnInit {
     return this.fact.tags.length && this.form.valid;
   }
 
-  private createIndexedSource(source?: Source): FormGroup {
+  private createIndexedSource(source?: any): FormGroup {
     let { fb } = this;
     return fb.group({
       url: fb.control(source ? source.url : ''),

@@ -15,6 +15,7 @@ using Nulobe.Utility.SlugBuilder;
 using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Storage.Table;
 using Nulobe.Microsoft.WindowsAzure.Storage;
+using Nulobe.Api.Core.Sources;
 
 namespace Nulobe.Api.Core.Facts
 {
@@ -28,6 +29,7 @@ namespace Nulobe.Api.Core.Facts
         private readonly CountryOptions _countryOptions;
         private readonly IClaimsPrincipalAccessor _claimsPrincipalAccessor;
         private readonly Auditor _auditor;
+        private readonly SourceValidator _sourceValidator;
         private readonly IDocumentClientFactory _documentClientFactory;
         private readonly ICloudStorageClientFactory _cloudStorageClientFactory;
         private readonly IMapper _mapper;
@@ -39,6 +41,7 @@ namespace Nulobe.Api.Core.Facts
             IOptions<CountryOptions> countryOptions,
             IClaimsPrincipalAccessor claimsPrincipalAccessor,
             Auditor auditor,
+            SourceValidator sourceValidator,
             IDocumentClientFactory documentClientFactory,
             ICloudStorageClientFactory cloudStorageClientFactory,
             IMapper mapper)
@@ -49,6 +52,7 @@ namespace Nulobe.Api.Core.Facts
             _countryOptions = countryOptions.Value;
             _claimsPrincipalAccessor = claimsPrincipalAccessor;
             _auditor = auditor;
+            _sourceValidator = sourceValidator;
             _documentClientFactory = documentClientFactory;
             _cloudStorageClientFactory = cloudStorageClientFactory;
             _mapper = mapper;
@@ -74,7 +78,7 @@ namespace Nulobe.Api.Core.Facts
         {
             AssertAuthenticated();
             Validator.ValidateNotNull(create, nameof(create));
-            ValidateFactCreate(create);
+            await ValidateFactCreateAsync(create);
 
             var fact = _mapper.Map<FactData>(create);
             fact.Id = Guid.NewGuid().ToString();
@@ -104,7 +108,7 @@ namespace Nulobe.Api.Core.Facts
         {
             AssertAuthenticated();
             Validator.ValidateNotNull(create, nameof(create));
-            ValidateFactCreate(create);
+            await ValidateFactCreateAsync(create);
 
             var fact = _mapper.Map<FactData>(create);
             using (var client = _documentClientFactory.Create())
@@ -172,7 +176,7 @@ namespace Nulobe.Api.Core.Facts
             }
         }
 
-        private void ValidateFactCreate(FactCreate create)
+        private async Task ValidateFactCreateAsync(FactCreate create)
         {
             var (isValid, modelErrors) = Validator.IsValid(create);
 
@@ -212,10 +216,10 @@ namespace Nulobe.Api.Core.Facts
             var sources = create.Sources.ToList();
             for (var i = 0; i < sources.Count(); i++)
             {
-                var (isSourceValid, sourceModelErrors) = Validator.IsValid(sources[i]);
-                if (!isSourceValid)
+                SourceValidationResult validationResult = await _sourceValidator.IsValidAsync(sources[i]);
+                if (!validationResult.IsValid)
                 {
-                    modelErrors.Add(sourceModelErrors, $"{nameof(create.Sources)}[{i}]");
+                    modelErrors.Add(validationResult.ModelErrors, $"{nameof(create.Sources)}[{i}]");
                 }
             }
 

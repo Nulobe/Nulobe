@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Nulobe.Api.Core.Sources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Nulobe.Api.Core.Facts
 
         public string Country { get; set; }
 
-        public IEnumerable<Source> Sources { get; set; }
+        public IEnumerable<dynamic> Sources { get; set; }
 
         public IEnumerable<string> Tags { get; set; }
 

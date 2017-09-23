@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Nulobe.Api.Core.Sources;
 using Nulobe.Utility.Validation;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace Nulobe.Api.Core.Facts
 
         public string NotesMarkdown { get; set; }
 
-        public IEnumerable<Source> Sources { get; set; }
+        public IEnumerable<dynamic> Sources { get; set; }
 
         public IEnumerable<string> Tags { get; set; }
 

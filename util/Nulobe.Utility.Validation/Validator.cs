@@ -10,8 +10,6 @@ namespace Nulobe.Utility.Validation
 {
     public static class Validator
     {
-
-
         public static (bool isValid, ModelErrorDictionary modelErrors) IsValid(
            object model,
            IServiceProvider serviceProvider = null,
@@ -24,11 +22,11 @@ namespace Nulobe.Utility.Validation
             var (resultsWithMember, resultsWithoutMember) = validationResults.Fork(v => v.MemberNames.Count() > 0);
 
             return (isValid, new ModelErrorDictionary(
-                resultsWithoutMember.Select(v => v.ErrorMessage),
                 resultsWithMember
                     .SelectMany(v => v.MemberNames.Select(m => (MemberName: m, ErrorMessage: v.ErrorMessage)))
                     .ToLookup(t => t.MemberName)
-                    .ToDictionary(g => g.Key, g => g.Select(t => t.ErrorMessage))));
+                    .ToDictionary(g => g.Key, g => g.Select(t => t.ErrorMessage)),
+                resultsWithoutMember.Select(v => v.ErrorMessage)));
         }
 
         public static void Validate(object model, IServiceProvider serviceProvider = null, IDictionary<object, object> items = null)
