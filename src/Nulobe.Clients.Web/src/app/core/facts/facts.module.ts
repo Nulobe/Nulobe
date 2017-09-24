@@ -7,6 +7,7 @@ import { MarkdownModule } from 'angular2-markdown';
 
 import { TagsModule } from '../tags';
 import { SourcesModule } from '../sources';
+import { BrandModule } from '../brand';
 
 import { FactListComponent } from './fact-list/fact-list.component';
 import { FactListItemComponent } from './fact-list-item/fact-list-item.component';
@@ -24,7 +25,8 @@ import { FactQueryService } from './fact-query/fact-query.service';
     MdSelectModule,
     MarkdownModule,
     TagsModule,
-    SourcesModule
+    SourcesModule,
+    BrandModule
   ],
   declarations: [
     FactListComponent,

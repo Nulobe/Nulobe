@@ -9,13 +9,14 @@
   </div>
   <ul class="footnotes">
     <li class="source" *ngFor="let source of citedSources; let i = index;">
-      <span>{{ i + 1 }}</span>
+      <span class="index">{{ i + 1 }}</span>
       <span *ngIf="source.type === 1">
         <span *ngIf="source.description">{{ source.description }}</span>
         <a class="url" *ngIf="source.url" href="{{ source.url }}">{{ source.url }}</a>
       </span>
-      <span *ngIf="source.type === 2">
+      <span *ngIf="source.type === 2" class="fact">
         <a href="{{ factLinkResolver.resolve(source.factId) }}">{{ source.factTitle }}</a>
+        <span class="logo-container"><core-logo [widthPixels]="15"></core-logo></span>
       </span>
     </li>
     <li class="notes" *ngIf="fact.notesMarkdown">

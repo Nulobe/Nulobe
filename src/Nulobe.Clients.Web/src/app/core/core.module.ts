@@ -6,6 +6,7 @@ import { FactsModule, FactListComponent, FactListItemComponent, FactFormBulkComp
 import { SpinnerModule, SpinnerComponent } from './spinner';
 import { TagsModule, TagListComponent, TagSelectorComponent } from './tags';
 import { SourcesModule, SourceFormListComponent } from './sources';
+import { BrandModule, LogoComponent } from './brand';
 
 @NgModule({
   imports: [
@@ -14,13 +15,16 @@ import { SourcesModule, SourceFormListComponent } from './sources';
     FactsModule,
     SpinnerModule,
     TagsModule,
-    SourcesModule
+    SourcesModule,
+    BrandModule
   ],
   exports: [
     FactListComponent, FactListItemComponent, FactFormBulkComponent, FactFormComponent,
     SpinnerComponent,
     TagListComponent, TagSelectorComponent,
-    SourceFormListComponent
-  ]
+    SourceFormListComponent,
+    LogoComponent
+  ],
+  declarations: []
 })
 export class CoreModule { }

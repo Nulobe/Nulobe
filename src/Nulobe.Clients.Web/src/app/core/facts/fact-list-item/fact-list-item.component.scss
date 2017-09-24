@@ -16,6 +16,27 @@
             }
         }
 
+        li.source {
+
+            .index {
+                margin-right: 3px;
+            }
+
+            .fact {
+                position: relative;
+
+                a {
+                    font-style: normal;
+                }
+
+                .logo-container {
+                    position: absolute;
+                    right: -20px;
+                    bottom: -2px;
+                }
+            }
+        }
+
         li.notes {
             /deep/ markdown {
                 display: inline-block;
