@@ -21,7 +21,6 @@ namespace Nulobe.Api.Core.Facts
                         .ToObject<IDictionary<string, object>>()
                         .ToDictionary(kvp => kvp.Key.Substring(0, 1).ToUpper() + kvp.Key.Substring(1), kvp => kvp.Value))));
 
-
             CreateMap<FactData, Fact>()
                 .EnsureServices()
                 .ForMember(

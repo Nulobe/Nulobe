@@ -39,7 +39,7 @@ export class FactListComponent implements OnInit {
         }
         return `/n/${fact.slug}`;
       }
-    }
+    };
   }
 
   navigateToTag(tag: string) {
