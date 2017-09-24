@@ -4,14 +4,13 @@ import { Observable, BehaviorSubject } from 'rxjs';
 
 import { NULOBE_ENV_SETTINGS } from '../../../app.settings';
 import { FactCreate } from '../../api';
-import { SourceType } from '../../sources';
+import { Source, SourceType, SourcePropertyHelper } from '../../sources';
 
 interface FactFormValue {
   title: string;
   definition: string;
   notesMarkdown: string;
-  indexedSources: any[];
-  sources: any[];
+  sources: Source[];
   country: string;
 }
 
@@ -52,7 +51,6 @@ export class FactFormComponent implements OnInit, AfterViewInit {
       title: fb.control(this.fact.title, Validators.required),
       definition: fb.control(this.fact.definition, Validators.required),
       notesMarkdown: fb.control(this.fact.notesMarkdown),
-      indexedSources: fb.array(this.fact.sources.map(s => this.createIndexedSource(s))),
       country: fb.control(this.fact.country)
     });
 
@@ -63,29 +61,6 @@ export class FactFormComponent implements OnInit, AfterViewInit {
     this.updateSourceCount(this.form.value);
     this.form.valueChanges.subscribe((formValue: FactFormValue) => {
       this.updateSourceCount(formValue);
-    });
-
-    this.sourceCount$.subscribe(sourceCount => {
-      let indexedSources = this.getIndexedSources();
-      let existingSourceCount = indexedSources.controls.length;
-      
-      let sourceCountDiff = sourceCount - existingSourceCount;
-      if (sourceCountDiff > 0) {
-        for (let i = 0; i < sourceCountDiff; i++) {
-          indexedSources.push(this.createIndexedSource());
-        }
-      } else if (sourceCountDiff < 0) {
-        let lastUnindexedSource = (<any[]>indexedSources.value)
-          .filter((v, i) => i >= sourceCount)
-          .reduce((prev, curr, i) => {
-            let { url, description } = curr;
-            return url || description ? i : prev;
-          }, -1);
-        
-        for (let i = sourceCount + 1 + lastUnindexedSource; i < existingSourceCount; i++) {
-          indexedSources.removeAt(i);
-        }
-      }
     });
 
     this.form.valueChanges.subscribe(() => {
@@ -101,16 +76,12 @@ export class FactFormComponent implements OnInit, AfterViewInit {
     this.triggerFactChanges();
   }
 
-  getIndexedSources(): FormArray {
-    return this.form.get('indexedSources') as FormArray;
-  }
-
   private triggerFactChanges() {
     let formValue: FactFormValue = this.form.value;
     this.fact = {
       title: formValue.title || '',
       definition: formValue.definition || '',
-      sources: formValue.indexedSources,
+      sources: formValue.sources.map(s => this.pruneSource(s)),
       notesMarkdown: formValue.notesMarkdown,
       tags: this.fact.tags,
       country: formValue.country
@@ -130,15 +101,6 @@ export class FactFormComponent implements OnInit, AfterViewInit {
     return this.fact.tags.length && this.form.valid;
   }
 
-  private createIndexedSource(source?: any): FormGroup {
-    let { fb } = this;
-    return fb.group({
-      type: fb.control(source ? source.type : 0),
-      url: fb.control(source ? source.url : ''),
-      description: fb.control(source ? source.description : '')
-    });
-  }
-
   private updateSourceCount(formValue: FactFormValue) {
     let sourceReferenceRegex = /\[(\d+)\]/g;
     let definition = formValue.definition;
@@ -154,6 +116,17 @@ export class FactFormComponent implements OnInit, AfterViewInit {
       .reduce((prev, curr) => Math.max(prev, curr), 0);
 
     this.sourceCount.next(Math.min(maxSourceIndex, 10));
+  }
+
+  private pruneSource(source: Source): Source {
+    let result: Source = { type: source.type };
+    
+    let properties = SourcePropertyHelper.getProperties(source.type);
+    properties.forEach(p => {
+      result[p] = source[p];
+    });
+
+    return result;
   }
 
 }

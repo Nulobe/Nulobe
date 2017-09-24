@@ -3,6 +3,7 @@ import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 
 import { Source } from '../source';
 import { SourceType } from '../source-type';
+import { SourcePropertyHelper } from '../helpers/source-property.helper';
 
 @Component({
   selector: 'core-source-form',
@@ -33,7 +34,8 @@ export class SourceFormComponent implements OnInit, OnDestroy {
     this.sourceFormGroup = fb.group({
       type: fb.control(source.type),
       url: fb.control(source.url),
-      description: fb.control(source.description)
+      description: fb.control(source.description),
+      factId: fb.control(source.factId)
     });
 
     this.parentFormArray.push(this.sourceFormGroup);
@@ -41,5 +43,10 @@ export class SourceFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.parentFormArray.removeAt(this.sourceIndex);
+  }
+
+  hasProperty(propName: string) {
+    let type: SourceType = this.sourceFormGroup.get('type').value;
+    return SourcePropertyHelper.hasProperty(type, propName);
   }
 }

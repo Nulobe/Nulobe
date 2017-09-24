@@ -6,14 +6,19 @@
       <md-option [value]="1">Legacy</md-option>
     </md-select>
   </div>
-  <div class="description">
+  <div class="description" *ngIf="hasProperty('description')">
     <md-input-container>
       <textarea mdInput formControlName="description" placeholder="Description of source {{ sourceIndex + 1 }}" tabindex="0"></textarea>
     </md-input-container>
   </div>
-  <div class="url">
+  <div class="url" *ngIf="hasProperty('url')">
     <md-input-container>
       <input mdInput type="url" formControlName="url" placeholder="Link to source {{ sourceIndex + 1 }}" />
     </md-input-container>
   </div>
+  <div class="fact-id" *ngIf="hasProperty('factId')">
+      <md-input-container>
+        <input mdInput type="factId" formControlName="factId" placeholder="Nulobe Nueron ID (GUID) for source {{ sourceIndex + 1 }}" />
+      </md-input-container>
+    </div>
 </div>

@@ -16,32 +16,6 @@
         [sources]="fact.sources"
         [sourceCount]="sourceCount$ | async"></core-source-form-list>
     </div>
-    <div class="sources">
-      <div class="indexed-sources">
-        <div class="source" formArrayName="indexedSources" *ngFor="let indexedSourceControl of getIndexedSources().controls; let i = index;">
-          <div class="index">{{ i + 1 }}.</div>
-          <div class="source-details" [formGroupName]="i">
-            <div class="type">
-              <md-select formControlName="type" floatPlaceholder="never">
-                <md-option [value]="3">Citation Needed</md-option>
-                <md-option [value]="2">Nulobe</md-option>
-                <md-option [value]="3">Legacy</md-option>
-              </md-select>
-            </div>
-            <div class="description">
-              <md-input-container>
-                <textarea mdInput formControlName="description" placeholder="Description of source {{ i + 1 }}" tabindex="0"></textarea>
-              </md-input-container>
-            </div>
-            <div class="url">
-              <md-input-container>
-                <input mdInput type="url" formControlName="url" placeholder="Link to source {{ i + 1 }}" />
-              </md-input-container>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="notes">
       <md-input-container>
         <textarea mdInput formControlName="notesMarkdown" placeholder="Notes" rows="5"></textarea>

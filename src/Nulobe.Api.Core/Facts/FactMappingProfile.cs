@@ -15,10 +15,11 @@ namespace Nulobe.Api.Core.Facts
         public FactMappingProfile()
         {
             CreateMap<FactCreate, FactData>()
-                //.ForMember(dest => dest.Sources, opts => opts.ResolveUsing(src => src.Sources.Select(s => (IDictionary<string, object>)s)));
                 .ForMember(
                     dest => dest.Sources,
-                    opts => opts.ResolveUsing(src => src.Sources.Select(s => s.ToObject<IDictionary<string, object>>())));
+                    opts => opts.ResolveUsing(src => src.Sources.Select(s => s
+                        .ToObject<IDictionary<string, object>>()
+                        .ToDictionary(kvp => kvp.Key.Substring(0, 1).ToUpper() + kvp.Key.Substring(1), kvp => kvp.Value))));
 
 
             CreateMap<FactData, Fact>()
@@ -31,7 +32,8 @@ namespace Nulobe.Api.Core.Facts
                         {
                             s.Add("type", SourceType.Legacy);
                         }
-                        return s;
+
+                        return s.ToDictionary(kvp => kvp.Key.Substring(0, 1).ToLower() + kvp.Key.Substring(1), kvp => kvp.Value);
                     })))
                 .BeforeMap((factData, fact) =>
                 {

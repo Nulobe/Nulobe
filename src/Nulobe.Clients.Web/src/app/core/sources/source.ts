@@ -1,8 +1,9 @@
 import { SourceType } from './source-type';
 
 export interface Source {
-    trackById: number;
+    trackById?: number;
     type: SourceType;
     url?: string;
     description?: string;
+    factId?: string;
 }
