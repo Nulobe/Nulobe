@@ -16,13 +16,6 @@
             @include align-items(center);
             margin-bottom: 200px;
 
-            .brand {
-                width: 100px;
-                height: 100px;
-                //background: url("assets/images/garlic.svg") no-repeat center;
-                background-size: contain;
-            }
-
             .tag-selector-container {
                 @include flex-display();
                 @include justify-content(center);

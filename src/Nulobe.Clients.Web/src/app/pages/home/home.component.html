@@ -2,10 +2,7 @@
   <div class="content-container">
     <div class="content">
       <div class="brand-container">
-        <img
-          src="/assets/images/garlic.png"
-          width="100px"
-          height="100px" />
+        <core-logo [widthPixels]="100"></core-logo>
       </div>
       <div class="tag-selector-container" [ngClass]="{ 'has-tag': searchTags.length > 0 }">
         <core-tag-selector
