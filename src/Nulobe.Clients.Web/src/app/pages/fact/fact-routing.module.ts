@@ -6,8 +6,12 @@ import { FactComponent } from './fact.component';
 const routes: Routes = [
   {
     component: FactComponent,
-    path: 'n/:slugNuance/:slugTitle'  
-  }  
+    path: 'n/:slugNuance/:slugTitle'
+  },
+  {
+    component: FactComponent,
+    path: 'n/:factId'
+  }
 ];
 
 @NgModule({

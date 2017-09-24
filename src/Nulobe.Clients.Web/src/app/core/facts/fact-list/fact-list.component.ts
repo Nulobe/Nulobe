@@ -4,7 +4,7 @@ import { Fact } from '../../api/api.swagger';
 import { IPermissionsResolver } from '../../abstractions';
 
 export interface FactLinkResolver {
-  resolve(fact: Fact): string;
+  resolve(fact: Fact | string): string;
 }
 
 @Component({
@@ -29,7 +29,7 @@ export class FactListComponent implements OnInit {
   ngOnInit() {
     if (!this.factLinkResolver) {
       this.factLinkResolver = {
-       resolve: (f: Fact) => '#' 
+        resolve: (f: Fact) => '#' 
       };
     }
 

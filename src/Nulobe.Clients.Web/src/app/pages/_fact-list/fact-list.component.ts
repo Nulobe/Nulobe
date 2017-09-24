@@ -6,6 +6,7 @@ import { NULOBE_ENV_SETTINGS } from '../../app.settings';
 import { IPermissionsResolver } from '../../core/abstractions';
 import { Fact, VoteApiClient, FlagApiClient } from '../../core/api';
 import { AuthService } from '../../features/auth';
+import { FactLinkResolver } from '../../core/facts';
 
 @Component({
   selector: 'app-fact-list',
@@ -16,6 +17,7 @@ export class FactListComponent implements OnInit {
   @Input() facts$: Observable<Fact>;
 
   permissionsResolver: IPermissionsResolver;
+  factLinkResolver: FactLinkResolver;
 
   constructor(
     private voteApiClient: VoteApiClient,
@@ -28,6 +30,16 @@ export class FactListComponent implements OnInit {
     this.permissionsResolver = {
       resolve: () => this.authService.isAuthenticated() 
     };
+
+    this.factLinkResolver = {
+      resolve: (fact: Fact | string) => {
+        if (typeof(fact) === 'string') {
+          // Parameter is factId
+          return `/n/${fact}`;
+        }
+        return `/n/${fact.slug}`;
+      }
+    }
   }
 
   navigateToTag(tag: string) {

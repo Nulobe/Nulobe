@@ -28,9 +28,9 @@ namespace Nulobe.Api.Core.Facts
                     dest => dest.Sources,
                     opts => opts.ResolveUsing(src => src.Sources.Select(s =>
                     {
-                        if (!s.ContainsKey("type"))
+                        if (!s.ContainsKey("Type"))
                         {
-                            s.Add("type", SourceType.Legacy);
+                            s.Add("Type", SourceType.Legacy);
                         }
 
                         return s.ToDictionary(kvp => kvp.Key.Substring(0, 1).ToLower() + kvp.Key.Substring(1), kvp => kvp.Value);

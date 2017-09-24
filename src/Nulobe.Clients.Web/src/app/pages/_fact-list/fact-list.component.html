@@ -1,5 +1,6 @@
 <core-fact-list
     [facts]="facts$ | async"
+    [factLinkResolver]="factLinkResolver"
     [permissionsResolver]="permissionsResolver"
     (onTagSelect)="navigateToTag($event)"
     (onVote)="voteFact($event)"

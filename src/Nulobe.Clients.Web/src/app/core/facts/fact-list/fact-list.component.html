@@ -2,6 +2,7 @@
   <div *ngFor="let fact of facts" class="fact-container">
     <core-fact-list-item
       [fact]="fact"
+      [factLinkResolver]="factLinkResolver"
       (onTagClick)="tagClicked($event)"></core-fact-list-item>
     <!--<a [routerLink]="factLinkResolver.resolve(fact)">
       <core-fact-list-item [fact]="fact"></core-fact-list-item>

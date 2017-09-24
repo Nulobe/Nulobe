@@ -4,14 +4,19 @@
     <i *ngIf="!fact.titleLocalized">(Add a title)</i>
   </h3>
   <div class="definition">
-    <span *ngIf="fact.definition">{{ fact.definition }}</span>
-    <i *ngIf="!fact.definition">(Add a definition)</i>
+    <span *ngIf="citedDefinition">{{ citedDefinition }}</span>
+    <i *ngIf="!citedDefinition">(Add a definition)</i>
   </div>
   <ul class="footnotes">
-    <li class="source" *ngFor="let source of fact.sources; let i = index;">
+    <li class="source" *ngFor="let source of citedSources; let i = index;">
       <span>{{ i + 1 }}</span>
-      <span *ngIf="source.description">{{ source.description }}</span>
-      <a class="url" *ngIf="source.url" href="{{ source.url }}">{{ source.url }}</a>
+      <span *ngIf="source.type === 1">
+        <span *ngIf="source.description">{{ source.description }}</span>
+        <a class="url" *ngIf="source.url" href="{{ source.url }}">{{ source.url }}</a>
+      </span>
+      <span *ngIf="source.type === 2">
+        <a href="{{ factLinkResolver.resolve(source.factId) }}">{{ source.factTitle }}</a>
+      </span>
     </li>
     <li class="notes" *ngIf="fact.notesMarkdown">
       <markdown>&#8224; {{ fact.notesMarkdown }}</markdown>
