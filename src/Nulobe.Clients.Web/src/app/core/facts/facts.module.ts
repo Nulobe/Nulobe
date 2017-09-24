@@ -5,7 +5,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MdIconModule, MdInputModule, MdSelectModule } from '@angular/material';
 import { MarkdownModule } from 'angular2-markdown';
 
-import { TagsModule } from '../tags/tags.module';
+import { TagsModule } from '../tags';
+import { SourcesModule } from '../sources';
 
 import { FactListComponent } from './fact-list/fact-list.component';
 import { FactListItemComponent } from './fact-list-item/fact-list-item.component';
@@ -22,7 +23,8 @@ import { FactQueryService } from './fact-query/fact-query.service';
     MdInputModule,
     MdSelectModule,
     MarkdownModule,
-    TagsModule
+    TagsModule,
+    SourcesModule
   ],
   declarations: [
     FactListComponent,

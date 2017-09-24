@@ -1,0 +1,19 @@
+<div class="source-form-group" [formGroup]="sourceFormGroup">
+  <div class="type">
+    <md-select formControlName="type" floatPlaceholder="never">
+      <md-option [value]="3">Citation Needed</md-option>
+      <md-option [value]="2">Nulobe</md-option>
+      <md-option [value]="3">Legacy</md-option>
+    </md-select>
+  </div>
+  <div class="description">
+    <md-input-container>
+      <textarea mdInput formControlName="description" placeholder="Description of source {{ sourceIndex + 1 }}" tabindex="0"></textarea>
+    </md-input-container>
+  </div>
+  <div class="url">
+    <md-input-container>
+      <input mdInput type="url" formControlName="url" placeholder="Link to source {{ sourceIndex + 1 }}" />
+    </md-input-container>
+  </div>
+</div>

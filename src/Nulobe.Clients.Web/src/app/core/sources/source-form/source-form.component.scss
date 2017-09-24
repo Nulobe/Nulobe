@@ -1,0 +1,28 @@
+@import "../../../../assets/scss/mixins";
+
+:host {
+    .source-form-group {
+        :not(:first-child) {
+            margin-top: 30px;
+        }
+
+        .type {
+            md-select {
+                @include font-family-default();
+                width: 50%;
+            }
+        }
+    
+        .description {
+            md-input-container {
+                width: 100%;
+            }
+        }
+    
+        .url {
+            md-input-container {
+                width: 50%;
+            }
+        }
+    }
+}

@@ -35,12 +35,19 @@
                 @include flex-display();
 
                 .index {
-                    padding-top: 49px;
+                    padding-top: 32px;
                     width: 50px;
                 }
 
                 .source-details {
                     @include flex(1);
+
+                    .type {
+                        md-select {
+                            @include font-family-default();
+                            width: 50%;
+                        }
+                    }
 
                     .description {
                         md-input-container {

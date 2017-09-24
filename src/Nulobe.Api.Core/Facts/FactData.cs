@@ -21,7 +21,7 @@ namespace Nulobe.Api.Core.Facts
 
         public string Country { get; set; }
 
-        public IEnumerable<dynamic> Sources { get; set; }
+        public IEnumerable<IDictionary<string, object>> Sources { get; set; }
 
         public IEnumerable<string> Tags { get; set; }
 

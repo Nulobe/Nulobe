@@ -11,10 +11,23 @@
       </md-input-container>
     </div>
     <div class="sources">
+      <core-source-form-list
+        [parentForm]="form"
+        [sources]="fact.sources"
+        [sourceCount]="sourceCount$ | async"></core-source-form-list>
+    </div>
+    <div class="sources">
       <div class="indexed-sources">
         <div class="source" formArrayName="indexedSources" *ngFor="let indexedSourceControl of getIndexedSources().controls; let i = index;">
           <div class="index">{{ i + 1 }}.</div>
           <div class="source-details" [formGroupName]="i">
+            <div class="type">
+              <md-select formControlName="type" floatPlaceholder="never">
+                <md-option [value]="3">Citation Needed</md-option>
+                <md-option [value]="2">Nulobe</md-option>
+                <md-option [value]="3">Legacy</md-option>
+              </md-select>
+            </div>
             <div class="description">
               <md-input-container>
                 <textarea mdInput formControlName="description" placeholder="Description of source {{ i + 1 }}" tabindex="0"></textarea>
@@ -35,7 +48,7 @@
       </md-input-container>
     </div>
     <div class="country">
-      <md-select placeholder="Country" formControlName="country" floatPlaceholder="never">
+      <md-select formControlName="country" floatPlaceholder="never">
         <md-option [value]="null">(No locality)</md-option>
         <md-option *ngFor="let country of countries" [value]="country.name">{{ country.displayName }}</md-option>
       </md-select>

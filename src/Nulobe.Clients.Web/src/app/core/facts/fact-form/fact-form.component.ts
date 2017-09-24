@@ -1,15 +1,17 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ChangeDetectorRef  } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { NULOBE_ENV_SETTINGS } from '../../../app.settings';
 import { FactCreate } from '../../api';
+import { SourceType } from '../../sources';
 
 interface FactFormValue {
   title: string;
   definition: string;
   notesMarkdown: string;
   indexedSources: any[];
+  sources: any[];
   country: string;
 }
 
@@ -18,20 +20,22 @@ interface FactFormValue {
   templateUrl: './fact-form.component.html',
   styleUrls: ['./fact-form.component.scss']
 })
-export class FactFormComponent implements OnInit {
+export class FactFormComponent implements OnInit, AfterViewInit {
   @Input() fact: FactCreate;
   @Output() factChanges = new EventEmitter<FactCreate>();
   @Output() factValidChanges = new EventEmitter<boolean>();
 
   form: FormGroup;
   countries = NULOBE_ENV_SETTINGS.countries;
+  sourceCount$: Observable<number>;
 
-  private sourceCount$: Observable<number>;
   private lastFormValid: boolean;
   private lastValid: boolean;
+  private sourceCount = new BehaviorSubject<number>(0);  
 
   constructor(
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.fact = this.fact || <FactCreate>{
@@ -52,21 +56,13 @@ export class FactFormComponent implements OnInit {
       country: fb.control(this.fact.country)
     });
 
-    this.sourceCount$ = this.form.valueChanges.map((formValue: FactFormValue) => {
-      let sourceReferenceRegex = /\[(\d+)\]/g;
-      let definition = formValue.definition;
+    this.sourceCount$ = this.sourceCount.asObservable();
+  }
 
-      let matches = [];
-      let match = null;
-      while ((match = sourceReferenceRegex.exec(definition)) != null) {
-        matches.push(parseInt(match[1], 10));
-      }
-
-      let maxSourceIndex =  matches
-        .filter(i => i > 0)
-        .reduce((prev, curr) => Math.max(prev, curr), 0);
-
-      return Math.min(maxSourceIndex, 10);
+  ngAfterViewInit(): void {
+    this.updateSourceCount(this.form.value);
+    this.form.valueChanges.subscribe((formValue: FactFormValue) => {
+      this.updateSourceCount(formValue);
     });
 
     this.sourceCount$.subscribe(sourceCount => {
@@ -96,6 +92,8 @@ export class FactFormComponent implements OnInit {
       this.triggerFactValidChanges();
       this.triggerFactChanges();
     });
+
+    this.changeDetectorRef.detectChanges();
   }
 
   updateTags(tags: string[]) {
@@ -135,9 +133,27 @@ export class FactFormComponent implements OnInit {
   private createIndexedSource(source?: any): FormGroup {
     let { fb } = this;
     return fb.group({
+      type: fb.control(source ? source.type : 0),
       url: fb.control(source ? source.url : ''),
       description: fb.control(source ? source.description : '')
     });
+  }
+
+  private updateSourceCount(formValue: FactFormValue) {
+    let sourceReferenceRegex = /\[(\d+)\]/g;
+    let definition = formValue.definition;
+
+    let matches = [];
+    let match = null;
+    while ((match = sourceReferenceRegex.exec(definition)) != null) {
+      matches.push(parseInt(match[1], 10));
+    }
+
+    let maxSourceIndex =  matches
+      .filter(i => i > 0)
+      .reduce((prev, curr) => Math.max(prev, curr), 0);
+
+    this.sourceCount.next(Math.min(maxSourceIndex, 10));
   }
 
 }

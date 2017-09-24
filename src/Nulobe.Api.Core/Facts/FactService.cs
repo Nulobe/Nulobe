@@ -25,7 +25,6 @@ namespace Nulobe.Api.Core.Facts
 
         private readonly IServiceProvider _serviceProvider;
         private readonly FactServiceOptions _factServiceOptions;
-        private readonly DocumentDbOptions _documentDbOptions;
         private readonly CountryOptions _countryOptions;
         private readonly IClaimsPrincipalAccessor _claimsPrincipalAccessor;
         private readonly Auditor _auditor;
@@ -37,7 +36,6 @@ namespace Nulobe.Api.Core.Facts
         public FactService(
             IServiceProvider serviceProvider,
             IOptions<FactServiceOptions> factServiceOptions,
-            IOptions<DocumentDbOptions> documentDbOptions,
             IOptions<CountryOptions> countryOptions,
             IClaimsPrincipalAccessor claimsPrincipalAccessor,
             Auditor auditor,
@@ -48,7 +46,6 @@ namespace Nulobe.Api.Core.Facts
         {
             _serviceProvider = serviceProvider;
             _factServiceOptions = factServiceOptions.Value;
-            _documentDbOptions = documentDbOptions.Value;
             _countryOptions = countryOptions.Value;
             _claimsPrincipalAccessor = claimsPrincipalAccessor;
             _auditor = auditor;

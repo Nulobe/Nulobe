@@ -1,0 +1,11 @@
+<div [formGroup]="parentForm">
+  <div class="source" formArrayName="sources" *ngFor="let source of localSources; index as i; trackBy: trackSource">
+    <div class="index">{{ i + 1 }}.</div>
+    <div class="source-form-container">
+      <core-source-form
+        [source]="source"
+        [sourceIndex]="i"
+        [parentFormArray]="sourcesFormArray"></core-source-form>
+    </div>
+  </div>
+</div>

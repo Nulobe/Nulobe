@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Options;
+using Nulobe.Api.Core.Sources;
 using Nulobe.Framework;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,25 @@ namespace Nulobe.Api.Core.Facts
     {
         public FactMappingProfile()
         {
-            CreateMap<FactCreate, FactData>();
+            CreateMap<FactCreate, FactData>()
+                //.ForMember(dest => dest.Sources, opts => opts.ResolveUsing(src => src.Sources.Select(s => (IDictionary<string, object>)s)));
+                .ForMember(
+                    dest => dest.Sources,
+                    opts => opts.ResolveUsing(src => src.Sources.Select(s => s.ToObject<IDictionary<string, object>>())));
+
 
             CreateMap<FactData, Fact>()
                 .EnsureServices()
+                .ForMember(
+                    dest => dest.Sources,
+                    opts => opts.ResolveUsing(src => src.Sources.Select(s =>
+                    {
+                        if (!s.ContainsKey("type"))
+                        {
+                            s.Add("type", SourceType.Legacy);
+                        }
+                        return s;
+                    })))
                 .BeforeMap((factData, fact) =>
                 {
                     fact.ReadOnlyTags = Enumerable.Empty<string>();
@@ -37,6 +53,14 @@ namespace Nulobe.Api.Core.Facts
                     {
                         fact.TitleLocalized = fact.Title;
                     }
+
+                    //foreach (var source in fact.Sources)
+                    //{
+                    //    if (!((IDictionary<string, object>)source).ContainsKey("type"))
+                    //    {
+                    //        source.type = SourceType.Legacy;
+                    //    }
+                    //}
                 });
         }
     }
