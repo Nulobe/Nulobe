@@ -226,7 +226,7 @@
     <Error Condition="!Exists('..\..\packages\Microsoft.Extensions.Configuration.UserSecrets.1.1.2\build\netstandard1.0\Microsoft.Extensions.Configuration.UserSecrets.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Extensions.Configuration.UserSecrets.1.1.2\build\netstandard1.0\Microsoft.Extensions.Configuration.UserSecrets.targets'))" />
   </Target>
   <PropertyGroup>
-    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(MSBuildProjectDirectory)\Pre-Build.ps1" "$(MSBuildProjectDirectory)\..\.." "$(MSBuildProjectDirectory)" "$(TargetDir)"</PreBuildEvent>
+    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(MSBuildProjectDirectory)\Pre-Build.ps1" "$(MSBuildProjectDirectory)\..\.." "$(MSBuildProjectDirectory)" "$(TargetDir)\"</PreBuildEvent>
   </PropertyGroup>
   <Import Project="..\..\packages\Microsoft.Web.WebJobs.Publish.1.1.0\tools\webjobs.targets" Condition="Exists('..\..\packages\Microsoft.Web.WebJobs.Publish.1.1.0\tools\webjobs.targets')" />
 </Project>
