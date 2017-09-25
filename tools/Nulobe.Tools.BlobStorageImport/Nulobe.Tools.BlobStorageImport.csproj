@@ -272,7 +272,7 @@
     <Error Condition="!Exists('..\..\packages\Microsoft.Azure.DocumentDB.1.13.0\build\Microsoft.Azure.DocumentDB.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Azure.DocumentDB.1.13.0\build\Microsoft.Azure.DocumentDB.targets'))" />
   </Target>
   <PropertyGroup>
-    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(MSBuildProjectDirectory)\..\..\Copy-Files.ps1" $(MSBuildProjectDirectory)\..\.. $(MSBuildProjectDirectory)</PreBuildEvent>
+    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(MSBuildProjectDirectory)\..\..\Copy-App-Settings.ps1" "$(MSBuildProjectDirectory)\..\.." "$(MSBuildProjectDirectory)"</PreBuildEvent>
   </PropertyGroup>
   <Import Project="..\..\packages\Microsoft.Azure.DocumentDB.1.13.0\build\Microsoft.Azure.DocumentDB.targets" Condition="Exists('..\..\packages\Microsoft.Azure.DocumentDB.1.13.0\build\Microsoft.Azure.DocumentDB.targets')" />
 </Project>

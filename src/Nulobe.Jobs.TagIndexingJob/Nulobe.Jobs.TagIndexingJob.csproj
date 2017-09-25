@@ -244,7 +244,7 @@
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
-    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(MSBuildProjectDirectory)\..\..\Copy-Files.ps1" $(MSBuildProjectDirectory)\..\.. $(MSBuildProjectDirectory)</PreBuildEvent>
+    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(MSBuildProjectDirectory)\..\..\Copy-App-Settings.ps1" "$(MSBuildProjectDirectory)\..\.." "$(MSBuildProjectDirectory)"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>

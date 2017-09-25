@@ -11,7 +11,7 @@
 
   <Import Sdk="Microsoft.NET.Sdk.Web" Project="Sdk.targets" />
   <PropertyGroup>
-    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(MSBuildProjectDirectory)\..\..\Copy-Files.ps1" $(MSBuildProjectDirectory)\..\.. $(MSBuildProjectDirectory)</PreBuildEvent>
+    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(MSBuildProjectDirectory)\..\..\Copy-App-Settings.ps1" "$(MSBuildProjectDirectory)\..\.." "$(MSBuildProjectDirectory)"</PreBuildEvent>
     <PostBuildEvent>"$(NSwagExe)" webapi2swagger /assembly:"$(TargetPath)" /output:"$(MSBuildProjectDirectory)\swagger.json" /defaultPropertyNameHandling:"CamelCase"</PostBuildEvent>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <TargetFramework>net452</TargetFramework>

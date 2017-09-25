@@ -11,7 +11,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(SolutionDir)\Copy-Files.ps1" $(SolutionDir) $(MSBuildProjectDirectory)</PreBuildEvent>
+    <PreBuildEvent>powershell.exe -ExecutionPolicy Unrestricted -file "$(SolutionDir)\Copy-App-Settings.ps1" $(SolutionDir) $(MSBuildProjectDirectory)</PreBuildEvent>
     <UserSecretsId>Nulobe-4cafb89d-dd40-46a8-8482-cbbf8ba9f5c3</UserSecretsId>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>

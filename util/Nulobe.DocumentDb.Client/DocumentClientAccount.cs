@@ -12,14 +12,13 @@ namespace Nulobe.DocumentDb.Client
     {
         public static DocumentClient Parse(string connectionString)
         {
-            DocumentClient ret;
 
             if (String.IsNullOrWhiteSpace(connectionString))
             {
                 throw new ArgumentException("Connection string cannot be empty.");
             }
 
-            if (ParseImpl(connectionString, out ret, err => { throw new FormatException(err); }))
+            if (ParseImpl(connectionString, out DocumentClient ret, err => { throw new FormatException(err); }))
             {
                 return ret;
             }
