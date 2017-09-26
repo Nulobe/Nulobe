@@ -64,7 +64,7 @@ namespace Nulobe.Tools.BlobStorageImport
         {
             var client = await _cloudBlobClientFactory.CreateBlobClient().GetCloudBlobContainerAsync("prodcopy");
 
-            var dts = EnumerableSeedExtensions.Seed(10, prev => prev.AddDays(-1), DateTime.UtcNow);
+            var dts = EnumerableSeedExtensions.Seed(10, prev => prev.AddDays(-1), DateTime.UtcNow.AddDays(-1));
             foreach (var dt in dts)
             {
                 CloudBlob blob = null;

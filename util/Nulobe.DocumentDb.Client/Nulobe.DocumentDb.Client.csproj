@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DocumentClientAccount.cs" />
+    <Compile Include="DocumentClientEnsuredExtensions.cs" />
     <Compile Include="DocumentClientFactory.cs" />
     <Compile Include="DocumentDbOptions.cs" />
     <Compile Include="DocumentNotFoundException.cs" />

@@ -138,7 +138,7 @@ namespace Nulobe.Api.Core.Facts
                 }
 
                 await AuditAsync(nameof(UpdateFactAsync), fact, existingFact);
-                await client.ReplaceFactDocumentAsync(id, fact);
+                await client.ExecuteEnsuredStoredProcedureAsync<FactData>("Nulobe", "Facts", "_db/StoredProcedures/updateFact.js", new dynamic[] { fact });
             }
 
             return _mapper.MapWithServices<FactData, Fact>(fact, _serviceProvider);
