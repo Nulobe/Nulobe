@@ -44,7 +44,9 @@
         .container {
             margin-top: 50px;
             width: 800px;
-
+            max-width: 100%;
+            padding: 0px 30px;
+            
             .title {
                 @include flex-display();
                 @include flex-direction(column);

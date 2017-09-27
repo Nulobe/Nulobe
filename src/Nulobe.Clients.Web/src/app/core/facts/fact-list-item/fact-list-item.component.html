@@ -12,7 +12,7 @@
       <span class="index">{{ i + 1 }}</span>
       <span *ngIf="source.type === 1">
         <span *ngIf="source.description">{{ source.description }}</span>
-        <a class="url" *ngIf="source.url" href="{{ source.url }}">{{ source.url }}</a>
+        <a class="url" *ngIf="source.url" href="{{ source.url }}">{{ getUrl(source.url) }}</a>
       </span>
       <span *ngIf="source.type === 2" class="fact">
         <a href="{{ factLinkResolver.resolve(source.factId) }}">{{ source.factTitle }}</a>

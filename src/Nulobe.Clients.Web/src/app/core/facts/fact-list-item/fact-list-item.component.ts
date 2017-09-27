@@ -42,4 +42,10 @@ export class FactListItemComponent implements OnInit {
     this.onTagClick.emit(tag);
   }
 
+  getUrl(url: string) {
+    let parser = document.createElement('a');
+    parser.href = url;
+    return parser.protocol + '//' + parser.host;
+  }
+
 }

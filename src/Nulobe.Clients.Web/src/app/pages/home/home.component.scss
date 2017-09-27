@@ -1,13 +1,25 @@
 @import '../../../assets/scss/mixins';
 
 .app-home {
-    height: 1px;
-    min-height: 100vh;
 
     .content-container {
         @include flex-display();
         @include justify-content(center);
         @include align-items(center);
+
+        @include phone() {
+            margin-top: 125px;
+        }
+
+        @include tablet() {
+            margin-top: 175px;
+        }
+
+        @include desktop() {
+            margin-top: 250px;
+        }
+        
+
         height: 100%;
 
         .content {
@@ -20,7 +32,7 @@
                 @include flex-display();
                 @include justify-content(center);
                 margin-top: 50px;
-                width: 500px;
+                max-width: 500px;
 
                 &.has-tag {
                     padding-left: 191px; // Same as input width in tag selector

@@ -1,6 +1,7 @@
 @import './mixins/transitions';
 @import './mixins/flexbox';
 @import './mixins/keyframes';
+@import './mixins/media';
 
 @mixin placeholder() {
     &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
