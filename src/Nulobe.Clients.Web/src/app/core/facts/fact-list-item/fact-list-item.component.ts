@@ -16,7 +16,7 @@ export class FactListItemComponent implements OnInit {
   @Output() onTagClick = new EventEmitter<string>();
 
   citedSources: Source[];
-  citedDefinition: string;
+  citedDefinitionMarkdown: string;
 
   constructor() { }
 
@@ -28,7 +28,7 @@ export class FactListItemComponent implements OnInit {
     this.citedSources = sources.filter(s => s.type !== SourceType.CitationNeeded);
 
     let sourceReferenceRegex = /\[(\d+)\]/g;
-    this.citedDefinition = this.fact.definition.replace(sourceReferenceRegex, (match, group) => {
+    this.citedDefinitionMarkdown = this.fact.definitionMarkdown.replace(sourceReferenceRegex, (match, group) => {
       let sourceNumber = parseInt(group);
       let sourceIndex = sourceNumber - 1;
 

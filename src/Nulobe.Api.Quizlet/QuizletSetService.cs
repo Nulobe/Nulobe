@@ -40,7 +40,7 @@ namespace Nulobe.Api.Quizlet
                     Title = title,
                     Terms = result.Facts.Select(f => {
                         var definition = Regex
-                            .Replace(f.Definition, @"\[(\d+)\]", string.Empty) // Remove indexed sources
+                            .Replace(f.DefinitionMarkdown, @"\[(\d+)\]", string.Empty) // Remove indexed sources
                             .Replace("  ", " ") // Remove multi-space (i.e. left by indexed sources)
                             .Trim();
 

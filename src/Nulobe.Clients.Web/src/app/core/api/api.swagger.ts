@@ -565,7 +565,7 @@ export interface Fact {
     id?: string | undefined;
     title?: string | undefined;
     titleLocalized?: string | undefined;
-    definition?: string | undefined;
+    definitionMarkdown?: string | undefined;
     notesMarkdown?: string | undefined;
     country?: string | undefined;
     sources?: any[] | undefined;
@@ -577,7 +577,7 @@ export interface Fact {
 
 export interface FactCreate {
     title?: string | undefined;
-    definition?: string | undefined;
+    definitionMarkdown?: string | undefined;
     notesMarkdown?: string | undefined;
     sources?: any[] | undefined;
     tags?: string[] | undefined;

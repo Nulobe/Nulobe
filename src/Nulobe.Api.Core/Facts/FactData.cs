@@ -15,7 +15,8 @@ namespace Nulobe.Api.Core.Facts
 
         public string Title { get; set; }
 
-        public string Definition { get; set; }
+        [JsonProperty("Definition")]
+        public string DefinitionMarkdown { get; set; }
 
         public string NotesMarkdown { get; set; }
 

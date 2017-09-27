@@ -8,7 +8,7 @@ import { Source, SourceType, SourcePropertyHelper } from '../../sources';
 
 interface FactFormValue {
   title: string;
-  definition: string;
+  definitionMarkdown: string;
   notesMarkdown: string;
   sources: Source[];
   country: string;
@@ -39,7 +39,7 @@ export class FactFormComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.fact = this.fact || <FactCreate>{
       title: '',
-      definition: '',
+      definitionMarkdown: '',
       notesMarkdown: '',
       sources: [],
       tags: []
@@ -49,7 +49,7 @@ export class FactFormComponent implements OnInit, AfterViewInit {
 
     this.form = fb.group({
       title: fb.control(this.fact.title, Validators.required),
-      definition: fb.control(this.fact.definition, Validators.required),
+      definitionMarkdown: fb.control(this.fact.definitionMarkdown, Validators.required),
       notesMarkdown: fb.control(this.fact.notesMarkdown),
       country: fb.control(this.fact.country)
     });
@@ -80,7 +80,7 @@ export class FactFormComponent implements OnInit, AfterViewInit {
     let formValue: FactFormValue = this.form.value;
     this.fact = {
       title: formValue.title || '',
-      definition: formValue.definition || '',
+      definitionMarkdown: formValue.definitionMarkdown || '',
       sources: formValue.sources.map(s => this.pruneSource(s)),
       notesMarkdown: formValue.notesMarkdown,
       tags: this.fact.tags,
@@ -103,11 +103,11 @@ export class FactFormComponent implements OnInit, AfterViewInit {
 
   private updateSourceCount(formValue: FactFormValue) {
     let sourceReferenceRegex = /\[(\d+)\]/g;
-    let definition = formValue.definition;
+    let definitionMarkdown = formValue.definitionMarkdown;
 
     let matches = [];
     let match = null;
-    while ((match = sourceReferenceRegex.exec(definition)) != null) {
+    while ((match = sourceReferenceRegex.exec(definitionMarkdown)) != null) {
       matches.push(parseInt(match[1], 10));
     }
 

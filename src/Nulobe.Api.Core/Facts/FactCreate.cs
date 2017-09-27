@@ -12,14 +12,17 @@ namespace Nulobe.Api.Core.Facts
 {
     public class FactCreate
     {
+        [StringNotNullOrEmpty]
         public string Title { get; set; }
 
-        public string Definition { get; set; }
+        [StringNotNullOrEmpty]
+        public string DefinitionMarkdown { get; set; }
 
         public string NotesMarkdown { get; set; }
 
         public IEnumerable<JObject> Sources { get; set; }
 
+        [EnumerableNotEmpty]
         public IEnumerable<string> Tags { get; set; }
 
         public string Credit { get; set; }

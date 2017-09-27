@@ -177,9 +177,9 @@ namespace Nulobe.Api.Core.Facts
         {
             var (isValid, modelErrors) = Validator.IsValid(create);
 
-            if (modelErrors.IsMemberValid(nameof(FactCreate.Definition)))
+            if (modelErrors.IsMemberValid(nameof(FactCreate.DefinitionMarkdown)))
             {
-                var indexSequence = SourceReferenceRegex.Matches(create.Definition)
+                var indexSequence = SourceReferenceRegex.Matches(create.DefinitionMarkdown)
                     .Cast<Match>()
                     .Select(m =>
                     {
@@ -196,16 +196,16 @@ namespace Nulobe.Api.Core.Facts
                     if (indexSequence.Max() != create.Sources.Count())
                     {
                         modelErrors.Add(
-                            $"Expected number of sources ({create.Sources.Count()}) to equal the number referenced in {nameof(FactCreate.Definition)} ({indexSequence.Max()})",
-                            nameof(FactCreate.Definition));
+                            $"Expected number of sources ({create.Sources.Count()}) to equal the number referenced in {nameof(FactCreate.DefinitionMarkdown)} ({indexSequence.Max()})",
+                            nameof(FactCreate.DefinitionMarkdown));
                     }
 
                     var expectedIndexSequence = ListHelpers.Range(1, indexSequence.Max());
                     if (!expectedIndexSequence.SequenceEqual(indexSequence))
                     {
                         modelErrors.Add(
-                            $"Source references in {nameof(FactCreate.Definition)} should be ascending and without missing indicies. Index sequence was [{string.Join(", ", indexSequence)}]",
-                            nameof(FactCreate.Definition));
+                            $"Source references in {nameof(FactCreate.DefinitionMarkdown)} should be ascending and without missing indicies. Index sequence was [{string.Join(", ", indexSequence)}]",
+                            nameof(FactCreate.DefinitionMarkdown));
                     }
                 }
             }

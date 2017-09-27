@@ -4,6 +4,24 @@
         margin-bottom: 10px;
     }
 
+    .definition {
+        /deep/ markdown {
+            p {
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
+    
+            ul {
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
+    
+            p + ul {
+                margin-top: 0px;
+            }
+        }
+    }
+
     ul.footnotes {
         list-style-type: none;
         padding-left: 0;

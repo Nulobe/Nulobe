@@ -4,8 +4,8 @@
     <i *ngIf="!fact.titleLocalized">(Add a title)</i>
   </h3>
   <div class="definition">
-    <span *ngIf="citedDefinition">{{ citedDefinition }}</span>
-    <i *ngIf="!citedDefinition">(Add a definition)</i>
+    <markdown *ngIf="citedDefinitionMarkdown">{{ citedDefinitionMarkdown }}</markdown>
+    <i *ngIf="!citedDefinitionMarkdown">(Add a definition)</i>
   </div>
   <ul class="footnotes">
     <li class="source" *ngFor="let source of citedSources; let i = index;">

@@ -28,7 +28,7 @@ export class CreateFactComponent implements OnInit {
   ngOnInit() {
     this.fact = {
       title: '',
-      definition: '',
+      definitionMarkdown: '',
       sources: [],
       tags: []
     };

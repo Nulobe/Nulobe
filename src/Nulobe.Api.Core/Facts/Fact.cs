@@ -17,7 +17,7 @@ namespace Nulobe.Api.Core.Facts
 
         public string TitleLocalized { get; set; }
 
-        public string Definition { get; set; }
+        public string DefinitionMarkdown { get; set; }
 
         public string NotesMarkdown { get; set; }
 

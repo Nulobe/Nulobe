@@ -67,6 +67,7 @@
     <Compile Include="ClientException.cs" />
     <Compile Include="ClientModelValidationException.cs" />
     <Compile Include="ClientValidationException.cs" />
+    <Compile Include="EnumerableNotEmptyAttribute.cs" />
     <Compile Include="ModelErrorDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringNotNullOrEmptyAttribute.cs" />
