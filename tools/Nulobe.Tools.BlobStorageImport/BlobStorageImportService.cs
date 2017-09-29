@@ -58,6 +58,7 @@ namespace Nulobe.Tools.BlobStorageImport
             }
         }
 
+
         #region Helpers
 
         private async Task<dynamic[]> GetLatestFactsAsync()

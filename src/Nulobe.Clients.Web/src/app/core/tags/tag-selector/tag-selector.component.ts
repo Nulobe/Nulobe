@@ -71,8 +71,7 @@ export class TagSelectorComponent implements OnInit {
         .filter(tag => {
           let existing = this.tags.find(tagString => tagString.toLowerCase() === tag.text.toLowerCase());
           return !existing;
-        })))
-        //.map(t => t.text)))
+        })));
     }
   }
 
