@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Nulobe.CosmosDataMigration;
 using Nulobe.DocumentDb.Client;
-using Nulobe.Microsoft.WindowsAzure.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,9 +31,9 @@ namespace Nulobe.Tools.BlobStorageImport
             services.AddOptions();
             services.AddDocumentDb(configuration);
             services.ConfigureStorage(configuration);
+            services.Configure<BlobStorageImportOptions>(opts => configuration.GetSection("Nulobe:Tools.BlobStorageImport").Bind(opts));
 
             services.AddTransient<CosmosDataMigrationToolClient>();
-            services.AddTransient<ICloudStorageClientFactory, CloudStorageClientFactory>();
             services.AddTransient<IDocumentClientFactory, DocumentClientFactory>();
 
             var serviceProvider = services.BuildServiceProvider();

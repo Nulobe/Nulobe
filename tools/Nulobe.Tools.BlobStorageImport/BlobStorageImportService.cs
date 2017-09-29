@@ -5,12 +5,12 @@ using Microsoft.WindowsAzure.Storage;
 using Newtonsoft.Json;
 using Nulobe.DocumentDb.Client;
 using Nulobe.Framework;
-using Nulobe.Microsoft.WindowsAzure.Storage;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,18 +18,18 @@ namespace Nulobe.Tools.BlobStorageImport
 {
     public class BlobStorageImportService
     {
-        private readonly ICloudStorageClientFactory _cloudBlobClientFactory;
         private readonly IDocumentClientFactory _documentDbClientFactory;
         private readonly DocumentDbOptions _documentDbOptions;
+        private readonly BlobStorageImportOptions _blobStorageImportOptions;
 
         public BlobStorageImportService(
-            ICloudStorageClientFactory cloudBlobClientFactory,
             IDocumentClientFactory documentDbClientFactory,
-            IOptions<DocumentDbOptions> documentDbOptions)
+            IOptions<DocumentDbOptions> documentDbOptions,
+            IOptions<BlobStorageImportOptions> blobStorageImportOptions)
         {
-            _cloudBlobClientFactory = cloudBlobClientFactory;
             _documentDbClientFactory = documentDbClientFactory;
             _documentDbOptions = documentDbOptions.Value;
+            _blobStorageImportOptions = blobStorageImportOptions.Value;
         }
 
         public async Task RunAsync()
@@ -62,40 +62,29 @@ namespace Nulobe.Tools.BlobStorageImport
 
         private async Task<dynamic[]> GetLatestFactsAsync()
         {
-            var client = await _cloudBlobClientFactory.CreateBlobClient().GetCloudBlobContainerAsync("prodcopy");
-
             var dts = EnumerableSeedExtensions.Seed(10, prev => prev.AddDays(-1), DateTime.UtcNow.AddDays(-1));
-            foreach (var dt in dts)
+            using (var client = new HttpClient())
             {
-                CloudBlob blob = null;
-                try
+                foreach (var dt in dts)
                 {
-                    blob = await client.GetAsync(Path.Combine(new object[]
+                    var response = await client.GetAsync(Path.Combine(new object[]
                     {
+                        _blobStorageImportOptions.ContainerUrl,
                         dt.Year,
                         dt.Month,
                         dt.Day,
                         "Nulobe.Facts.json"
                     }.Select(o => o.ToString()).ToArray()));
-                }
-                catch (StorageException ex)
-                {
-                    var innerWebException = ex.InnerException as WebException;
-                    if (innerWebException != null)
+
+                    if (response.StatusCode != HttpStatusCode.NotFound)
                     {
-                        var httpWebResponse = innerWebException.Response as HttpWebResponse;
-                        if (httpWebResponse != null && httpWebResponse.StatusCode == HttpStatusCode.NotFound)
+                        response.EnsureSuccessStatusCode();
+
+                        using (var sr = new StreamReader(await response.Content.ReadAsStreamAsync()))
                         {
-                            // A backup doesn't exist for this day, continue to the previous day.
-                            continue;
+                            return JsonConvert.DeserializeObject<dynamic[]>(await sr.ReadToEndAsync());
                         }
                     }
-                    throw;
-                }
-
-                using (var sr = new StreamReader(blob.Stream))
-                {
-                    return JsonConvert.DeserializeObject<dynamic[]>(await sr.ReadToEndAsync());
                 }
             }
 
