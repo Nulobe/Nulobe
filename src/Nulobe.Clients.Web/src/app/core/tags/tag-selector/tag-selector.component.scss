@@ -61,5 +61,58 @@
                 }
             }
         }
+
+        @include phone() {
+            
+            .ng2-tags-container {
+                justify-content: center;
+
+                tag {
+                    margin-bottom: 5px;
+                }
+
+                tag-input-form {
+                    width: 100%;
+
+                    .ng2-tag-input__text-input {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+
+    &.has-tag {
+
+        /deep/ tag-input {
+
+            .ng2-tags-container {
+
+                tag-input-form {
+
+                    .ng2-tag-input__text-input {
+
+                        @include phone() {
+                            text-align: center;
+
+                            &:focus {
+                                &::-webkit-input-placeholder { /* WebKit browsers */
+                                    color: transparent;
+                                }
+                                &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+                                   color: transparent;
+                                }
+                                &::-moz-placeholder { /* Mozilla Firefox 19+ */
+                                   color: transparent;
+                                }
+                                &:-ms-input-placeholder { /* Internet Explorer 10+ */
+                                   color: transparent;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

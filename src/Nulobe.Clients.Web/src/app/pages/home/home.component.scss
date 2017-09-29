@@ -18,7 +18,6 @@
         @include desktop() {
             margin-top: 250px;
         }
-        
 
         height: 100%;
 
@@ -36,6 +35,10 @@
 
                 &.has-tag {
                     padding-left: 191px; // Same as input width in tag selector
+
+                    @include phone() {
+                        padding-left: 0px;
+                    }
                 }
 
                 &:not(.has-tag) { 

@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { FormsModule } from '@angular/forms';
 import { MdChipsModule } from '@angular/material';
-import { TagInputModule } from 'ngx-chips';
+//import { TagInputModule } from 'ngx-chips';
+import { TagInputModule } from '../../imports';
 
 import { TagSelectorComponent } from './tag-selector/tag-selector.component';
 import { TagListComponent } from './tag-list/tag-list.component';

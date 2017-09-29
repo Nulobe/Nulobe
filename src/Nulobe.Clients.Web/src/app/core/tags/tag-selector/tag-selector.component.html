@@ -1,4 +1,4 @@
-<div class="core-tag-selector">
+<div class="core-tag-selector" [ngClass]="{ 'has-tag': tagInput_tags.length > 0 }">
   <tag-input
     [(ngModel)]="tagInput_tags"
     [onAdding]="tagInput_addHash"
