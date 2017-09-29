@@ -1,4 +1,4 @@
-<div class="home-link-position" *ngIf="!(isHome$ | async)">
+<div class="home-link-position" [ngClass]="{ 'on-home-page': isHome$ | async }">
   <div class="home-link-container">
     <a class="home-link" routerLink="/">
       <core-logo [widthPixels]="35"></core-logo>

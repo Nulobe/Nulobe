@@ -67,11 +67,15 @@ export class TagSelectorComponent implements OnInit {
         this.tagInput_lastApiCall = apiSuggestions;
       }
 
-      return Observable.fromPromise(apiSuggestions.then(r => r
-        .filter(tag => {
+      return Observable.fromPromise(apiSuggestions.then(r => {
+        r.sort((a, b) => b.usageCount - a.usageCount);
+        return r.filter(tag => {
           let existing = this.tags.find(tagString => tagString.toLowerCase() === tag.text.toLowerCase());
           return !existing;
-        })));
+        })
+        .filter((tag, index) => index < 3);
+      }));
+        
     }
   }
 

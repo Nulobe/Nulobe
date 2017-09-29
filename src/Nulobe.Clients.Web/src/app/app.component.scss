@@ -1,3 +1,4 @@
+@import "../assets/scss/mixins";
 
 :host {
     .home-link-position {
@@ -9,6 +10,16 @@
         .home-link-container {
             padding: 10px;
             position: relative;
+        }
+
+        &.on-home-page {
+            display: none;
+        }
+
+        @include phone() {
+            &.on-home-page {
+                display: block;
+            }
         }
     }
 }

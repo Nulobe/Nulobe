@@ -1,0 +1,3 @@
+[submodule "submodules/ngx-chips"]
+	path = submodules/ngx-chips
+	url = https://github.com/Nulobe/ngx-chips.git
