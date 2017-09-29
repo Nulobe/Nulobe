@@ -1,1 +1,0 @@
-export { DeleteIconComponent, TagComponent, TagInputComponent, TagInputDropdown, TagInputForm, TagInputModule, TagRipple } from './ngx-chips/modules';

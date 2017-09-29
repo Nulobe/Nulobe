@@ -1,3 +1,0 @@
-[submodule ".\\src\\Nulobe.Clients.Web\\src\\app\\imports\\ngx-chips"]
-	path = .\\src\\Nulobe.Clients.Web\\src\\app\\imports\\ngx-chips
-	url = https://github.com/Nulobe/ngx-chips.git
