@@ -6,16 +6,12 @@ using System.Threading.Tasks;
 
 namespace Nulobe.Api.Core.Sources
 {
-    public enum SourceType
+    public enum ApaSourceType
     {
         Unknown = 0,
 
-        Legacy = 1,
+        JournalArticle = 1,
 
-        Nulobe = 2,
-
-        CitationNeeded = 3,
-
-        Apa = 4
+        Book = 2
     }
 }

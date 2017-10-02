@@ -1,22 +1,41 @@
 <div class="source-form-group" [formGroup]="sourceFormGroup">
-  <div class="type">
+  <div class="source-form-control type">
     <md-select formControlName="type" floatPlaceholder="never">
       <md-option [value]="3">Citation Needed</md-option>
+      <md-option [value]="4">APA</md-option>
       <md-option [value]="2">Nulobe</md-option>
       <md-option [value]="1">Legacy</md-option>
     </md-select>
   </div>
-  <div class="description" *ngIf="hasProperty('description')">
+  <div class="source-form-control apa-type" *ngIf="hasProperty('apaType')">
+    <md-select formControlName="apaType" floatPlaceholder="never">
+      <md-option [value]="1">Journal Article</md-option>
+      <md-option [value]="2">Book</md-option>
+    </md-select>
+  </div>
+  <div class="source-form-control authors" *ngIf="hasProperty('authors')">
+    <div class="author" formArrayName="authors" *ngFor="let author of sourceAuthorsFormArray.controls; index as i;">
+      <md-input-container>
+        <input mdInput type="text" [formControlName]="i" placeholder="Author {{ i + 1 }}" (blur)="onAuthorBlur(i)" />
+      </md-input-container>
+    </div>
+    <div class="author">
+      <md-input-container>
+        <input #newAuthor mdInput type="text" formControlName="newAuthor" placeholder="Author {{ sourceAuthorsFormArray.controls.length + 1 }}" (blur)="onNewAuthorBlur()" />
+      </md-input-container>
+    </div>
+  </div>
+  <div class="source-form-control description" *ngIf="hasProperty('description')">
     <md-input-container>
       <textarea mdInput formControlName="description" placeholder="Description of source {{ sourceIndex + 1 }}" tabindex="0"></textarea>
     </md-input-container>
   </div>
-  <div class="url" *ngIf="hasProperty('url')">
+  <div class="source-form-control url" *ngIf="hasProperty('url')">
     <md-input-container>
       <input mdInput type="url" formControlName="url" placeholder="Link to source {{ sourceIndex + 1 }}" />
     </md-input-container>
   </div>
-  <div class="fact-id" *ngIf="hasProperty('factId')">
+  <div class="source-form-control fact-id" *ngIf="hasProperty('factId')">
       <md-input-container>
         <input mdInput type="factId" formControlName="factId" placeholder="Nulobe Nueron ID (GUID) for source {{ sourceIndex + 1 }}" />
       </md-input-container>

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormArray, AbstractControl } from '@angular/for
 import { Observable } from 'rxjs';
 
 import { Source } from '../source';
-import { SourceType } from '../source-type';
+import { SourceType, ApaSourceType } from '../source-type';
 
 let trackByIdCounter = 0;
 
@@ -50,7 +50,9 @@ export class SourceFormListComponent implements OnInit, OnChanges {
         for (let i = 0; i < sourceCountDiff; i++) {
           localSources.push({
             type: SourceType.CitationNeeded,
-            trackById: ++trackByIdCounter
+            apaType: ApaSourceType.JournalArticle,
+            trackById: ++trackByIdCounter,
+            authors: []
           });
         }
       } else if (sourceCountDiff < 0) {

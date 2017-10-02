@@ -121,7 +121,7 @@ export class FactFormComponent implements OnInit, AfterViewInit {
   private pruneSource(source: Source): Source {
     let result: Source = { type: source.type };
     
-    let properties = SourcePropertyHelper.getProperties(source.type);
+    let properties = SourcePropertyHelper.getProperties(source.type, source.apaType);
     properties.forEach(p => {
       result[p] = source[p];
     });

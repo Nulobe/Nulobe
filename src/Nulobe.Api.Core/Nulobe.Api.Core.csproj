@@ -166,8 +166,11 @@
     <Compile Include="Facts\FactServiceOptions.cs" />
     <Compile Include="Facts\IFactQueryService.cs" />
     <Compile Include="Facts\IFactService.cs" />
+    <Compile Include="Sources\ApaSourceType.cs" />
     <Compile Include="Sources\ISourceValidationHandler.cs" />
     <Compile Include="Sources\SourceValidationHandlers\AlwaysValidSourceValidationHandler.cs" />
+    <Compile Include="Sources\SourceValidationHandlers\ApaSourceValidationHandler.cs" />
+    <Compile Include="Sources\SourceValidationHandlers\CitationNeededValidationHandler.cs" />
     <Compile Include="Sources\SourceValidationHandlers\LegacySourceValidationHandler.cs" />
     <Compile Include="Sources\SourceValidationHandlers\NulobeSourceValidationHandler.cs" />
     <Compile Include="Sources\SourceType.cs" />
@@ -224,6 +227,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\Microsoft.Azure.DocumentDB.1.13.0\build\Microsoft.Azure.DocumentDB.targets" Condition="Exists('..\..\packages\Microsoft.Azure.DocumentDB.1.13.0\build\Microsoft.Azure.DocumentDB.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -18,7 +18,6 @@ namespace Nulobe.Api.Core.Sources
             _handlers = handlers;
         }
 
-
         public async Task<SourceValidationResult> IsValidAsync(dynamic source)
         {
             SourceValidationResult sourceTypeInvalid(string message) => SourceValidationResult.Invalid("Type", message);

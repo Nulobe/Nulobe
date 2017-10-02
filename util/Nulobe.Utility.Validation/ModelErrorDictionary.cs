@@ -25,6 +25,11 @@ namespace Nulobe.Utility.Validation
             }
         }
 
+        public ModelErrorDictionary()
+        {
+            Errors = Enumerable.Empty<string>();
+        }
+
         public void Add(string error, string memberName = null)
         {
             Errors = Errors.Concat(new string[] { error });

@@ -22,6 +22,8 @@ namespace Nulobe.Api.Core.Sources.SourceValidationHandlers
 
         public SourceType Type => SourceType.Nulobe;
 
+        public IEnumerable<string> Fields => throw new NotImplementedException();
+
         public async Task<SourceValidationResult> IsValidAsync(dynamic source)
         {
             string factId = source.factId;

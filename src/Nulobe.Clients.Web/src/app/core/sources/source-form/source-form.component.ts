@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
+import { Component, OnInit, OnDestroy, Input, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { FormBuilder, FormArray, FormGroup, FormControl } from '@angular/forms';
+import { MdInputDirective } from '@angular/material';
 
 import { Source } from '../source';
-import { SourceType } from '../source-type';
+import { SourceType, ApaSourceType } from '../source-type';
 import { SourcePropertyHelper } from '../helpers/source-property.helper';
 
 @Component({
@@ -17,22 +18,25 @@ export class SourceFormComponent implements OnInit, OnDestroy {
   @Input() sourceIndex: number;
 
   sourceFormGroup: FormGroup;
+  sourceAuthorsFormArray: FormArray;
+  newAuthorFormControl: FormControl;
+
+  @ViewChildren(MdInputDirective) newAuthor: QueryList<MdInputDirective>;
 
   constructor(
     private fb: FormBuilder
   ) { }
 
   ngOnInit() {
-    this.source = this.source || <Source>{
-      type: SourceType.CitationNeeded,
-      url: '',
-      description: ''
-    };
-
     let { fb, source } = this;
 
+    this.sourceAuthorsFormArray = fb.array(source.authors.map(a => this.createAuthorControl(a)));
+    this.newAuthorFormControl = fb.control('');
     this.sourceFormGroup = fb.group({
       type: fb.control(source.type),
+      apaType: fb.control(source.apaType),
+      authors: this.sourceAuthorsFormArray,
+      newAuthor: this.newAuthorFormControl,
       url: fb.control(source.url),
       description: fb.control(source.description),
       factId: fb.control(source.factId)
@@ -47,6 +51,27 @@ export class SourceFormComponent implements OnInit, OnDestroy {
 
   hasProperty(propName: string) {
     let type: SourceType = this.sourceFormGroup.get('type').value;
-    return SourcePropertyHelper.hasProperty(type, propName);
+    let apaType: ApaSourceType = this.sourceFormGroup.get('apaType').value;
+    return SourcePropertyHelper.hasProperty(type, apaType, propName);
+  }
+
+  createAuthorControl(author: string): FormControl {
+    return this.fb.control(author);
+  }
+
+  onAuthorBlur(authorIndex) {
+    let authorControl = this.sourceAuthorsFormArray.get(authorIndex.toString());
+    if (!authorControl.value) {
+      this.sourceAuthorsFormArray.removeAt(authorIndex);
+    }
+  }
+
+  onNewAuthorBlur() {
+    let { value } = this.newAuthorFormControl;
+    if (value) {
+      this.sourceAuthorsFormArray.push(this.createAuthorControl(value));
+      this.newAuthorFormControl.setValue('');
+      this.newAuthor.last.focus();
+    }
   }
 }

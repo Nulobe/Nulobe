@@ -2,14 +2,42 @@
 
 :host {
     .source-form-group {
-        :not(:first-child) {
-            margin-top: 30px;
+
+        .source-form-control {
+            &:not(:first-child) {
+                margin-top: 30px;
+            }
         }
 
         .type {
             md-select {
                 @include font-family-default();
                 width: 50%;
+            }
+        }
+
+        .apa-type {
+            md-select {
+                @include font-family-default();
+                width: 50%;
+            }
+        }
+
+        .authors {
+            display: flex;
+            flex-wrap: wrap;
+            
+            .author {
+                width: 30%;
+                padding-right: 5%;
+
+                md-input-container {
+                    width: 100%;
+                }
+
+                &:nth-child(3) {
+                    padding-right: 0px;
+                }
             }
         }
     

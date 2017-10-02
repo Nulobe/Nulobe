@@ -28,7 +28,8 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<SourceValidator>();
             services.AddTransient<ISourceValidationHandler, LegacySourceValidationHandler>();
             services.AddTransient<ISourceValidationHandler, NulobeSourceValidationHandler>();
-            services.AddTransient<ISourceValidationHandler>(sp => new AlwaysValidSourceValidationHandler(SourceType.CitationNeeded));
+            services.AddTransient<ISourceValidationHandler, CitationNeededValidationHandler>();
+            services.AddTransient<ISourceValidationHandler, ApaSourceValidationHandler>();
 
             services.AddTransient<ITagQueryService, TagQueryService>();
             services.AddTransient<ITagMemoryRepository, TagMemoryRepository>();

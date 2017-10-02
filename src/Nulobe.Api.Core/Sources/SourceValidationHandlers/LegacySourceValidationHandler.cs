@@ -11,6 +11,8 @@ namespace Nulobe.Api.Core.Sources.SourceValidationHandlers
     {
         public SourceType Type => SourceType.Legacy;
 
+        public IEnumerable<string> Fields => throw new NotImplementedException();
+
         public Task<SourceValidationResult> IsValidAsync(dynamic source)
         {
             string sourceUrl = source.url;

@@ -10,6 +10,8 @@ namespace Nulobe.Api.Core.Sources
     {
         SourceType Type { get; }
 
+        IEnumerable<string> Fields { get; }
+
         Task<SourceValidationResult> IsValidAsync(dynamic source);
     }
 }
