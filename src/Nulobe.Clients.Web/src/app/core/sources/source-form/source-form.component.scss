@@ -23,6 +23,12 @@
             }
         }
 
+        .title {
+            md-input-container {
+                width: 100%;
+            }
+        }
+
         .authors {
             display: flex;
             flex-wrap: wrap;
@@ -38,6 +44,26 @@
                 &:nth-child(3) {
                     padding-right: 0px;
                 }
+            }
+        }
+
+        .date {
+            display: flex;
+
+            .date-part {
+                width: 30%;
+                padding-right: 5%;
+
+                md-select {
+                    @include font-family-default();
+                    width: 100%;
+                }
+            }
+        }
+
+        .doi {
+            md-input-container {
+                width: 50%;
             }
         }
     

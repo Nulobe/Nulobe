@@ -8,8 +8,8 @@ const PROPERTIES_BY_TYPE = {
 };
 
 const APA_PROPERTIES_BY_TYPE = {
-    [ApaSourceType.JournalArticle]: ['authors', 'date'],
-    [ApaSourceType.Book]: ['authors', 'date']
+    [ApaSourceType.JournalArticle]: ['authors', 'date', 'title'],
+    [ApaSourceType.Book]: ['authors', 'date', 'title']
 }
 
 export const SourcePropertyHelper = {

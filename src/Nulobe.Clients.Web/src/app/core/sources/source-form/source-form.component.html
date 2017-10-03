@@ -13,6 +13,11 @@
       <md-option [value]="2">Book</md-option>
     </md-select>
   </div>
+  <div class="source-form-control title" *ngIf="hasProperty('title')">
+      <md-input-container>
+        <input mdInput type="text" formControlName="title" placeholder="Title" />
+      </md-input-container>
+    </div>
   <div class="source-form-control authors" *ngIf="hasProperty('authors')">
     <div class="author" formArrayName="authors" *ngFor="let author of sourceAuthorsFormArray.controls; index as i;">
       <md-input-container>
@@ -24,6 +29,20 @@
         <input #newAuthor mdInput type="text" formControlName="newAuthor" placeholder="Author {{ sourceAuthorsFormArray.controls.length + 1 }}" (blur)="onNewAuthorBlur()" />
       </md-input-container>
     </div>
+  </div>
+  <div class="source-form-control date" [formGroup]="datePartsFormGroup" *ngIf="hasProperty('date')">
+    <md-select formControlName="year" placeholder="Year">
+      <md-option [value]="null">(Select a year)</md-option>
+      <md-option *ngFor="let year of years" [value]="year">{{ year }}</md-option>
+    </md-select>
+    <md-select formControlName="month" placeholder="Month">
+      <md-option [value]="null">(Select a month)</md-option>
+      <md-option *ngFor="let month of months; index as i" [value]="i + 1">{{ month }}</md-option>
+    </md-select>
+    <md-select formControlName="day" placeholder="Day">
+      <md-option [value]="null">(Select a day)</md-option>
+      <md-option *ngFor="let day of days$ | async" [value]="day">{{ day }}</md-option>
+    </md-select>
   </div>
   <div class="source-form-control description" *ngIf="hasProperty('description')">
     <md-input-container>
