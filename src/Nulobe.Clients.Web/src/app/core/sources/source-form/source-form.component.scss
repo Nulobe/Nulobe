@@ -48,16 +48,8 @@
         }
 
         .date {
-            display: flex;
-
-            .date-part {
-                width: 30%;
-                padding-right: 5%;
-
-                md-select {
-                    @include font-family-default();
-                    width: 100%;
-                }
+            core-source-date {
+                width: 100%;
             }
         }
 

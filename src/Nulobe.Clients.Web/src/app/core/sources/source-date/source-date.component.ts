@@ -39,27 +39,16 @@ export class SourceDateComponent implements OnInit, OnDestroy {
   ngOnInit() {
     let { fb, sourceDate } = this;
 
-    this.yearFormControl = fb.control(
-      sourceDate ? sourceDate.year : null,
-      c => {
-        if (c.value < MINIMUM_YEAR || c.value > CURRENT_YEAR) {
-          return { 'year': 'Year is invalid' };
-        }
-        return null;
-      });
+    const isYearInRange = (x) => x >= MINIMUM_YEAR && x <= CURRENT_YEAR;
+    const isMonthInRange = (x) => x >= 1 && x <= 12;
 
-    this.monthFormControl = fb.control(
-      sourceDate ? sourceDate.month : null,
-      c => {
-        if (c.value < 1 || c.value > 12) {
-          return { 'month': 'Month is invalid' };
-        }
-      });
+    this.yearFormControl = fb.control(sourceDate ? sourceDate.year : null);
+    this.monthFormControl = fb.control(sourceDate ? sourceDate.month : null);
     this.dayFormControl = fb.control(sourceDate ? sourceDate.day : null);
 
     this.yearFormControl.valueChanges.subscribe(v => {
       this.monthFormControl.setValue(null);
-      if (this.yearFormControl.valid) {
+      if (isYearInRange(v)) {
         this.monthFormControl.enable()
       } else {
         this.monthFormControl.disable();
@@ -68,7 +57,7 @@ export class SourceDateComponent implements OnInit, OnDestroy {
 
     this.monthFormControl.valueChanges.subscribe(v => {
       this.dayFormControl.setValue(null);
-      if (this.monthFormControl.valid) {
+      if (isMonthInRange(v)) {
         this.dayFormControl.enable();
       } else {
         this.dayFormControl.disable();
