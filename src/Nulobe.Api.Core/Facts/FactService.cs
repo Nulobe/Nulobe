@@ -225,7 +225,7 @@ namespace Nulobe.Api.Core.Facts
                 modelErrors.Add($"{create.Country} is not an available country", nameof(create.Country));
             }
 
-            if (modelErrors.Errors.Count() > 0)
+            if (modelErrors.HasErrors)
             {
                 throw new ClientModelValidationException(modelErrors);
             }

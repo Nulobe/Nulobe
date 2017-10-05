@@ -32,7 +32,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<ISourceValidationHandler, ApaSourceValidationHandler>();
 
             services.AddTransient<ITagQueryService, TagQueryService>();
-            services.AddTransient<ITagMemoryRepository, TagMemoryRepository>();
+            services.AddSingleton<ITagMemoryRepository, TagMemoryRepository>();
             services.AddTransient<IFlagEventService, FlagEventService>();
             services.AddTransient<IVoteEventService, VoteEventService>();
 

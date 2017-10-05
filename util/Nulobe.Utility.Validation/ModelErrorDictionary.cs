@@ -10,6 +10,8 @@ namespace Nulobe.Utility.Validation
     {
         public IEnumerable<string> Errors { get; private set; }
 
+        public bool HasErrors => Errors.Any() || this.SelectMany(kvp => kvp.Value).Any();
+
         public ModelErrorDictionary(string member, string error)
             : this(new Dictionary<string, IEnumerable<string>>() { { member, new string[] { error } } }) { }
 
@@ -43,18 +45,35 @@ namespace Nulobe.Utility.Validation
 
         public void Add(ModelErrorDictionary other, string memberPrefix = null)
         {
-            Errors = Errors.Concat(other.Errors);
-            foreach (var kvp in other)
+            if (other.Errors.Any())
             {
                 if (string.IsNullOrEmpty(memberPrefix))
                 {
-                    this[memberPrefix] = kvp.Value;
+                    Errors = Errors.Concat(other.Errors);
                 }
                 else
                 {
-                    this[$"{memberPrefix}.{kvp.Key}"] = kvp.Value;
+                    if (!TryGetValue(memberPrefix, out IEnumerable<string> memberErrors))
+                    {
+                        memberErrors = Enumerable.Empty<string>();
+                    }
+                    this[memberPrefix] = memberErrors.Concat(other.Errors);
                 }
-
+            }
+            
+            if (other.SelectMany(kvp => kvp.Value).Any())
+            {
+                foreach (var kvp in other)
+                {
+                    if (string.IsNullOrEmpty(memberPrefix))
+                    {
+                        this[memberPrefix] = kvp.Value;
+                    }
+                    else
+                    {
+                        this[$"{memberPrefix}.{kvp.Key}"] = kvp.Value;
+                    }
+                }
             }
         }
 
