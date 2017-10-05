@@ -18,12 +18,12 @@ namespace Nulobe.Api.Core.Sources.SourceValidationHandlers
             string sourceUrl = source.url;
             if (string.IsNullOrEmpty(sourceUrl))
             {
-                return Task.FromResult(SourceValidationResult.Invalid("Url", "The field Url is required"));
+                return Task.FromResult(SourceValidationResult.Invalid("The field Url is required", "Url"));
             }
 
             if (!ValidationUtility.IsValidUri(sourceUrl))
             {
-                return Task.FromResult(SourceValidationResult.Invalid("Url", "The field Url is not a valid URI"));
+                return Task.FromResult(SourceValidationResult.Invalid("The field Url is not valid", "Url"));
             }
 
             return Task.FromResult(SourceValidationResult.Valid());

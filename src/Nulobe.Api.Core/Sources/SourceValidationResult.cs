@@ -18,10 +18,16 @@ namespace Nulobe.Api.Core.Sources
             IsValid = true
         };
 
-        public static SourceValidationResult Invalid(string member, string error) => new SourceValidationResult()
+        public static SourceValidationResult Invalid(string error) => new SourceValidationResult()
         {
             IsValid = false,
-            ModelErrors = new ModelErrorDictionary(member, error)
+            ModelErrors = new ModelErrorDictionary(error)
+        };
+
+        public static SourceValidationResult Invalid(string error, string member) => new SourceValidationResult()
+        {
+            IsValid = false,
+            ModelErrors = new ModelErrorDictionary(error, member)
         };
 
         public static SourceValidationResult Invalid(ModelErrorDictionary modelErrors) => new SourceValidationResult()

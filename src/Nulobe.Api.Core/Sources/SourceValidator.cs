@@ -1,4 +1,5 @@
 ﻿using MoreLinq;
+using Newtonsoft.Json.Linq;
 using Nulobe.Utility.Validation;
 using System;
 using System.Collections.Generic;
@@ -20,8 +21,12 @@ namespace Nulobe.Api.Core.Sources
 
         public async Task<SourceValidationResult> IsValidAsync(dynamic source)
         {
-            SourceValidationResult sourceTypeInvalid(string message) => SourceValidationResult.Invalid("Type", message);
+            if (!(source is JObject))
+            {
+                return SourceValidationResult.Invalid("Expected source to be a JSON object");
+            }
 
+            SourceValidationResult sourceTypeInvalid(string message) => SourceValidationResult.Invalid(message, "Type");
             SourceType sourceType = SourceType.Unknown;
             var sourceTypeInt = (int?)source.type;
             if (sourceTypeInt.HasValue)
@@ -42,6 +47,12 @@ namespace Nulobe.Api.Core.Sources
             {
                 throw new Exception($"No {nameof(ISourceValidationHandler)} defined for {nameof(SourceType)}.{sourceType}");
             }
+
+            var errors = new ModelErrorDictionary();
+
+            SourceValidationResult handlerValidationResult = await handler.IsValidAsync(source);
+            errors.Add(handlerValidationResult.ModelErrors);
+
 
             return await handler.IsValidAsync(source);
         }

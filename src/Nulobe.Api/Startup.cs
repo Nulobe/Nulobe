@@ -12,8 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Nulobe.Framework;
 using Nulobe.Api.Services;
-using Nulobe.Api.Core.Facts;
-using Nulobe.Api.Core.Events;
 using AutoMapper;
 using Nulobe.Api.Middleware;
 using System.Diagnostics;
@@ -21,7 +19,6 @@ using Microsoft.Azure.Documents.Client;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents;
-using Nulobe.Microsoft.WindowsAzure.Storage;
 
 namespace Nulobe.Api
 {

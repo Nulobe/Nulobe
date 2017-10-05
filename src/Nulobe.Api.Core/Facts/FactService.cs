@@ -177,7 +177,7 @@ namespace Nulobe.Api.Core.Facts
         {
             var (isValid, modelErrors) = Validator.IsValid(create);
 
-            if (modelErrors.IsMemberValid(nameof(FactCreate.DefinitionMarkdown)))
+            if (modelErrors.MemberHasErrors(nameof(FactCreate.DefinitionMarkdown)))
             {
                 var indexSequence = SourceReferenceRegex.Matches(create.DefinitionMarkdown)
                     .Cast<Match>()

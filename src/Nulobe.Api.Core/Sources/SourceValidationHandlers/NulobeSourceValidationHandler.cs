@@ -29,7 +29,7 @@ namespace Nulobe.Api.Core.Sources.SourceValidationHandlers
             string factId = source.factId;
             if (string.IsNullOrEmpty(factId))
             {
-                return SourceValidationResult.Invalid("FactId", "FactId is required");
+                return SourceValidationResult.Invalid("FactId is required", "FactId");
             }
 
             FactData fact = null;
@@ -41,7 +41,7 @@ namespace Nulobe.Api.Core.Sources.SourceValidationHandlers
                 }
                 catch (DocumentNotFoundException)
                 {
-                    return SourceValidationResult.Invalid("FactId", $"No fact with Id {factId} exists");
+                    return SourceValidationResult.Invalid($"No fact with Id {factId} exists", "FactId");
                 }
             }
 

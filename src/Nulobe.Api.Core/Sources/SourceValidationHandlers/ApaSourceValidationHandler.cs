@@ -53,9 +53,9 @@ namespace Nulobe.Api.Core.Sources.SourceValidationHandlers
                 for (var i = 0; i < authorsArray.Count(); i++)
                 {
                     var author = authorsArray[i] as JValue;
-                    if (author == null || string.IsNullOrEmpty(author.ToObject<string>()))
+                    if (author == null || author.Type != JTokenType.String || string.IsNullOrEmpty(author.ToObject<string>()))
                     {
-                        errors.Add("Author must not a non-empty string", $"[{i}]");
+                        errors.Add("Author must not a non-empty string", i);
                     }
                 }
             }
@@ -87,7 +87,7 @@ namespace Nulobe.Api.Core.Sources.SourceValidationHandlers
                     {
                         var daysInMonth = DateTime.DaysInMonth(year, month);
                         var (day, dayErrors) = GetValidInteger(dateJObject.SelectToken("day"), 1, daysInMonth);
-                        errors.Add(dayErrors);
+                        errors.Add(dayErrors, "Day");
                     }
                 }
             }
