@@ -15,7 +15,8 @@ namespace Nulobe.Api.Core.Sources
 
         public static SourceValidationResult Valid() => new SourceValidationResult()
         {
-            IsValid = true
+            IsValid = true,
+            ModelErrors = new ModelErrorDictionary()
         };
 
         public static SourceValidationResult Invalid(string error) => new SourceValidationResult()

@@ -41,8 +41,10 @@ namespace Nulobe.Api.Core.Sources.Impl
                 new string[]
                 {
                     SourceFields.Apa.Authors,
-                    SourceFields.Apa.Pages,
                     SourceFields.Apa.Organisation,
+                    SourceFields.Apa.Date,
+                    SourceFields.Apa.Title,
+                    SourceFields.Apa.Pages,
                     SourceFields.Apa.Doi,
                     SourceFields.Url,
                 }
@@ -52,9 +54,11 @@ namespace Nulobe.Api.Core.Sources.Impl
                 new string[]
                 {
                     SourceFields.Apa.Authors,
+                    SourceFields.Apa.Organisation,
+                    SourceFields.Apa.Date,
+                    SourceFields.Apa.Title,
                     SourceFields.Apa.Edition,
                     SourceFields.Apa.Pages,
-                    SourceFields.Apa.Organisation,
                     SourceFields.Url
                 }
             },
@@ -64,13 +68,15 @@ namespace Nulobe.Api.Core.Sources.Impl
                 {
                     SourceFields.Apa.Authors,
                     SourceFields.Apa.Organisation,
+                    SourceFields.Apa.Date,
+                    SourceFields.Apa.Title,
                     SourceFields.Url
                 }
             }
         }
         .ToReadOnlyDictionary();
 
-        public IEnumerable<string> this[ApaSourceType key] => WithSourceTypeField(_internalApaSourceFieldDictionary[key]);
+        public IEnumerable<string> this[ApaSourceType key] => WithApaSourceTypeFields(_internalApaSourceFieldDictionary[key]);
 
         public IEnumerable<string> this[SourceType key]
         {

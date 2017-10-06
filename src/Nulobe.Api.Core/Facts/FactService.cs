@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Storage.Table;
 using Nulobe.Microsoft.WindowsAzure.Storage;
 using Nulobe.Api.Core.Sources;
+using MoreLinq;
 
 namespace Nulobe.Api.Core.Facts
 {
@@ -78,6 +79,8 @@ namespace Nulobe.Api.Core.Facts
             await ValidateFactCreateAsync(create);
 
             var fact = _mapper.MapWithServices<FactCreate, FactData>(create, _serviceProvider);
+            ValidateFactCreateHasNoExtraFields(create, fact);
+
             fact.Id = Guid.NewGuid().ToString();
             fact.Slug = GenerateSlug(fact);
             fact.SlugHistory = new FactDataSlugAudit[]
@@ -108,6 +111,8 @@ namespace Nulobe.Api.Core.Facts
             await ValidateFactCreateAsync(create);
 
             var fact =_mapper.MapWithServices<FactCreate, FactData>(create, _serviceProvider);
+            ValidateFactCreateHasNoExtraFields(create, fact);
+
             using (var client = _documentClientFactory.Create())
             {
                 var existingFact = await client.ReadFactDocumentAsync<FactData>(id);
@@ -228,6 +233,48 @@ namespace Nulobe.Api.Core.Facts
             if (modelErrors.HasErrors)
             {
                 throw new ClientModelValidationException(modelErrors);
+            }
+        }
+
+        private void ValidateFactCreateHasNoExtraFields(FactCreate create, FactData factData)
+        {
+            var errors = create.Sources
+                .Zip(factData.Sources, (src, dest) => new
+                {
+                    Source = src,
+                    Destination = dest
+                })
+                .Select(x =>
+                {
+                    var modelErrors = new ModelErrorDictionary();
+
+                    var sourceProperties = x.Source.Properties().Select(p => p.Name);
+                    var destinationProperties = x.Destination.Keys;
+
+                    var propertiesDiff = sourceProperties.Except(destinationProperties, StringComparer.OrdinalIgnoreCase);
+                    foreach (var property in propertiesDiff)
+                    {
+                        modelErrors.Add($"The property {property} is not a valid property name");
+                    }
+
+                    return modelErrors;
+                })
+                .Select((e, i) => new
+                {
+                    ModelErrors = e,
+                    Index = i
+                })
+                .Aggregate(new ModelErrorDictionary(), (parent, curr) =>
+                {
+                    parent.Add(curr.ModelErrors, curr.Index);
+                    return parent;
+                });
+
+            if (errors.HasErrors)
+            {
+                var sourceErrors = new ModelErrorDictionary();
+                sourceErrors.Add(errors, "Sources");
+                throw new ClientModelValidationException(sourceErrors);
             }
         }
 
