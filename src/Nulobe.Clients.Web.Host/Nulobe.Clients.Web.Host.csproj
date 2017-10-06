@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\util\Nulobe.Microsoft.Extensions\Nulobe.Microsoft.Extensions.csproj" />
+    <ProjectReference Include="..\Nulobe.Api.Core\Nulobe.Api.Core.csproj" />
     <ProjectReference Include="..\Nulobe.Framework\Nulobe.Framework.csproj" />
   </ItemGroup>
 

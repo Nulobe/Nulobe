@@ -11,6 +11,9 @@
     <md-select formControlName="apaType" floatPlaceholder="never">
       <md-option [value]="1">Journal Article</md-option>
       <md-option [value]="2">Book</md-option>
+      <md-option [value]="3">Webpage</md-option>
+      <md-option [value]="4">Newspaper</md-option>
+      <md-option [value]="5">Magazine</md-option>
     </md-select>
   </div>
   <div class="source-form-control title" *ngIf="hasProperty('title')">

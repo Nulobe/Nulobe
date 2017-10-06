@@ -17,6 +17,9 @@ using Microsoft.Extensions.Options;
 using Nulobe.Framework;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
+using Nulobe.Api.Core.Sources.Impl;
+using Nulobe.Api.Core.Sources;
+using Nulobe.System;
 
 namespace Nulobe.Clients.Web.Host
 {
@@ -40,6 +43,8 @@ namespace Nulobe.Clients.Web.Host
             services.ConfigureAuth0(_configuration);
             services.ConfigureQuizlet(_configuration);
             services.ConfigureCountries(_configuration);
+            services.AddTransient<ISourceFieldDictionary, SourceFieldsDictionary>();
+            services.AddTransient<IApaSourceFieldDictionary, SourceFieldsDictionary>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -165,6 +170,8 @@ namespace Nulobe.Clients.Web.Host
             var auth0Options = serviceProvider.GetRequiredService<IOptions<Auth0Options>>().Value;
             var quizletOptions = serviceProvider.GetRequiredService<IOptions<QuizletOptions>>().Value;
             var countryOptions = serviceProvider.GetRequiredService<IOptions<CountryOptions>>().Value;
+            var sourceTypeDictionary = serviceProvider.GetRequiredService<ISourceFieldDictionary>();
+            var apaSourceTypeDictionary = serviceProvider.GetRequiredService<IApaSourceFieldDictionary>();
 
             var environmentSettings = new
             {
@@ -181,7 +188,9 @@ namespace Nulobe.Clients.Web.Host
                         name = kvp.Key,
                         displayName = kvp.Value.DisplayName
                     })
-                    .OrderBy(c => c.displayName)
+                    .OrderBy(c => c.displayName),
+                sourceTypeFields = sourceTypeDictionary.GetDictionary().ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Select(s => s.Substring(0, 1).ToLower() + s.Substring(1, s.Length - 1))),
+                apaSourceTypeFields = apaSourceTypeDictionary.GetDictionary().ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Select(s => s.Substring(0, 1).ToLower() + s.Substring(1, s.Length - 1)))
             };
 
             var environmentName = hostingEnvironment.EnvironmentName;

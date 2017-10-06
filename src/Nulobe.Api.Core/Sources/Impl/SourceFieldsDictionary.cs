@@ -10,7 +10,7 @@ namespace Nulobe.Api.Core.Sources.Impl
 {
     public class SourceFieldsDictionary : ISourceFieldDictionary, IApaSourceFieldDictionary
     {
-        private readonly IReadOnlyDictionary<SourceType, IEnumerable<string>> _apaSourceFieldDictionary = new Dictionary<SourceType, IEnumerable<string>>()
+        private readonly IReadOnlyDictionary<SourceType, IEnumerable<string>> _sourceFieldDictionary = new Dictionary<SourceType, IEnumerable<string>>()
         {
             {
                 SourceType.CitationNeeded,
@@ -34,7 +34,7 @@ namespace Nulobe.Api.Core.Sources.Impl
         }
         .ToReadOnlyDictionary();
 
-        private readonly IReadOnlyDictionary<ApaSourceType, IEnumerable<string>> _internalApaSourceFieldDictionary = new Dictionary<ApaSourceType, IEnumerable<string>>()
+        private readonly IReadOnlyDictionary<ApaSourceType, IEnumerable<string>> _apaSourceFieldDictionary = new Dictionary<ApaSourceType, IEnumerable<string>>()
         {
             {
                 ApaSourceType.JournalArticle,
@@ -76,9 +76,9 @@ namespace Nulobe.Api.Core.Sources.Impl
         }
         .ToReadOnlyDictionary();
 
-        public IEnumerable<string> this[ApaSourceType key] => WithApaSourceTypeFields(_internalApaSourceFieldDictionary[key]);
+        IEnumerable<string> IApaSourceFieldDictionary.this[ApaSourceType key] => WithApaSourceTypeFields(_apaSourceFieldDictionary[key]);
 
-        public IEnumerable<string> this[SourceType key]
+        IEnumerable<string> ISourceFieldDictionary.this[SourceType key]
         {
             get
             {
@@ -87,14 +87,25 @@ namespace Nulobe.Api.Core.Sources.Impl
                     throw new InvalidOperationException($"Use {nameof(IApaSourceFieldDictionary)} to lookup APA sources");
                 }
 
-                return WithSourceTypeField(_apaSourceFieldDictionary[key]);
+                return WithSourceTypeField(_sourceFieldDictionary[key]);
             }
         }
+
+        IDictionary<SourceType, IEnumerable<string>> ISourceFieldDictionary.GetDictionary()
+            => _sourceFieldDictionary.ToDictionary(kvp => kvp.Key, kvp => WithSourceTypeField(kvp.Value));
+
+        IDictionary<ApaSourceType, IEnumerable<string>> IApaSourceFieldDictionary.GetDictionary()
+            => _apaSourceFieldDictionary.ToDictionary(kvp => kvp.Key, kvp => WithApaSourceTypeFields(kvp.Value));
+
+
+        #region Helpers
 
         private IEnumerable<string> WithApaSourceTypeFields(IEnumerable<string> fields)
             => WithSourceTypeField(new string[] { SourceFields.ApaType }.Concat(fields));
 
         private IEnumerable<string> WithSourceTypeField(IEnumerable<string> fields)
             => new string[] { SourceFields.Type }.Concat(fields);
+
+        #endregion
     }
 }

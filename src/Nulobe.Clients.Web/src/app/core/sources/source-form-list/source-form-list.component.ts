@@ -2,8 +2,9 @@ import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/cor
 import { FormBuilder, FormGroup, FormArray, AbstractControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 
+import { SourceType, ApaSourceType } from '../../api';
+
 import { Source } from '../source';
-import { SourceType, ApaSourceType } from '../source-type';
 
 let trackByIdCounter = 0;
 

@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup, FormControl } from '@angular/forms';
 import { MdInputDirective } from '@angular/material';
+import { SourceType, ApaSourceType } from '../../api';
 
 import { Source } from '../source';
-import { SourceType, ApaSourceType } from '../source-type';
 import { SourcePropertyHelper } from '../helpers/source-property.helper';
 
 @Component({

@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { Fact } from '../../api/api.swagger';
-import { Source, SourceType } from '../../sources';
+import { Fact, SourceType } from '../../api';
+
+import { Source } from '../../sources';
 
 import { FactLinkResolver } from '../fact-list/fact-list.component';
 

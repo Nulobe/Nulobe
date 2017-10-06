@@ -1,30 +1,25 @@
-import { SourceType, ApaSourceType } from '../source-type';
-
-const PROPERTIES_BY_TYPE = {
-    [SourceType.CitationNeeded]: [],
-    [SourceType.Nulobe]: ['factId'],
-    [SourceType.Legacy]: ['url', 'description'],
-    [SourceType.Apa]: ['apaType']
-};
-
-const APA_PROPERTIES_BY_TYPE = {
-    [ApaSourceType.JournalArticle]: ['authors', 'date', 'title'],
-    [ApaSourceType.Book]: ['authors', 'date', 'title']
-}
+import { NULOBE_ENV_SETTINGS } from '../../../app.settings';
+import { SourceType, ApaSourceType } from '../../api';
 
 export const SourcePropertyHelper = {
 
-    hasProperty(type: SourceType, apaType: ApaSourceType, propName: string): boolean {
-        return this.getProperties(type, apaType).indexOf(propName) > -1;
+    hasProperty(sourceType: SourceType, apaSourceType: ApaSourceType, propName: string): boolean {
+        return this.getProperties(sourceType, apaSourceType).indexOf(propName) > -1;
     },
 
-    getProperties(type: SourceType, apaType: ApaSourceType): string[] {
-        let result = [...PROPERTIES_BY_TYPE[type]];
-
-        if (type === SourceType.Apa && ApaSourceType[apaType]) {
-            result.push(...APA_PROPERTIES_BY_TYPE[apaType])
+    getProperties(sourceType: SourceType, apaSourceType: ApaSourceType = null): string[] {
+        if (!sourceType) {
+            throw new Error('Unknown source type');
         }
+        else if (sourceType === SourceType.Apa) {
+            if (!apaSourceType) {
+                throw new Error('Unknown apa source type');
+            }
 
-        return result;
+            return NULOBE_ENV_SETTINGS.apaSourceTypeFields[ApaSourceType[apaSourceType]];
+        }
+        else {
+            return NULOBE_ENV_SETTINGS.sourceTypeFields[SourceType[sourceType]];
+        }
     }
 };

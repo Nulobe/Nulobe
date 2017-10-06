@@ -1,4 +1,4 @@
-import { SourceType, ApaSourceType } from './source-type';
+import { SourceType, ApaSourceType } from '../api';
 
 export interface Source {
     trackById?: number;

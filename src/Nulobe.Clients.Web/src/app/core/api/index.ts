@@ -1,6 +1,7 @@
 export { ApiModule } from './api.module';
 export {
     FactApiClient, FactQuery, Fact, FactCreate,
+    SourceType, ApaSourceType,
     TagApiClient, Tag,
     VoteApiClient, VoteCreate,
     FlagApiClient, FlagCreate,

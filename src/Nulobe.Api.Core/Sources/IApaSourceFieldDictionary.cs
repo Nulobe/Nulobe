@@ -9,5 +9,7 @@ namespace Nulobe.Api.Core.Sources
     public interface IApaSourceFieldDictionary
     {
         IEnumerable<string> this[ApaSourceType key] { get; }
+
+        IDictionary<ApaSourceType, IEnumerable<string>> GetDictionary();
     }
 }

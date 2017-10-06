@@ -3,8 +3,8 @@ import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@ang
 import { Observable, BehaviorSubject } from 'rxjs';
 
 import { NULOBE_ENV_SETTINGS } from '../../../app.settings';
-import { FactCreate } from '../../api';
-import { Source, SourceType, SourcePropertyHelper } from '../../sources';
+import { FactCreate, SourceType } from '../../api';
+import { Source, SourcePropertyHelper } from '../../sources';
 
 interface FactFormValue {
   title: string;

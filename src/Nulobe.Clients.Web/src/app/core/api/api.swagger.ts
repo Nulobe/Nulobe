@@ -438,6 +438,69 @@ export class QuizletApiClient implements IQuizletApiClient {
     }
 }
 
+export interface ISwaggerGenerationDummyClient {
+    /**
+     * @return or
+     */
+    dummyEndpoint(): Observable<string | null>;
+}
+
+@Injectable()
+export class SwaggerGenerationDummyClient implements ISwaggerGenerationDummyClient {
+    private http: Http;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @return or
+     */
+    dummyEndpoint(): Observable<string | null> {
+        let url_ = this.baseUrl + "/__dummy";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = {
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processDummyEndpoint(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processDummyEndpoint(response_);
+                } catch (e) {
+                    return <Observable<string>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<string>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processDummyEndpoint(response: Response): Observable<string | null> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: string | null = null;
+            result200 = _responseText === "" ? null : <string>JSON.parse(_responseText, this.jsonParseReviver);
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText);
+        }
+        return Observable.of<string | null>(<any>null);
+    }
+}
+
 export interface ITagApiClient {
     list(searchPattern: string | undefined, fields: string | undefined, orderBy: string | undefined): Observable<Tag[] | null>;
 }
@@ -640,6 +703,23 @@ export interface QuizletSet {
 export interface QuizletTerm {
     name?: string | undefined;
     definition?: string | undefined;
+}
+
+export enum SourceType {
+    Unknown = 0, 
+    Legacy = 1, 
+    Nulobe = 2, 
+    CitationNeeded = 3, 
+    Apa = 4, 
+}
+
+export enum ApaSourceType {
+    Unknown = 0, 
+    JournalArticle = 1, 
+    Book = 2, 
+    Webpage = 3, 
+    Newspaper = 4, 
+    Magazine = 5, 
 }
 
 export interface Tag {
