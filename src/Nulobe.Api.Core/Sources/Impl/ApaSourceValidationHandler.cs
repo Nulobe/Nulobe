@@ -6,15 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nulobe.Api.Core.Sources.SourceValidationHandlers
+namespace Nulobe.Api.Core.Sources.Impl
 {
     public class ApaSourceValidationHandler : ISourceValidationHandler
     {
         private const int MinimumYear = 1900;
 
         public SourceType Type => SourceType.Apa;
-
-        public IEnumerable<string> Fields => new string[] { "apaType", "authors" };
 
         public Task<SourceValidationResult> IsValidAsync(dynamic source)
         {
@@ -47,9 +45,8 @@ namespace Nulobe.Api.Core.Sources.SourceValidationHandlers
         {
             var errors = new ModelErrorDictionary();
 
-            if (authors is JArray)
+            if (authors is JArray authorsArray)
             {
-                var authorsArray = (JArray)authors;
                 for (var i = 0; i < authorsArray.Count(); i++)
                 {
                     var author = authorsArray[i] as JValue;
@@ -71,14 +68,12 @@ namespace Nulobe.Api.Core.Sources.SourceValidationHandlers
         {
             var errors = new ModelErrorDictionary();
 
-            if (date is JObject)
+            if (date is JObject dateJObject)
             {
-                var dateJObject = (JObject)date;
-
                 var (year, yearErrors) = GetValidInteger(dateJObject.SelectToken("year"), 1900, DateTime.UtcNow.Year);
                 errors.Add(yearErrors, "Year");
 
-                if  (!yearErrors.HasErrors)
+                if (!yearErrors.HasErrors)
                 {
                     var (month, monthErrors) = GetValidInteger(dateJObject.SelectToken("month"), 1, 12);
                     errors.Add(monthErrors, "Month");
@@ -104,9 +99,8 @@ namespace Nulobe.Api.Core.Sources.SourceValidationHandlers
             var result = default(int);
             var errors = new ModelErrorDictionary();
 
-            if (value is JValue)
+            if (value is JValue jValue)
             {
-                var jValue = (JValue)value;
                 if (jValue.Type == JTokenType.Integer)
                 {
                     var intValue = jValue.ToObject<int>();

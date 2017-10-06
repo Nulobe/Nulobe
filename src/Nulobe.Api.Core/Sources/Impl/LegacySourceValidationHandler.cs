@@ -5,13 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nulobe.Api.Core.Sources.SourceValidationHandlers
+namespace Nulobe.Api.Core.Sources.Impl
 {
     public class LegacySourceValidationHandler : ISourceValidationHandler
     {
         public SourceType Type => SourceType.Legacy;
-
-        public IEnumerable<string> Fields => throw new NotImplementedException();
 
         public Task<SourceValidationResult> IsValidAsync(dynamic source)
         {

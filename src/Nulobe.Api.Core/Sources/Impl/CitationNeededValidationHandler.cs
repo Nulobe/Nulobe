@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nulobe.Api.Core.Sources.SourceValidationHandlers
+namespace Nulobe.Api.Core.Sources.Impl
 {
     public class CitationNeededValidationHandler : AlwaysValidSourceValidationHandler
     {
-        public CitationNeededValidationHandler() : base(SourceType.CitationNeeded, Enumerable.Empty<string>())
+        public CitationNeededValidationHandler() : base(SourceType.CitationNeeded)
         {
         }
     }
