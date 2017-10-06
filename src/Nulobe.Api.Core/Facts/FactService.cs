@@ -77,7 +77,7 @@ namespace Nulobe.Api.Core.Facts
             Validator.ValidateNotNull(create, nameof(create));
             await ValidateFactCreateAsync(create);
 
-            var fact = _mapper.Map<FactData>(create);
+            var fact = _mapper.MapWithServices<FactCreate, FactData>(create, _serviceProvider);
             fact.Id = Guid.NewGuid().ToString();
             fact.Slug = GenerateSlug(fact);
             fact.SlugHistory = new FactDataSlugAudit[]
@@ -107,7 +107,7 @@ namespace Nulobe.Api.Core.Facts
             Validator.ValidateNotNull(create, nameof(create));
             await ValidateFactCreateAsync(create);
 
-            var fact = _mapper.Map<FactData>(create);
+            var fact =_mapper.MapWithServices<FactCreate, FactData>(create, _serviceProvider);
             using (var client = _documentClientFactory.Create())
             {
                 var existingFact = await client.ReadFactDocumentAsync<FactData>(id);

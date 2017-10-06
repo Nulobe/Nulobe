@@ -17,9 +17,13 @@ namespace Nulobe.Api.Core.Facts
             CreateMap<FactCreate, FactData>()
                 .ForMember(
                     dest => dest.Sources,
-                    opts => opts.ResolveUsing(src => src.Sources.Select(s => s
-                        .ToObject<IDictionary<string, object>>()
-                        .ToDictionary(kvp => kvp.Key.Substring(0, 1).ToUpper() + kvp.Key.Substring(1), kvp => kvp.Value))));
+                    opts => opts.ResolveUsing((src, dest, member, resolutionContext) =>
+                    {
+                        var sourcePropertyFilter = resolutionContext.GetRequiredService<ISourcePropertyFilter>();
+                        return src.Sources.Select(s => sourcePropertyFilter.GetFilteredSource(s)
+                            .ToObject<IDictionary<string, object>>()
+                            .ToDictionary(kvp => kvp.Key.Substring(0, 1).ToUpper() + kvp.Key.Substring(1), kvp => kvp.Value));
+                    }));
 
             CreateMap<FactData, Fact>()
                 .EnsureServices()

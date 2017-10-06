@@ -52,9 +52,7 @@ namespace Nulobe.Api.Core.Sources
 
             SourceValidationResult handlerValidationResult = await handler.IsValidAsync(source);
             errors.Add(handlerValidationResult.ModelErrors);
-
-
-            return await handler.IsValidAsync(source);
+            return errors.HasErrors ? SourceValidationResult.Invalid(errors) : SourceValidationResult.Valid();
         }
     }
 }

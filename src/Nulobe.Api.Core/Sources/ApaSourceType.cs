@@ -12,6 +12,12 @@ namespace Nulobe.Api.Core.Sources
 
         JournalArticle = 1,
 
-        Book = 2
+        Book = 2,
+
+        Webpage = 3,
+
+        Newspaper = 4,
+
+        Magazine = 5
     }
 }

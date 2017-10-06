@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Nulobe.Api.Core.Sources
 {
-    public interface ISourceValidationHandler
+    public interface ISourceFieldResolver
     {
-        SourceType Type { get; }
-
-        Task<SourceValidationResult> IsValidAsync(dynamic source);
+        IEnumerable<string> ResolveFields(SourceType sourceType, ApaSourceType apaSourceType = ApaSourceType.Unknown);
     }
 }

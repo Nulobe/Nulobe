@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
     <Compile Include="Collections\Generic\ListHelpers.cs" />
     <Compile Include="Linq\EnumerableExtensions.cs" />
     <Compile Include="Linq\EnumerableSeedExtensions.cs" />

@@ -2,7 +2,7 @@
 using Nulobe.Api.Core.Events;
 using Nulobe.Api.Core.Facts;
 using Nulobe.Api.Core.Sources;
-using Nulobe.Api.Core.Sources.SourceValidationHandlers;
+using Nulobe.Api.Core.Sources.Impl;
 using Nulobe.Api.Core.Tags;
 using Nulobe.DocumentDb.Client;
 using Nulobe.Microsoft.WindowsAzure.Storage;
@@ -30,6 +30,10 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<ISourceValidationHandler, NulobeSourceValidationHandler>();
             services.AddTransient<ISourceValidationHandler, CitationNeededValidationHandler>();
             services.AddTransient<ISourceValidationHandler, ApaSourceValidationHandler>();
+            services.AddTransient<ISourceFieldDictionary, SourceFieldsDictionary>();
+            services.AddTransient<IApaSourceFieldDictionary, SourceFieldsDictionary>();
+            services.AddTransient<ISourceFieldResolver, SourceFieldResolver>();
+            services.AddTransient<ISourcePropertyFilter, SourcePropertyFilter>();
 
             services.AddTransient<ITagQueryService, TagQueryService>();
             services.AddSingleton<ITagMemoryRepository, TagMemoryRepository>();
