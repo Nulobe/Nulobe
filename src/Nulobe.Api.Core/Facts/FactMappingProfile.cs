@@ -15,6 +15,7 @@ namespace Nulobe.Api.Core.Facts
         public FactMappingProfile()
         {
             CreateMap<FactCreate, FactData>()
+                .EnsureServices()
                 .ForMember(
                     dest => dest.Sources,
                     opts => opts.ResolveUsing((src, dest, member, resolutionContext) =>
@@ -22,7 +23,7 @@ namespace Nulobe.Api.Core.Facts
                         var sourcePropertyFilter = resolutionContext.GetRequiredService<ISourcePropertyFilter>();
                         return src.Sources.Select(s => sourcePropertyFilter.GetFilteredSource(s)
                             .ToObject<IDictionary<string, object>>()
-                            .ToDictionary(kvp => kvp.Key.Capitalize()));
+                            .ToDictionary(kvp => kvp.Key.Capitalize(), kvp => kvp.Value));
                     }));
 
             CreateMap<FactData, Fact>()
@@ -31,12 +32,12 @@ namespace Nulobe.Api.Core.Facts
                     dest => dest.Sources,
                     opts => opts.ResolveUsing(src => src.Sources.Select(s =>
                     {
-                        if (!s.ContainsKey("Type"))
+                        if (!s.ContainsKey(SourceFields.Type.Capitalize()))
                         {
-                            s.Add("Type", SourceType.Legacy);
+                            s.Add(SourceFields.Type.Capitalize(), SourceType.Legacy);
                         }
 
-                        return s.ToDictionary(kvp => kvp.Key.Decapitalize());
+                        return s.ToDictionary(kvp => kvp.Key.Decapitalize(), kvp => kvp.Value);
                     })))
                 .BeforeMap((factData, fact) =>
                 {
