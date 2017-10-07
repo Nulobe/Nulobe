@@ -13,5 +13,25 @@ namespace System
             var plainTextBytes = Encoding.UTF8.GetBytes(str);
             return Convert.ToBase64String(plainTextBytes);
         }
+
+        public static string Capitalize(this string str)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                throw new ArgumentException();
+            }
+
+            return str.Substring(0, 1).ToUpper() + str.Substring(1, str.Length - 1);
+        }
+
+        public static string Decapitalize(this string str)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                throw new ArgumentException();
+            }
+
+            return str.Substring(0, 1).ToLower() + str.Substring(1, str.Length - 1);
+        }
     }
 }

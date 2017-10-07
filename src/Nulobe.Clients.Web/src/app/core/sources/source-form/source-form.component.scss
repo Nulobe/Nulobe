@@ -29,6 +29,12 @@
             }
         }
 
+        .organisation {
+            md-input-container {
+                width: 100%;
+            }
+        }
+
         .authors {
             display: flex;
             flex-wrap: wrap;
@@ -50,6 +56,24 @@
         .date {
             core-source-date {
                 width: 100%;
+            }
+        }
+
+        .pages {
+            display: flex;
+            flex-wrap: wrap;
+
+            .page-part {
+                width: 30%;
+                padding-right: 5%;
+
+                md-input-container {
+                    width: 100%;
+                }
+
+                &:nth-child(3) {
+                    padding-right: 0px;
+                }
             }
         }
 

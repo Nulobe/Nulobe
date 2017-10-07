@@ -14,34 +14,48 @@ namespace Nulobe.Api.Core.Sources.Impl
 
         public SourceType Type => SourceType.Apa;
 
-        public Task<SourceValidationResult> IsValidAsync(dynamic source)
+        public Task<SourceValidationResult> IsValidAsync(dynamic sourceOld)
         {
+            JObject source = sourceOld;
+
             var errors = new ModelErrorDictionary();
 
-            void apaSourceTypeInvalid(string message) => errors.Add("ApaType", message);
+            void apaSourceTypeInvalid(string message) => errors.Add(SourceFields.ApaType, message);
 
             ApaSourceType apaSourceType = ApaSourceType.Unknown;
-            var apaSourceTypeInt = (int?)source.apaType;
-            if (apaSourceTypeInt.HasValue)
-            {
-                apaSourceType = (ApaSourceType)apaSourceTypeInt;
-                if (!Enum.IsDefined(typeof(ApaSourceType), apaSourceType) || apaSourceType == ApaSourceType.Unknown)
-                {
-                    apaSourceTypeInvalid("APA source type value is invalid");
-                }
-            }
-            else
+            var apaSourceTypeToken = source.SelectToken(SourceFields.ApaType);
+            if (apaSourceTypeToken == null)
             {
                 apaSourceTypeInvalid("APA source type is required");
             }
+            else if (apaSourceTypeToken is JValue apaSourceTypeValue)
+            {
+                if (apaSourceTypeValue.Type == JTokenType.Integer)
+                {
+                    apaSourceType = (ApaSourceType)apaSourceTypeValue.ToObject<int>();
+                    if (!Enum.IsDefined(typeof(ApaSourceType), apaSourceType) || apaSourceType == ApaSourceType.Unknown)
+                    {
+                        apaSourceTypeInvalid("APA source type value is invalid");
+                    }
+                }
+                else
+                {
+                    apaSourceTypeInvalid("APA source type must be an integer");
+                }
+            }
 
-            errors.Add(ValidateAuthors(source.authors), "Authors");
-            errors.Add(ValidateDate(source.date), "Date");
+            errors.Add(ValidateAuthors(source.SelectToken(SourceFields.Apa.Authors)), "Authors");
+            errors.Add(ValidateDate(source.SelectToken(SourceFields.Apa.Date)), "Date");
+            errors.Add(ValidateTitle(source.SelectToken(SourceFields.Apa.Title)), "Title");
+            errors.Add(ValidateEdition(source.SelectToken(SourceFields.Apa.Edition)), "Edition");
+            errors.Add(ValidatePages(source.SelectToken(SourceFields.Apa.Pages)), "Pages");
+            errors.Add(ValidateDoi(source.SelectToken(SourceFields.Apa.Doi)), "Doi");
+            errors.Add(ValidateOrganisation(source.SelectToken(SourceFields.Apa.Organisation)), "Organisation");
 
             return Task.FromResult(errors.Any() ? SourceValidationResult.Invalid(errors) : SourceValidationResult.Valid());
         }
 
-        private ModelErrorDictionary ValidateAuthors(dynamic authors)
+        private ModelErrorDictionary ValidateAuthors(JToken authors)
         {
             var errors = new ModelErrorDictionary();
 
@@ -64,7 +78,7 @@ namespace Nulobe.Api.Core.Sources.Impl
             return errors;
         }
 
-        private ModelErrorDictionary ValidateDate(dynamic date)
+        private ModelErrorDictionary ValidateDate(JToken date)
         {
             var errors = new ModelErrorDictionary();
 
@@ -94,7 +108,32 @@ namespace Nulobe.Api.Core.Sources.Impl
             return errors;
         }
 
-        private (int value, ModelErrorDictionary errors) GetValidInteger(dynamic value, int minimumValue, int maximumValue)
+        private ModelErrorDictionary ValidateTitle(JToken jToken)
+        {
+            return new ModelErrorDictionary();
+        }
+
+        private ModelErrorDictionary ValidateEdition(JToken jToken)
+        {
+            return new ModelErrorDictionary();
+        }
+
+        private ModelErrorDictionary ValidatePages(JToken jToken)
+        {
+            return new ModelErrorDictionary();
+        }
+
+        private ModelErrorDictionary ValidateDoi(JToken jToken)
+        {
+            return new ModelErrorDictionary();
+        }
+
+        private ModelErrorDictionary ValidateOrganisation(JToken jToken)
+        {
+            return new ModelErrorDictionary();
+        }
+
+        private (int value, ModelErrorDictionary errors) GetValidInteger(JToken value, int minimumValue, int maximumValue)
         {
             var result = default(int);
             var errors = new ModelErrorDictionary();

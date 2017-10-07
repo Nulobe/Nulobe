@@ -116,6 +116,8 @@ export class FactFormComponent implements OnInit, AfterViewInit {
       .reduce((prev, curr) => Math.max(prev, curr), 0);
 
     this.sourceCount.next(Math.min(maxSourceIndex, 10));
+    
+    this.changeDetectorRef.detectChanges();
   }
 
   private pruneSource(source: Source): Source {

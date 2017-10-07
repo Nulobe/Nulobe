@@ -53,7 +53,8 @@ export class SourceFormListComponent implements OnInit, OnChanges {
             type: SourceType.CitationNeeded,
             apaType: ApaSourceType.JournalArticle,
             trackById: ++trackByIdCounter,
-            authors: []
+            authors: [],
+            pages: {}
           });
         }
       } else if (sourceCountDiff < 0) {

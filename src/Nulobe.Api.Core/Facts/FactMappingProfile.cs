@@ -22,7 +22,7 @@ namespace Nulobe.Api.Core.Facts
                         var sourcePropertyFilter = resolutionContext.GetRequiredService<ISourcePropertyFilter>();
                         return src.Sources.Select(s => sourcePropertyFilter.GetFilteredSource(s)
                             .ToObject<IDictionary<string, object>>()
-                            .ToDictionary(kvp => kvp.Key.Substring(0, 1).ToUpper() + kvp.Key.Substring(1), kvp => kvp.Value));
+                            .ToDictionary(kvp => kvp.Key.Capitalize()));
                     }));
 
             CreateMap<FactData, Fact>()
@@ -36,7 +36,7 @@ namespace Nulobe.Api.Core.Facts
                             s.Add("Type", SourceType.Legacy);
                         }
 
-                        return s.ToDictionary(kvp => kvp.Key.Substring(0, 1).ToLower() + kvp.Key.Substring(1), kvp => kvp.Value);
+                        return s.ToDictionary(kvp => kvp.Key.Decapitalize());
                     })))
                 .BeforeMap((factData, fact) =>
                 {
@@ -58,14 +58,6 @@ namespace Nulobe.Api.Core.Facts
                     {
                         fact.TitleLocalized = fact.Title;
                     }
-
-                    //foreach (var source in fact.Sources)
-                    //{
-                    //    if (!((IDictionary<string, object>)source).ContainsKey("type"))
-                    //    {
-                    //        source.type = SourceType.Legacy;
-                    //    }
-                    //}
                 });
         }
     }

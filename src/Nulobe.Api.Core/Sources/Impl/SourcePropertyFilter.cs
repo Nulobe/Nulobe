@@ -32,10 +32,9 @@ namespace Nulobe.Api.Core.Sources.Impl
             }
 
             var result = new JObject();
-            var lowerFields = fields.Select(f => ToLowerCasePath(f));
             foreach (var kvp in source)
             {
-                if (lowerFields.Contains(kvp.Key))
+                if (fields.Contains(kvp.Key))
                 {
                     result.Add(kvp.Key, kvp.Value);
                 }
@@ -48,16 +47,10 @@ namespace Nulobe.Api.Core.Sources.Impl
         #region Helpers
 
         private SourceType GetSourceType(JObject source)
-            => (SourceType)source.SelectToken(ToLowerCasePath(SourceFields.Type)).ToObject<int>();
+            => (SourceType)source.SelectToken(SourceFields.Type).ToObject<int>();
 
         private ApaSourceType GetApaSourceType(JObject source)
-            => (ApaSourceType)source.SelectToken(ToLowerCasePath(SourceFields.ApaType)).ToObject<int>();
-
-        private string ToLowerCasePath(string path) => string.Join(
-            ".",
-            path
-                .Split('.')
-                .Select(s => s.Substring(0, 1).ToLower() + s.Substring(1, s.Length - 1)));
+            => (ApaSourceType)source.SelectToken(SourceFields.ApaType).ToObject<int>();
 
         #endregion
     }

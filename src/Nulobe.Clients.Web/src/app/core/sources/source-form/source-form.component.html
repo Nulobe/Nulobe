@@ -17,19 +17,36 @@
     </md-select>
   </div>
   <div class="source-form-control title" *ngIf="hasProperty('title')">
-      <md-input-container>
-        <input mdInput type="text" formControlName="title" placeholder="Title" />
-      </md-input-container>
-    </div>
+    <md-input-container>
+      <input mdInput type="text" formControlName="title" placeholder="Title" />
+    </md-input-container>
+  </div>
   <div class="source-form-control authors" *ngIf="hasProperty('authors')">
     <div class="author" formArrayName="authors" *ngFor="let author of sourceAuthorsFormArray.controls; index as i;">
       <md-input-container>
-        <input mdInput type="text" [formControlName]="i" placeholder="Author {{ i + 1 }}" (blur)="onAuthorBlur(i)" />
+        <input mdInput type="text" [id]="'author-' + i" [formControlName]="i" placeholder="Author {{ i + 1 }}" (blur)="onAuthorBlur(i)" />
       </md-input-container>
     </div>
     <div class="author">
       <md-input-container>
-        <input #newAuthor mdInput type="text" formControlName="newAuthor" placeholder="Author {{ sourceAuthorsFormArray.controls.length + 1 }}" (blur)="onNewAuthorBlur()" />
+        <input mdInput id="newAuthor" type="text" formControlName="newAuthor" placeholder="Author {{ sourceAuthorsFormArray.controls.length + 1 }}" (blur)="onNewAuthorBlur()" />
+      </md-input-container>
+    </div>
+  </div>
+  <div class="source-form-control organisation" *ngIf="hasProperty('organisation')">
+    <md-input-container>
+      <input mdInput type="text" formControlName="organisation" placeholder="Organisation" />
+    </md-input-container>
+  </div>
+  <div class="source-form-control pages" [formGroup]="pagesFormGroup" *ngIf="hasProperty('pages')">
+    <div class="page-part">
+      <md-input-container>
+        <input mdInput type="number" formControlName="pageStart" placeholder="Page start" />
+      </md-input-container>
+    </div>
+    <div class="page-part">
+      <md-input-container>
+        <input mdInput type="number" formControlName="pageEnd" placeholder="Page end" />
       </md-input-container>
     </div>
   </div>
@@ -38,7 +55,12 @@
   </div>
   <div class="source-form-control description" *ngIf="hasProperty('description')">
     <md-input-container>
-      <textarea mdInput formControlName="description" placeholder="Description of source {{ sourceIndex + 1 }}" tabindex="0"></textarea>
+      <textarea mdInput formControlName="description" placeholder="Description of source {{ sourceIndex + 1 }}"></textarea>
+    </md-input-container>
+  </div>
+  <div class="source-form-control doi" *ngIf="hasProperty('doi')">
+    <md-input-container>
+      <input mdInput type="text" formControlName="doi" placeholder="DOI" />
     </md-input-container>
   </div>
   <div class="source-form-control url" *ngIf="hasProperty('url')">

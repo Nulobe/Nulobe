@@ -40,6 +40,7 @@ namespace Nulobe.Api.Core.Sources.Impl
                 ApaSourceType.JournalArticle,
                 new string[]
                 {
+                    SourceFields.ApaType,
                     SourceFields.Apa.Authors,
                     SourceFields.Apa.Organisation,
                     SourceFields.Apa.Date,
@@ -53,6 +54,7 @@ namespace Nulobe.Api.Core.Sources.Impl
                 ApaSourceType.Book,
                 new string[]
                 {
+                    SourceFields.ApaType,
                     SourceFields.Apa.Authors,
                     SourceFields.Apa.Organisation,
                     SourceFields.Apa.Date,
@@ -66,13 +68,29 @@ namespace Nulobe.Api.Core.Sources.Impl
                 ApaSourceType.Webpage,
                 new string[]
                 {
+                    SourceFields.ApaType,
                     SourceFields.Apa.Authors,
                     SourceFields.Apa.Organisation,
                     SourceFields.Apa.Date,
                     SourceFields.Apa.Title,
                     SourceFields.Url
                 }
-            }
+            },
+            {
+                ApaSourceType.Newspaper,
+                new string[]
+                {
+
+                }
+            },
+            {
+                ApaSourceType.Magazine,
+                new string[]
+                {
+
+                }
+            },
+            
         }
         .ToReadOnlyDictionary();
 

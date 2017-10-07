@@ -248,6 +248,7 @@ namespace Nulobe.Api.Core.Facts
                 {
                     var modelErrors = new ModelErrorDictionary();
 
+                    // If any source properties have been filtered from the source, that's an error.
                     var sourceProperties = x.Source.Properties().Select(p => p.Name);
                     var destinationProperties = x.Destination.Keys;
 

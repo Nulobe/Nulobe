@@ -189,8 +189,8 @@ namespace Nulobe.Clients.Web.Host
                         displayName = kvp.Value.DisplayName
                     })
                     .OrderBy(c => c.displayName),
-                sourceTypeFields = sourceTypeDictionary.GetDictionary().ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Select(s => s.Substring(0, 1).ToLower() + s.Substring(1, s.Length - 1))),
-                apaSourceTypeFields = apaSourceTypeDictionary.GetDictionary().ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Select(s => s.Substring(0, 1).ToLower() + s.Substring(1, s.Length - 1)))
+                sourceTypeFields = sourceTypeDictionary.GetDictionary(),
+                apaSourceTypeFields = apaSourceTypeDictionary.GetDictionary()
             };
 
             var environmentName = hostingEnvironment.EnvironmentName;

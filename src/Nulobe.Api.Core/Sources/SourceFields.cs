@@ -8,31 +8,33 @@ namespace Nulobe.Api.Core.Sources
 {
     public static class SourceFields
     {
-        public static string Type = "Type";
+        public static string Type = "type";
 
-        public static string Url = "Url";
+        public static string Title = "title";
 
-        public static string Description = "Description";
+        public static string Url = "url";
 
-        public static string FactId = "FactId";
+        public static string Description = "description";
 
-        public static string ApaType = "ApaType";
+        public static string FactId = "factId";
+
+        public static string ApaType = "apaType";
 
         public static class Apa
         {
-            public const string Authors = "Authors";
+            public const string Authors = "authors";
 
-            public const string Date = "Date";
+            public const string Date = "date";
 
-            public const string Title = "Title";
+            public const string Title = "title";
 
-            public const string Edition = "Edition";
+            public const string Edition = "edition";
 
-            public const string Pages = "Pages";
+            public const string Pages = "pages";
 
-            public const string Doi = "Doi";
+            public const string Doi = "doi";
 
-            public const string Organisation = "Organisation";
+            public const string Organisation = "organisation";
         }
     }
 }

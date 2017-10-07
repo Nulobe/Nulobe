@@ -20,8 +20,9 @@ export class SourceFormComponent implements OnInit, OnDestroy {
   sourceFormGroup: FormGroup;
   sourceAuthorsFormArray: FormArray;
   newAuthorFormControl: FormControl;
+  pagesFormGroup: FormGroup;
 
-  @ViewChildren(MdInputDirective) newAuthor: QueryList<MdInputDirective>;
+  @ViewChildren(MdInputDirective) inputs: QueryList<MdInputDirective>;
 
   constructor(
     private fb: FormBuilder
@@ -31,13 +32,23 @@ export class SourceFormComponent implements OnInit, OnDestroy {
     let { fb, source } = this;
 
     this.sourceAuthorsFormArray = fb.array(source.authors.map(a => this.createAuthorControl(a)));
+    
     this.newAuthorFormControl = fb.control('');
+    
+    this.pagesFormGroup = fb.group({
+      pageStart: fb.control(source.pages.pageStart),
+      pageEnd: fb.control(source.pages.pageEnd)
+    });
+
     this.sourceFormGroup = fb.group({
       type: fb.control(source.type),
       apaType: fb.control(source.apaType),
-      title: fb.control(source.title),
       authors: this.sourceAuthorsFormArray,
       newAuthor: this.newAuthorFormControl,
+      organisation: fb.control(source.organisation),
+      title: fb.control(source.title),
+      pages: this.pagesFormGroup,
+      doi: fb.control(source.doi),
       url: fb.control(source.url),
       description: fb.control(source.description),
       factId: fb.control(source.factId)
@@ -72,7 +83,9 @@ export class SourceFormComponent implements OnInit, OnDestroy {
     if (value) {
       this.sourceAuthorsFormArray.push(this.createAuthorControl(value));
       this.newAuthorFormControl.setValue('');
-      this.newAuthor.last.focus();
+
+      let newAuthorInput = this.inputs.filter(input => input.id === "newAuthor")[0];
+      newAuthorInput.focus();
     }
   }
 }
