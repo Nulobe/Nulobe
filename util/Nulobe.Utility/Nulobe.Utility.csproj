@@ -64,5 +64,8 @@
     <Compile Include="SlugBuilder\SlugBuilder.cs" />
     <Compile Include="SlugBuilder\SlugBuilderFactory.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Json\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

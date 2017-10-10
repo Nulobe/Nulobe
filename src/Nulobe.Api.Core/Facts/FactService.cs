@@ -30,6 +30,7 @@ namespace Nulobe.Api.Core.Facts
         private readonly IClaimsPrincipalAccessor _claimsPrincipalAccessor;
         private readonly Auditor _auditor;
         private readonly SourceValidator _sourceValidator;
+        private readonly SourcePipeline _sourcePipeline;
         private readonly IDocumentClientFactory _documentClientFactory;
         private readonly ICloudStorageClientFactory _cloudStorageClientFactory;
         private readonly IMapper _mapper;
@@ -41,6 +42,7 @@ namespace Nulobe.Api.Core.Facts
             IClaimsPrincipalAccessor claimsPrincipalAccessor,
             Auditor auditor,
             SourceValidator sourceValidator,
+            SourcePipeline sourcePipeline,
             IDocumentClientFactory documentClientFactory,
             ICloudStorageClientFactory cloudStorageClientFactory,
             IMapper mapper)
@@ -51,6 +53,7 @@ namespace Nulobe.Api.Core.Facts
             _claimsPrincipalAccessor = claimsPrincipalAccessor;
             _auditor = auditor;
             _sourceValidator = sourceValidator;
+            _sourcePipeline = sourcePipeline;
             _documentClientFactory = documentClientFactory;
             _cloudStorageClientFactory = cloudStorageClientFactory;
             _mapper = mapper;
@@ -218,11 +221,15 @@ namespace Nulobe.Api.Core.Facts
             var sources = create.Sources.ToList();
             for (var i = 0; i < sources.Count(); i++)
             {
-                SourceValidationResult validationResult = await _sourceValidator.IsValidAsync(sources[i]);
-                if (!validationResult.IsValid)
-                {
-                    modelErrors.Add(validationResult.ModelErrors, $"{nameof(create.Sources)}[{i}]");
-                }
+                var sourceModelErrors = new ModelErrorDictionary();
+                await _sourcePipeline.RunAsync(sources[i], sourceModelErrors);
+                modelErrors.Add(sourceModelErrors, $"{nameof(create.Sources)}[{i}]");
+
+                //SourceValidationResult validationResult = await _sourceValidator.IsValidAsync(sources[i]);
+                //if (!validationResult.IsValid)
+                //{
+                //    modelErrors.Add(validationResult.ModelErrors, $"{nameof(create.Sources)}[{i}]");
+                //}
             }
 
             if (!string.IsNullOrEmpty(create.Country) && !_countryOptions.ContainsKey(create.Country))

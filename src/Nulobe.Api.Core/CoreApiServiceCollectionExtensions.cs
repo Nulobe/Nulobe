@@ -35,6 +35,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<ISourceFieldResolver, SourceFieldResolver>();
             services.AddTransient<ISourcePropertyFilter, SourcePropertyFilter>();
 
+            services.AddTransient<SourcePipeline>();
+            services.AddTransient<ISourceHandler, DoiSourceHandler>();
+
             services.AddTransient<ITagQueryService, TagQueryService>();
             services.AddSingleton<ITagMemoryRepository, TagMemoryRepository>();
             services.AddTransient<IFlagEventService, FlagEventService>();

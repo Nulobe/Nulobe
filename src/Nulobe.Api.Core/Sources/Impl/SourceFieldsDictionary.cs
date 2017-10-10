@@ -90,8 +90,7 @@ namespace Nulobe.Api.Core.Sources.Impl
                 {
 
                 }
-            },
-            
+            }
         }
         .ToReadOnlyDictionary();
 

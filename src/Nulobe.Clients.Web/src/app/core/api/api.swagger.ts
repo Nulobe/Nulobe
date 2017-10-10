@@ -711,6 +711,7 @@ export enum SourceType {
     Nulobe = 2, 
     CitationNeeded = 3, 
     Apa = 4, 
+    Doi = 5, 
 }
 
 export enum ApaSourceType {

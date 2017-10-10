@@ -166,12 +166,14 @@
     <Compile Include="Facts\FactServiceOptions.cs" />
     <Compile Include="Facts\IFactQueryService.cs" />
     <Compile Include="Facts\IFactService.cs" />
+    <Compile Include="Sources\Impl\DoiSourceHandler.cs" />
     <Compile Include="Sources\Impl\SourceFieldResolver.cs" />
     <Compile Include="Sources\Impl\SourceFieldsDictionary.cs" />
     <Compile Include="Sources\ApaSourceType.cs" />
     <Compile Include="Sources\IApaSourceFieldDictionary.cs" />
     <Compile Include="Sources\Impl\SourcePropertyFilter.cs" />
     <Compile Include="Sources\ISourceFieldDictionary.cs" />
+    <Compile Include="Sources\ISourceHandler.cs" />
     <Compile Include="Sources\ISourcePropertyFilter.cs" />
     <Compile Include="Sources\ISourceValidationHandler.cs" />
     <Compile Include="Sources\ISourceFieldResolver.cs" />
@@ -184,6 +186,7 @@
     <Compile Include="Sources\SourceType.cs" />
     <Compile Include="Sources\SourceValidationResult.cs" />
     <Compile Include="Sources\SourceValidator.cs" />
+    <Compile Include="Sources\SourcePipeline.cs" />
     <Compile Include="Tags\ITagQueryService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tags\ITagMemoryRepository.cs" />

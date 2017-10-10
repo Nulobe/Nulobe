@@ -16,6 +16,8 @@ namespace Nulobe.Api.Core.Sources
 
         CitationNeeded = 3,
 
-        Apa = 4
+        Apa = 4,
+
+        Doi = 5
     }
 }
