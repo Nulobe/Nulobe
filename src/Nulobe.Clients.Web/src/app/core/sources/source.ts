@@ -7,6 +7,7 @@ export interface Source {
     organisation?: string;
     date?: SourceDate;
     title?: string;
+    journal?: SourceJournal;
     pages?: SourcePages;
     doi?: string;
     url?: string;
@@ -24,4 +25,10 @@ export interface SourceDate {
 export interface SourcePages {
     pageStart?: number;
     pageEnd?: number;
+}
+
+export interface SourceJournal {
+    title?: string;
+    volume?: number;
+    issue?: number;
 }

@@ -6,6 +6,7 @@ import { MdInputModule, MdSelectModule } from '@angular/material';
 import { SourceFormListComponent } from './source-form-list/source-form-list.component';
 import { SourceFormComponent } from './source-form/source-form.component';
 import { SourceDateComponent } from './source-date/source-date.component';
+import { SourceJournalComponent } from './source-journal/source-journal.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { SourceDateComponent } from './source-date/source-date.component';
   declarations: [
     SourceFormListComponent,
     SourceFormComponent,
-    SourceDateComponent
+    SourceDateComponent,
+    SourceJournalComponent
   ],
   exports: [
     SourceFormListComponent,

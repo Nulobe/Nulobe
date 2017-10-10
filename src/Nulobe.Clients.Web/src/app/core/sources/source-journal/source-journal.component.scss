@@ -1,0 +1,22 @@
+@import "../../../../assets/scss/mixins";
+
+:host {
+    .journal-form-group {
+        display: flex;
+        flex-wrap: wrap;
+
+        .journal-part {
+            width: 30%;
+            padding-right: 5%;
+
+            md-select {
+                width: 100%;
+                @include font-family-default();
+            }
+
+            &:nth-child(3) {
+                padding-right: 0px;
+            }
+        }
+    }
+}

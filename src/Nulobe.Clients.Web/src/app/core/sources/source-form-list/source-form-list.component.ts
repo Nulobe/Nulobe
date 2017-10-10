@@ -54,7 +54,8 @@ export class SourceFormListComponent implements OnInit, OnChanges {
             apaType: ApaSourceType.JournalArticle,
             trackById: ++trackByIdCounter,
             authors: [],
-            pages: {}
+            pages: {},
+            journal: {}
           });
         }
       } else if (sourceCountDiff < 0) {

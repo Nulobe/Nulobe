@@ -35,6 +35,14 @@ namespace Nulobe.Api.Core.Sources
             public const string Doi = "doi";
 
             public const string Organisation = "organisation";
+
+            public const string Journal = "journal";
+
+            public const string JournalTitle = Journal + ".title";
+
+            public const string JournalVolume = Journal + ".volume";
+
+            public const string JournalIssue = Journal + ".issue";
         }
     }
 }

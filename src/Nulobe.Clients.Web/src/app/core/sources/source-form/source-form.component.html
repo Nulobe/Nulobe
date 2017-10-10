@@ -38,6 +38,9 @@
       <input mdInput type="text" formControlName="organisation" placeholder="Organisation" />
     </md-input-container>
   </div>
+  <div class="source-form-control journal" *ngIf="hasProperty('journal')">
+    <core-source-journal [parentFormGroup]="sourceFormGroup" [sourceJournal]="source.journal"></core-source-journal>
+  </div>
   <div class="source-form-control pages" [formGroup]="pagesFormGroup" *ngIf="hasProperty('pages')">
     <div class="page-part">
       <md-input-container>

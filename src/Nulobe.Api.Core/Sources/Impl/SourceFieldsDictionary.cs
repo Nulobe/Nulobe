@@ -45,6 +45,7 @@ namespace Nulobe.Api.Core.Sources.Impl
                     SourceFields.Apa.Organisation,
                     SourceFields.Apa.Date,
                     SourceFields.Apa.Title,
+                    SourceFields.Apa.Journal,
                     SourceFields.Apa.Pages,
                     SourceFields.Apa.Doi,
                     SourceFields.Url,

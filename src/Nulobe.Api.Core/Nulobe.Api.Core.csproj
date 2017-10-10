@@ -168,7 +168,6 @@
     <Compile Include="Facts\IFactService.cs" />
     <Compile Include="Sources\Impl\SourceFieldResolver.cs" />
     <Compile Include="Sources\Impl\SourceFieldsDictionary.cs" />
-    <Compile Include="Sources\ApaSourceFields.cs" />
     <Compile Include="Sources\ApaSourceType.cs" />
     <Compile Include="Sources\IApaSourceFieldDictionary.cs" />
     <Compile Include="Sources\Impl\SourcePropertyFilter.cs" />
