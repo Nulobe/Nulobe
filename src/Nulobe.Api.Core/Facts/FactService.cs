@@ -29,7 +29,6 @@ namespace Nulobe.Api.Core.Facts
         private readonly CountryOptions _countryOptions;
         private readonly IClaimsPrincipalAccessor _claimsPrincipalAccessor;
         private readonly Auditor _auditor;
-        private readonly SourceValidator _sourceValidator;
         private readonly SourcePipeline _sourcePipeline;
         private readonly IDocumentClientFactory _documentClientFactory;
         private readonly ICloudStorageClientFactory _cloudStorageClientFactory;
@@ -41,7 +40,6 @@ namespace Nulobe.Api.Core.Facts
             IOptions<CountryOptions> countryOptions,
             IClaimsPrincipalAccessor claimsPrincipalAccessor,
             Auditor auditor,
-            SourceValidator sourceValidator,
             SourcePipeline sourcePipeline,
             IDocumentClientFactory documentClientFactory,
             ICloudStorageClientFactory cloudStorageClientFactory,
@@ -52,7 +50,6 @@ namespace Nulobe.Api.Core.Facts
             _countryOptions = countryOptions.Value;
             _claimsPrincipalAccessor = claimsPrincipalAccessor;
             _auditor = auditor;
-            _sourceValidator = sourceValidator;
             _sourcePipeline = sourcePipeline;
             _documentClientFactory = documentClientFactory;
             _cloudStorageClientFactory = cloudStorageClientFactory;
@@ -79,10 +76,10 @@ namespace Nulobe.Api.Core.Facts
         {
             AssertAuthenticated();
             Validator.ValidateNotNull(create, nameof(create));
-            await ValidateFactCreateAsync(create);
+            await ValidateFactAsync(create);
 
             var fact = _mapper.MapWithServices<FactCreate, FactData>(create, _serviceProvider);
-            ValidateFactCreateHasNoExtraFields(create, fact);
+            //ValidateFactCreateHasNoExtraFields(create, fact);
 
             fact.Id = Guid.NewGuid().ToString();
             fact.Slug = GenerateSlug(fact);
@@ -111,10 +108,9 @@ namespace Nulobe.Api.Core.Facts
         {
             AssertAuthenticated();
             Validator.ValidateNotNull(create, nameof(create));
-            await ValidateFactCreateAsync(create);
+            await ValidateFactAsync(create);
 
             var fact =_mapper.MapWithServices<FactCreate, FactData>(create, _serviceProvider);
-            ValidateFactCreateHasNoExtraFields(create, fact);
 
             using (var client = _documentClientFactory.Create())
             {
@@ -181,7 +177,7 @@ namespace Nulobe.Api.Core.Facts
             }
         }
 
-        private async Task ValidateFactCreateAsync(FactCreate create)
+        private async Task ValidateFactAsync(FactCreate create)
         {
             var (isValid, modelErrors) = Validator.IsValid(create);
 
@@ -224,12 +220,6 @@ namespace Nulobe.Api.Core.Facts
                 var sourceModelErrors = new ModelErrorDictionary();
                 await _sourcePipeline.RunAsync(sources[i], sourceModelErrors);
                 modelErrors.Add(sourceModelErrors, $"{nameof(create.Sources)}[{i}]");
-
-                //SourceValidationResult validationResult = await _sourceValidator.IsValidAsync(sources[i]);
-                //if (!validationResult.IsValid)
-                //{
-                //    modelErrors.Add(validationResult.ModelErrors, $"{nameof(create.Sources)}[{i}]");
-                //}
             }
 
             if (!string.IsNullOrEmpty(create.Country) && !_countryOptions.ContainsKey(create.Country))
@@ -240,49 +230,6 @@ namespace Nulobe.Api.Core.Facts
             if (modelErrors.HasErrors)
             {
                 throw new ClientModelValidationException(modelErrors);
-            }
-        }
-
-        private void ValidateFactCreateHasNoExtraFields(FactCreate create, FactData factData)
-        {
-            var errors = create.Sources
-                .Zip(factData.Sources, (src, dest) => new
-                {
-                    Source = src,
-                    Destination = dest
-                })
-                .Select(x =>
-                {
-                    var modelErrors = new ModelErrorDictionary();
-
-                    // If any source properties have been filtered from the source, that's an error.
-                    var sourceProperties = x.Source.Properties().Select(p => p.Name);
-                    var destinationProperties = x.Destination.Keys;
-
-                    var propertiesDiff = sourceProperties.Except(destinationProperties, StringComparer.OrdinalIgnoreCase);
-                    foreach (var property in propertiesDiff)
-                    {
-                        modelErrors.Add($"The property {property} is not a valid property name");
-                    }
-
-                    return modelErrors;
-                })
-                .Select((e, i) => new
-                {
-                    ModelErrors = e,
-                    Index = i
-                })
-                .Aggregate(new ModelErrorDictionary(), (parent, curr) =>
-                {
-                    parent.Add(curr.ModelErrors, curr.Index);
-                    return parent;
-                });
-
-            if (errors.HasErrors)
-            {
-                var sourceErrors = new ModelErrorDictionary();
-                sourceErrors.Add(errors, "Sources");
-                throw new ClientModelValidationException(sourceErrors);
             }
         }
 

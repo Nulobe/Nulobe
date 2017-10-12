@@ -8,17 +8,25 @@ namespace Nulobe.Api.Core.Sources
 {
     public static class SourceFields
     {
-        public static string Type = "type";
+        public const string Type = "type";
 
-        public static string Title = "title";
+        public const string Title = "title";
 
-        public static string Url = "url";
+        public const string Url = "url";
 
-        public static string Description = "description";
+        public const string Description = "description";
 
-        public static string FactId = "factId";
+        public const string FactId = "factId";
 
-        public static string ApaType = "apaType";
+        public const string FactTitle = "factTitle";
+
+        public const string ApaType = "apaType";
+
+        public const string NotesMarkdown = "notesMarkdown";
+
+        public const string CitationFromDoi = "citationFromDoi";
+
+
 
         public static class Apa
         {

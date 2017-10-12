@@ -5,6 +5,7 @@
       <md-option [value]="4">APA</md-option>
       <md-option [value]="2">Nulobe</md-option>
       <md-option [value]="1">Legacy</md-option>
+      <md-option [value]="5">DOI Lookup</md-option>
     </md-select>
   </div>
   <div class="source-form-control apa-type" *ngIf="hasProperty('apaType')">
@@ -64,6 +65,11 @@
   <div class="source-form-control doi" *ngIf="hasProperty('doi')">
     <md-input-container>
       <input mdInput type="text" formControlName="doi" placeholder="DOI" />
+    </md-input-container>
+  </div>
+  <div class="source-form-control notes-markdown" *ngIf="hasProperty('notesMarkdown')">
+    <md-input-container>
+      <textarea mdInput formControlName="notesMarkdown" placeholder="Source notes" rows="5"></textarea>
     </md-input-container>
   </div>
   <div class="source-form-control url" *ngIf="hasProperty('url')">

@@ -30,6 +30,14 @@ namespace Nulobe.Api.Core.Sources.Impl
                     SourceFields.Description,
                     SourceFields.Url
                 }
+            },
+            {
+                SourceType.Doi,
+                new string[]
+                {
+                    SourceFields.Apa.Doi,
+                    SourceFields.NotesMarkdown
+                }
             }
         }
         .ToReadOnlyDictionary();

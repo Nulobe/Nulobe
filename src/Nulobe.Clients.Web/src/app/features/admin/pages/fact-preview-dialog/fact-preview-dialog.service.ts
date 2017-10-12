@@ -1,8 +1,8 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { MdDialog } from '@angular/material';
 
-import { Fact, FactApiClient, API_BASE_URL } from '../../../../core/api';
+import { Fact } from '../../../../core/api';
 
 import { FactPreviewDialogComponent } from './fact-preview-dialog.component';
 
@@ -10,19 +10,12 @@ import { FactPreviewDialogComponent } from './fact-preview-dialog.component';
 export class FactPreviewDialogService {
 
   constructor(
-    private mdDialog: MdDialog,
-    private factApiClient: FactApiClient,
-    private http: Http,
-    @Inject(API_BASE_URL) private baseUrl: string
+    private mdDialog: MdDialog
   ) { }
 
   open(fact: Fact) {
-    this.http.post(this.baseUrl + '/facts?dryRun=true', fact)
-      .map(r => r.json() as Fact)
-      .subscribe(f => {
-        let dialogRef = this.mdDialog.open(FactPreviewDialogComponent);
-        dialogRef.componentInstance.fact = f;
-      });
+    let dialogRef = this.mdDialog.open(FactPreviewDialogComponent);
+    dialogRef.componentInstance.fact = fact;
   }
 
 }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using MoreLinq;
+using Newtonsoft.Json.Linq;
 using Nulobe.Utility.Validation;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,14 @@ namespace Nulobe.Api.Core.Sources
 {
     public class SourcePipeline
     {
+        private readonly ISourceFieldResolver _sourceFieldResolver;
         private readonly IEnumerable<ISourceHandler> _handlers;
 
         public SourcePipeline(
+            ISourceFieldResolver sourceFieldResolver,
             IEnumerable<ISourceHandler> handlers)
         {
+            _sourceFieldResolver = sourceFieldResolver;
             _handlers = handlers;
         }
 
@@ -23,6 +27,17 @@ namespace Nulobe.Api.Core.Sources
             // TODO: Validate properties here.
 
             var sourceType = GetValidSourceType(source, errors);
+            if (errors.HasErrors)
+            {
+                return;
+            }
+
+            var allowedProperties = _sourceFieldResolver.ResolveFields(sourceType);
+            source.Children<JProperty>().Select(t => t.Name).Except(allowedProperties).ForEach(p =>
+            {
+                errors.Add($"{p} is not a valid property");
+            });
+
             if (errors.HasErrors)
             {
                 return;

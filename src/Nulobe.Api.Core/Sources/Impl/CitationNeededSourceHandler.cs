@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Nulobe.Api.Core.Sources.Impl
 {
-    public class CitationNeededValidationHandler : AlwaysValidSourceValidationHandler
+    public class CitationNeededSourceHandler : AlwaysValidSourceHandler
     {
-        public CitationNeededValidationHandler() : base(SourceType.CitationNeeded)
+        public CitationNeededSourceHandler() : base(SourceType.CitationNeeded)
         {
         }
     }

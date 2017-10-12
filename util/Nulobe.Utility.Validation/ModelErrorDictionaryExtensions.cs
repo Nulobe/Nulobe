@@ -20,6 +20,9 @@ namespace Nulobe.Utility.Validation
         public static void AddIntegerExpected(this ModelErrorDictionary modelErrorDictionary, string memberName)
             => modelErrorDictionary.AddTypeExpected(memberName, "integer");
 
+        public static void AddUriExpected(this ModelErrorDictionary modelErrorDictionary, string memberName)
+            => modelErrorDictionary.AddTypeExpected(memberName, "uri");
+
         public static void AddTypeExpected(this ModelErrorDictionary modelErrorDictionary, string memberName, string typeDescriptor)
             => modelErrorDictionary.Add($"Expected {memberName} to be of type ${typeDescriptor}", memberName);
     }

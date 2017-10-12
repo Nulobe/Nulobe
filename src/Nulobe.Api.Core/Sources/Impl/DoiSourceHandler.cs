@@ -55,9 +55,11 @@ namespace Nulobe.Api.Core.Sources.Impl
                 try
                 {
                     var response = await client.SendAsync(request);
-                    response.EnsureSuccessStatusCode();
-                    citation = await response.Content.ReadAsStringAsync();
-                    citation = citation.Trim();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        citation = await response.Content.ReadAsStringAsync();
+                        citation = citation.Trim();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -66,15 +68,15 @@ namespace Nulobe.Api.Core.Sources.Impl
 
             if (citation != null)
             {
-                source.Add("CitationFromDoi", new JValue(citation));
+                source.Add(SourceFields.CitationFromDoi, new JValue(citation));
             }
         }
 
         public void PostValidate(JObject source, ModelErrorDictionary errors)
         {
-            if (source.SelectToken("CitationFromDoi") == null)
+            if (source.SelectToken(SourceFields.CitationFromDoi) == null)
             {
-                errors.Add($"Could not find document with DOI ${source.SelectToken(SourceFields.Apa.Doi).ToObject<string>()}", SourceFields.Apa.Doi);
+                errors.Add($"Could not find document with DOI {source.SelectToken(SourceFields.Apa.Doi).ToObject<string>()}", SourceFields.Apa.Doi);
             }
         }
     }

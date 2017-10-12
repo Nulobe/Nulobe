@@ -49,6 +49,7 @@ export class SourceFormComponent implements OnInit, OnDestroy {
       title: fb.control(source.title),
       pages: this.pagesFormGroup,
       doi: fb.control(source.doi),
+      notesMarkdown: fb.control(source.notesMarkdown),
       url: fb.control(source.url),
       description: fb.control(source.description),
       factId: fb.control(source.factId)

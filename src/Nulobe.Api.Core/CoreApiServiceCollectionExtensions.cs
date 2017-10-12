@@ -25,15 +25,13 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<IFactService, FactService>();
             services.AddTransient<IFactQueryService, FactQueryService>();
 
-            services.AddTransient<SourceValidator>();
-            services.AddTransient<ISourceValidationHandler, LegacySourceValidationHandler>();
-            services.AddTransient<ISourceValidationHandler, NulobeSourceValidationHandler>();
-            services.AddTransient<ISourceValidationHandler, CitationNeededValidationHandler>();
-            services.AddTransient<ISourceValidationHandler, ApaSourceValidationHandler>();
+            services.AddTransient<SourcePipeline>();
+            services.AddTransient<ISourceHandler, LegacySourceHandler>();
+            services.AddTransient<ISourceHandler, NulobeSourceHandler>();
+            services.AddTransient<ISourceHandler, CitationNeededSourceHandler>();
             services.AddTransient<ISourceFieldDictionary, SourceFieldsDictionary>();
             services.AddTransient<IApaSourceFieldDictionary, SourceFieldsDictionary>();
             services.AddTransient<ISourceFieldResolver, SourceFieldResolver>();
-            services.AddTransient<ISourcePropertyFilter, SourcePropertyFilter>();
 
             services.AddTransient<SourcePipeline>();
             services.AddTransient<ISourceHandler, DoiSourceHandler>();
