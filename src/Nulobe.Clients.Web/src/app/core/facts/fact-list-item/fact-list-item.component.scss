@@ -53,6 +53,18 @@
                     bottom: -2px;
                 }
             }
+
+            .doi {
+                a {
+                    font-style: normal;
+                }
+
+                /deep/ markdown {
+                    p {
+                        margin: 0;
+                    }
+                }
+            }
         }
 
         li.notes {

@@ -18,6 +18,10 @@
         <a href="{{ factLinkResolver.resolve(source.factId) }}">{{ source.factTitle }}</a>
         <span class="logo-container"><core-logo [widthPixels]="15"></core-logo></span>
       </span>
+      <span *ngIf="source.type === 5" class="doi">
+        <a [href]="'https://doi.org/' + source.doi">{{ source.citationFromDoi }}</a>
+        <markdown *ngIf="source.notesMarkdown">{{ source.notesMarkdown }}</markdown>
+      </span>
     </li>
     <li class="notes" *ngIf="fact.notesMarkdown">
       <markdown>&#8224; {{ fact.notesMarkdown }}</markdown>
