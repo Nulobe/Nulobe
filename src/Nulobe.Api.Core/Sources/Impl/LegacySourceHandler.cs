@@ -8,11 +8,13 @@ using Nulobe.Utility.Validation;
 
 namespace Nulobe.Api.Core.Sources.Impl
 {
-    public class LegacySourceHandler : ISourceHandler
+    public class LegacySourceHandler : BaseSourceHandler
     {
-        public SourceType Type => SourceType.Legacy;
+        public LegacySourceHandler() : base(SourceType.Legacy)
+        {
+        }
 
-        public void PreValidate(JObject source, ModelErrorDictionary errors)
+        public override void PreValidate(JObject source, ModelErrorDictionary errors)
         {
             string url = null;
             var urlToken = source.SelectToken(SourceFields.Url);
@@ -36,12 +38,6 @@ namespace Nulobe.Api.Core.Sources.Impl
                     errors.AddUriExpected(SourceFields.Url);
                 }
             }
-        }
-
-        public Task ProcessAsync(JObject source) => Task.FromResult(0);
-
-        public void PostValidate(JObject source, ModelErrorDictionary errors)
-        {
         }
     }
 }

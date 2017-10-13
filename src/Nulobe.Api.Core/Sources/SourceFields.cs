@@ -26,31 +26,26 @@ namespace Nulobe.Api.Core.Sources
 
         public const string CitationFromDoi = "citationFromDoi";
 
+        public const string Citation = "citation";
 
+        public const string Authors = "authors";
 
-        public static class Apa
-        {
-            public const string Authors = "authors";
+        public const string Date = "date";
 
-            public const string Date = "date";
+        public const string Edition = "edition";
 
-            public const string Title = "title";
+        public const string Pages = "pages";
 
-            public const string Edition = "edition";
+        public const string Doi = "doi";
 
-            public const string Pages = "pages";
+        public const string Organisation = "organisation";
 
-            public const string Doi = "doi";
+        public const string Journal = "journal";
 
-            public const string Organisation = "organisation";
+        public const string JournalTitle = Journal + ".title";
 
-            public const string Journal = "journal";
+        public const string JournalVolume = Journal + ".volume";
 
-            public const string JournalTitle = Journal + ".title";
-
-            public const string JournalVolume = Journal + ".volume";
-
-            public const string JournalIssue = Journal + ".issue";
-        }
+        public const string JournalIssue = Journal + ".issue";
     }
 }

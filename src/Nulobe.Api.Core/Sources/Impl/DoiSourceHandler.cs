@@ -10,17 +10,19 @@ using System.Net.Http.Headers;
 
 namespace Nulobe.Api.Core.Sources.Impl
 {
-    public class DoiSourceHandler : ISourceHandler
+    public class DoiSourceHandler : BaseSourceHandler
     {
-        public SourceType Type => SourceType.Doi;
+        public DoiSourceHandler() : base(SourceType.Doi)
+        {
+        }
 
-        public void PreValidate(JObject source, ModelErrorDictionary errors)
+        public override void PreValidate(JObject source, ModelErrorDictionary errors)
         {
             string doi = null;
-            var doiToken = source.SelectToken(SourceFields.Apa.Doi);
+            var doiToken = source.SelectToken(SourceFields.Doi);
             if (doiToken == null)
             {
-                errors.AddRequired(SourceFields.Apa.Doi);
+                errors.AddRequired(SourceFields.Doi);
             }
             else if (doiToken is JValue doiValue)
             {
@@ -30,20 +32,20 @@ namespace Nulobe.Api.Core.Sources.Impl
                 }
                 else
                 {
-                    errors.AddStringExpected(SourceFields.Apa.Doi);
+                    errors.AddStringExpected(SourceFields.Doi);
                 }
             }
             else
             {
-                errors.AddStringExpected(SourceFields.Apa.Doi);
+                errors.AddStringExpected(SourceFields.Doi);
             }
 
-            // TODO: Validate Doi format
+            // TODO: Validate DOI format
         }
 
-        public async Task ProcessAsync(JObject source)
+        public override async Task ProcessAsync(JObject source)
         {
-            var doi = source.SelectToken(SourceFields.Apa.Doi).ToObject<string>();
+            var doi = source.SelectToken(SourceFields.Doi).ToObject<string>();
 
             string citation = null;
             using (var client = new HttpClient())
@@ -61,7 +63,7 @@ namespace Nulobe.Api.Core.Sources.Impl
                         citation = citation.Trim();
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }
@@ -72,11 +74,11 @@ namespace Nulobe.Api.Core.Sources.Impl
             }
         }
 
-        public void PostValidate(JObject source, ModelErrorDictionary errors)
+        public override void PostValidate(JObject source, ModelErrorDictionary errors)
         {
             if (source.SelectToken(SourceFields.CitationFromDoi) == null)
             {
-                errors.Add($"Could not find document with DOI {source.SelectToken(SourceFields.Apa.Doi).ToObject<string>()}", SourceFields.Apa.Doi);
+                errors.Add($"Could not find document with DOI {source.SelectToken(SourceFields.Doi).ToObject<string>()}", SourceFields.Doi);
             }
         }
     }

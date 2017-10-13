@@ -29,9 +29,8 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<ISourceHandler, LegacySourceHandler>();
             services.AddTransient<ISourceHandler, NulobeSourceHandler>();
             services.AddTransient<ISourceHandler, CitationNeededSourceHandler>();
+            services.AddTransient<ISourceHandler, ApaSourceHandler>();
             services.AddTransient<ISourceFieldDictionary, SourceFieldsDictionary>();
-            services.AddTransient<IApaSourceFieldDictionary, SourceFieldsDictionary>();
-            services.AddTransient<ISourceFieldResolver, SourceFieldResolver>();
 
             services.AddTransient<SourcePipeline>();
             services.AddTransient<ISourceHandler, DoiSourceHandler>();

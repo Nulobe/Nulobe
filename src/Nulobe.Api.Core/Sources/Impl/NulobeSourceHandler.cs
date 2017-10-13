@@ -65,13 +65,13 @@ namespace Nulobe.Api.Core.Sources.Impl
 
             if (fact != null)
             {
-                source.Add("FactTitle", fact.Title);
+                source.Add(SourceFields.FactTitle, fact.Title);
             }
         }
 
         public void PostValidate(JObject source, ModelErrorDictionary errors)
         {
-            if (source.SelectToken("FactTitle") == null)
+            if (source.SelectToken(SourceFields.FactTitle) == null)
             {
                 var factId = source.SelectToken(SourceFields.FactId).ToObject<string>();
                 errors.Add($"Could not find fact with Id ${factId}", SourceFields.FactId);

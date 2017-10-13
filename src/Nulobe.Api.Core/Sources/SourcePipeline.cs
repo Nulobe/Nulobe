@@ -11,14 +11,14 @@ namespace Nulobe.Api.Core.Sources
 {
     public class SourcePipeline
     {
-        private readonly ISourceFieldResolver _sourceFieldResolver;
+        private readonly ISourceFieldDictionary _sourceFieldDictionary;
         private readonly IEnumerable<ISourceHandler> _handlers;
 
         public SourcePipeline(
-            ISourceFieldResolver sourceFieldResolver,
+            ISourceFieldDictionary sourceFieldDictionary,
             IEnumerable<ISourceHandler> handlers)
         {
-            _sourceFieldResolver = sourceFieldResolver;
+            _sourceFieldDictionary = sourceFieldDictionary;
             _handlers = handlers;
         }
 
@@ -32,7 +32,7 @@ namespace Nulobe.Api.Core.Sources
                 return;
             }
 
-            var allowedProperties = _sourceFieldResolver.ResolveFields(sourceType);
+            var allowedProperties = _sourceFieldDictionary[sourceType];
             source.Children<JProperty>().Select(t => t.Name).Except(allowedProperties).ForEach(p =>
             {
                 errors.Add($"{p} is not a valid property");

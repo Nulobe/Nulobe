@@ -19,17 +19,12 @@ export interface SourceTypeFields {
   [key: string]: string[];
 }
 
-export interface ApaSourceTypeFields {
-  [key: string]: string[];
-}
-
 export interface EnvironmentSettings {
   baseUrl: string;
   apiBaseUrl: string;
   auth: AuthSettingsCollection;
   countries: CountryData[];
   sourceTypeFields: SourceTypeFields;
-  apaSourceTypeFields: ApaSourceTypeFields;
 }
 
 export const NULOBE_ENV: string = window["NULOBE_ENV"];

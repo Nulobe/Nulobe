@@ -8,22 +8,9 @@ using Nulobe.Utility.Validation;
 
 namespace Nulobe.Api.Core.Sources.Impl
 {
-    public class AlwaysValidSourceHandler : ISourceHandler
+    public class AlwaysValidSourceHandler : BaseSourceHandler
     {
-        public AlwaysValidSourceHandler(SourceType type)
-        {
-            Type = type;
-        }
-
-        public SourceType Type { get; private set; }
-
-        public void PostValidate(JObject source, ModelErrorDictionary errors)
-        {
-        }
-
-        public virtual Task ProcessAsync(JObject source) => Task.FromResult(0);
-
-        public void PreValidate(JObject source, ModelErrorDictionary errors)
+        public AlwaysValidSourceHandler(SourceType type) : base(type)
         {
         }
     }

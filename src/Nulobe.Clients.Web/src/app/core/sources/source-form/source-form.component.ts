@@ -49,6 +49,7 @@ export class SourceFormComponent implements OnInit, OnDestroy {
       title: fb.control(source.title),
       pages: this.pagesFormGroup,
       doi: fb.control(source.doi),
+      citation: fb.control(source.citation),
       notesMarkdown: fb.control(source.notesMarkdown),
       url: fb.control(source.url),
       description: fb.control(source.description),
@@ -64,8 +65,7 @@ export class SourceFormComponent implements OnInit, OnDestroy {
 
   hasProperty(propName: string) {
     let type: SourceType = this.sourceFormGroup.get('type').value;
-    let apaType: ApaSourceType = this.sourceFormGroup.get('apaType').value;
-    return SourcePropertyHelper.hasProperty(type, apaType, propName);
+    return SourcePropertyHelper.hasProperty(type, propName);
   }
 
   createAuthorControl(author: string): FormControl {

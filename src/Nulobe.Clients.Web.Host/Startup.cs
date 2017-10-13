@@ -44,7 +44,6 @@ namespace Nulobe.Clients.Web.Host
             services.ConfigureQuizlet(_configuration);
             services.ConfigureCountries(_configuration);
             services.AddTransient<ISourceFieldDictionary, SourceFieldsDictionary>();
-            services.AddTransient<IApaSourceFieldDictionary, SourceFieldsDictionary>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -171,7 +170,6 @@ namespace Nulobe.Clients.Web.Host
             var quizletOptions = serviceProvider.GetRequiredService<IOptions<QuizletOptions>>().Value;
             var countryOptions = serviceProvider.GetRequiredService<IOptions<CountryOptions>>().Value;
             var sourceTypeDictionary = serviceProvider.GetRequiredService<ISourceFieldDictionary>();
-            var apaSourceTypeDictionary = serviceProvider.GetRequiredService<IApaSourceFieldDictionary>();
 
             var environmentSettings = new
             {
@@ -189,8 +187,7 @@ namespace Nulobe.Clients.Web.Host
                         displayName = kvp.Value.DisplayName
                     })
                     .OrderBy(c => c.displayName),
-                sourceTypeFields = sourceTypeDictionary.GetDictionary(),
-                apaSourceTypeFields = apaSourceTypeDictionary.GetDictionary()
+                sourceTypeFields = sourceTypeDictionary.GetDictionary()
             };
 
             var environmentName = hostingEnvironment.EnvironmentName;

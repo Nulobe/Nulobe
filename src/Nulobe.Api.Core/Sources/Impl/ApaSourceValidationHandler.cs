@@ -20,10 +20,10 @@ namespace Nulobe.Api.Core.Sources.Impl
 
     //        var errors = new ModelErrorDictionary();
 
-    //        void apaSourceTypeInvalid(string message) => errors.Add(SourceFields.ApaType, message);
+    //        void apaSourceTypeInvalid(string message) => errors.Add(SourceFieldsType, message);
 
     //        ApaSourceType apaSourceType = ApaSourceType.Unknown;
-    //        var apaSourceTypeToken = source.SelectToken(SourceFields.ApaType);
+    //        var apaSourceTypeToken = source.SelectToken(SourceFieldsType);
     //        if (apaSourceTypeToken == null)
     //        {
     //            apaSourceTypeInvalid("APA source type is required");
@@ -44,13 +44,13 @@ namespace Nulobe.Api.Core.Sources.Impl
     //            }
     //        }
 
-    //        errors.Add(ValidateAuthors(source.SelectToken(SourceFields.Apa.Authors)), "Authors");
-    //        errors.Add(ValidateDate(source.SelectToken(SourceFields.Apa.Date)), "Date");
-    //        errors.Add(ValidateTitle(source.SelectToken(SourceFields.Apa.Title)), "Title");
-    //        errors.Add(ValidateEdition(source.SelectToken(SourceFields.Apa.Edition)), "Edition");
-    //        errors.Add(ValidatePages(source.SelectToken(SourceFields.Apa.Pages)), "Pages");
-    //        errors.Add(ValidateDoi(source.SelectToken(SourceFields.Apa.Doi)), "Doi");
-    //        errors.Add(ValidateOrganisation(source.SelectToken(SourceFields.Apa.Organisation)), "Organisation");
+    //        errors.Add(ValidateAuthors(source.SelectToken(SourceFields.Authors)), "Authors");
+    //        errors.Add(ValidateDate(source.SelectToken(SourceFields.Date)), "Date");
+    //        errors.Add(ValidateTitle(source.SelectToken(SourceFields.Title)), "Title");
+    //        errors.Add(ValidateEdition(source.SelectToken(SourceFields.Edition)), "Edition");
+    //        errors.Add(ValidatePages(source.SelectToken(SourceFields.Pages)), "Pages");
+    //        errors.Add(ValidateDoi(source.SelectToken(SourceFields.Doi)), "Doi");
+    //        errors.Add(ValidateOrganisation(source.SelectToken(SourceFields.Organisation)), "Organisation");
 
     //        return Task.FromResult(errors.Any() ? SourceValidationResult.Invalid(errors) : SourceValidationResult.Valid());
     //    }

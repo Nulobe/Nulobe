@@ -10,6 +10,7 @@ export interface Source {
     journal?: SourceJournal;
     pages?: SourcePages;
     doi?: string;
+    citation?: string;
     notesMarkdown?: string;
     url?: string;
     description?: string;

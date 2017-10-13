@@ -3,9 +3,9 @@
     <md-select formControlName="type" floatPlaceholder="never">
       <md-option [value]="3">Citation Needed</md-option>
       <md-option [value]="4">APA</md-option>
+      <md-option [value]="5">DOI Lookup</md-option>
       <md-option [value]="2">Nulobe</md-option>
       <md-option [value]="1">Legacy</md-option>
-      <md-option [value]="5">DOI Lookup</md-option>
     </md-select>
   </div>
   <div class="source-form-control apa-type" *ngIf="hasProperty('apaType')">
@@ -65,6 +65,11 @@
   <div class="source-form-control doi" *ngIf="hasProperty('doi')">
     <md-input-container>
       <input mdInput type="text" formControlName="doi" placeholder="DOI" />
+    </md-input-container>
+  </div>
+  <div class="source-form-control citation" *ngIf="hasProperty('citation')">
+    <md-input-container>
+      <textarea mdInput formControlName="citation" placeholder="Citation" rows="3"></textarea>
     </md-input-container>
   </div>
   <div class="source-form-control notes-markdown" *ngIf="hasProperty('notesMarkdown')">
