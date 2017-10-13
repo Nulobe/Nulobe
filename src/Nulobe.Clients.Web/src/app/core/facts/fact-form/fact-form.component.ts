@@ -10,6 +10,7 @@ interface FactFormValue {
   title: string;
   definitionMarkdown: string;
   notesMarkdown: string;
+  creditMarkdown: string;
   sources: Source[];
   country: string;
 }
@@ -41,6 +42,7 @@ export class FactFormComponent implements OnInit, AfterViewInit {
       title: '',
       definitionMarkdown: '',
       notesMarkdown: '',
+      creditMarkdown: '',
       sources: [],
       tags: []
     };
@@ -51,6 +53,7 @@ export class FactFormComponent implements OnInit, AfterViewInit {
       title: fb.control(this.fact.title, Validators.required),
       definitionMarkdown: fb.control(this.fact.definitionMarkdown, Validators.required),
       notesMarkdown: fb.control(this.fact.notesMarkdown),
+      creditMarkdown: fb.control(this.fact.creditMarkdown),
       country: fb.control(this.fact.country)
     });
 
@@ -83,6 +86,7 @@ export class FactFormComponent implements OnInit, AfterViewInit {
       definitionMarkdown: formValue.definitionMarkdown || '',
       sources: formValue.sources.map(s => this.pruneSource(s)),
       notesMarkdown: formValue.notesMarkdown,
+      creditMarkdown: formValue.creditMarkdown,
       tags: this.fact.tags,
       country: formValue.country
     };

@@ -24,8 +24,11 @@
         <markdown class="notes" *ngIf="source.notesMarkdown">{{ source.notesMarkdown }}</markdown>
       </span>
     </li>
-    <li class="notes" *ngIf="fact.notesMarkdown">
-      <markdown>&#8224; {{ fact.notesMarkdown }}</markdown>
+    <li class="notes" *ngFor="let note of notes; let i = index;">
+      <markdown>
+        <span *ngFor="let j of getNotesSymbolIterator(i)">&#8224;</span>
+        <span>{{ note }}</span>
+      </markdown>
     </li>
   </ul>
   <div class="tags-list-container">

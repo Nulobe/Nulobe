@@ -20,6 +20,7 @@ using Newtonsoft.Json;
 using Nulobe.Api.Core.Sources.Impl;
 using Nulobe.Api.Core.Sources;
 using Nulobe.System;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace Nulobe.Clients.Web.Host
 {
@@ -53,6 +54,11 @@ namespace Nulobe.Clients.Web.Host
             ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole();
+
+            if (!env.IsDevelopment())
+            {
+                app.UseRewriter(new RewriteOptions().AddRedirectToHttpsPermanent());
+            }
 
             if (env.IsDevelopment())
             {

@@ -26,7 +26,7 @@ namespace Nulobe.Api.Core.Facts
 
         public IEnumerable<string> Tags { get; set; }
 
-        public string Credit { get; set; }
+        public string CreditMarkdown { get; set; }
 
         public string Slug { get; set; }
 

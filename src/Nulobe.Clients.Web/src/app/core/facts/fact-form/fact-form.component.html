@@ -16,6 +16,11 @@
         [sources]="fact.sources"
         [sourceCount]="sourceCount$ | async"></core-source-form-list>
     </div>
+    <div class="credit">
+      <md-input-container>
+        <input mdInput formControlName="creditMarkdown" type="text" placeholder="Credit" />
+      </md-input-container>
+    </div>
     <div class="notes">
       <md-input-container>
         <textarea mdInput formControlName="notesMarkdown" placeholder="Notes" rows="5"></textarea>

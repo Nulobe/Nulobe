@@ -18,6 +18,7 @@ export class FactListItemComponent implements OnInit {
 
   citedSources: Source[];
   citedDefinitionMarkdown: string;
+  notes: string[];
 
   constructor() { }
 
@@ -37,6 +38,8 @@ export class FactListItemComponent implements OnInit {
       let citedSourceIndex = this.citedSources.findIndex(s => s === source); 
       return citedSourceIndex > -1 ? `[${citedSourceIndex + 1}]` : '[Citation needed]';
     });
+
+    this.notes = [this.fact.notesMarkdown, this.fact.creditMarkdown].filter(n => n);
   }
 
   tagClicked(tag: string) {
@@ -47,6 +50,10 @@ export class FactListItemComponent implements OnInit {
     let parser = document.createElement('a');
     parser.href = url;
     return parser.protocol + '//' + parser.host;
+  }
+
+  getNotesSymbolIterator(index: number) {
+    return new Array(index + 1);
   }
 
 }

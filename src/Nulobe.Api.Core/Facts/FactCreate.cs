@@ -25,7 +25,7 @@ namespace Nulobe.Api.Core.Facts
         [EnumerableNotEmpty]
         public IEnumerable<string> Tags { get; set; }
 
-        public string Credit { get; set; }
+        public string CreditMarkdown { get; set; }
 
         public string Country { get; set; }
     }

@@ -634,7 +634,7 @@ export interface Fact {
     sources?: any[] | undefined;
     tags?: string[] | undefined;
     readOnlyTags?: string[] | undefined;
-    credit?: string | undefined;
+    creditMarkdown?: string | undefined;
     slug?: string | undefined;
 }
 
@@ -644,7 +644,7 @@ export interface FactCreate {
     notesMarkdown?: string | undefined;
     sources?: any[] | undefined;
     tags?: string[] | undefined;
-    credit?: string | undefined;
+    creditMarkdown?: string | undefined;
     country?: string | undefined;
 }
 

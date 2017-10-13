@@ -19,6 +19,7 @@ using Microsoft.Azure.Documents.Client;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace Nulobe.Api
 {
@@ -84,6 +85,11 @@ namespace Nulobe.Api
             using (var client = documentClientFactory.Create())
             {
                 client.EnsureFactCollectionAsync().Wait();
+            }
+
+            if (!env.IsDevelopment())
+            {
+                app.UseRewriter(new RewriteOptions().AddRedirectToHttpsPermanent());
             }
 
             if (env.IsDevelopment())
