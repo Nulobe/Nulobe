@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Fact, SourceType } from '../../api';
+import { IPermissionsResolver } from '../../abstractions';
 
 import { Source } from '../../sources';
 
@@ -14,11 +15,17 @@ import { FactLinkResolver } from '../fact-list/fact-list.component';
 export class FactListItemComponent implements OnInit {
   @Input() fact: Fact;
   @Input() factLinkResolver: FactLinkResolver;
+  @Input() permissionsResolver: IPermissionsResolver;
   @Output() onTagClick = new EventEmitter<string>();
+  @Output() onVote = new EventEmitter<Fact>();
+  @Output() onFlag = new EventEmitter<Fact>();
+  @Output() onEdit = new EventEmitter<Fact>();
+  @Output() onLink = new EventEmitter<Fact>();
 
   citedSources: Source[];
   citedDefinitionMarkdown: string;
   notes: string[];
+  canEdit: boolean = false;
 
   constructor() { }
 
@@ -40,10 +47,30 @@ export class FactListItemComponent implements OnInit {
     });
 
     this.notes = [this.fact.notesMarkdown, this.fact.creditMarkdown].filter(n => n);
+
+    if (this.permissionsResolver) {
+      this.canEdit = this.permissionsResolver.resolve('fact', 'edit');
+    }
   }
 
   tagClicked(tag: string) {
     this.onTagClick.emit(tag);
+  }
+
+  voteClicked(fact: Fact) {
+    this.onVote.emit(fact);
+  }
+
+  flagClicked(fact: Fact) {
+    this.onFlag.emit(fact);
+  }
+
+  linkClicked(fact: Fact) {
+    this.onLink.emit(fact);
+  }
+
+  editClicked(fact: Fact) {
+    this.onEdit.emit(fact);
   }
 
   getUrl(url: string) {

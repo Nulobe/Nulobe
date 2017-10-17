@@ -1,5 +1,9 @@
+@import "../../../../assets/scss/variables";
+@import "../../../../assets/scss/mixins";
 
 :host {
+    padding-bottom: 20px;
+
     .title {
         margin-bottom: 10px;
     }
@@ -9,6 +13,7 @@
             p {
                 margin-top: 5px;
                 margin-bottom: 5px;
+                word-break: break-word;
             }
     
             ul {
@@ -54,6 +59,7 @@
                     display: inline-block;
                     p {
                         margin: 0;
+                        word-break: break-word;
                     }
 
                     &.notes {
@@ -68,7 +74,65 @@
                 display: inline-block;
                 p {
                     margin: 0;
+                    word-break: break-word;
                 }
+            }
+        }
+    }
+
+    .actions {
+        display: flex;
+        justify-content: space-between;
+        
+        .tag-list-container {
+            flex: 1;
+        }
+
+        .fact-controls-container {
+            display: flex;            
+            justify-content: flex-end;
+            width: 150px;
+
+            .fact-controls {
+                display: flex;
+                margin-top: 5px; // Align with tag text
+                opacity: 0;
+
+                .fact-control {
+                    &:not(:last-child) {
+                        padding-right: 10px;
+                    }
+
+                    color: $medium-lobe-color;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: $primary-color;
+                    }
+                }
+            }
+        }
+
+        @include phone() {
+            display: block;
+
+            .fact-controls-container {
+                margin-top: 10px;
+                display: block;
+
+                .fact-controls{
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    &:hover {
+        .actions {
+            .fact-controls-container {
+                .fact-controls {
+                    opacity: 1;
+                }   
             }
         }
     }

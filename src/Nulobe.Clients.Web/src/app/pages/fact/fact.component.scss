@@ -5,6 +5,7 @@
     .content {
         @include flex-display();
         @include justify-content(center);
+        padding-bottom: 30px;
 
         .container {
             margin-top: 50px;

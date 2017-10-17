@@ -63,7 +63,7 @@ namespace Nulobe.Tools.BlobStorageImport
 
         private async Task<dynamic[]> GetLatestFactsAsync()
         {
-            var dts = EnumerableSeedExtensions.Seed(10, prev => prev.AddDays(-1), DateTime.UtcNow.AddDays(-1));
+            var dts = EnumerableSeedExtensions.Seed(10, prev => prev.AddDays(-1), DateTime.UtcNow.AddDays(0));
             using (var client = new HttpClient())
             {
                 foreach (var dt in dts)
