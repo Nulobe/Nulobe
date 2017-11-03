@@ -20,7 +20,8 @@ namespace Nulobe.Api.Core.Sources.Impl
                 SourceType.Nulobe,
                 new string[]
                 {
-                    SourceFields.FactId
+                    SourceFields.FactId,
+                    SourceFields.FactTitle
                 }
             },
             {

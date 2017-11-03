@@ -65,6 +65,7 @@ namespace Nulobe.Api.Core.Sources.Impl
 
             if (fact != null)
             {
+                source.Remove(SourceFields.FactTitle);
                 source.Add(SourceFields.FactTitle, fact.Title);
             }
         }

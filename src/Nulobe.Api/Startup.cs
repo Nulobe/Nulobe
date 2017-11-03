@@ -94,7 +94,6 @@ namespace Nulobe.Api
 
             if (env.IsDevelopment())
             {
-                EnsureDocumentDbRunningAsync().Wait();
                 app.UseDeveloperExceptionPage();
             }
 
@@ -125,61 +124,6 @@ namespace Nulobe.Api
                 });
 
             app.UseMvc();
-        }
-
-        private const string DocumentDbEmulatorExePath = @"C:\Program Files\Azure Cosmos DB Emulator\CosmosDB.Emulator.exe";
-
-        private static async Task EnsureDocumentDbRunningAsync()
-        {
-            var existingProcess = Process.GetProcessesByName("CosmosDB.Emulator").FirstOrDefault();
-            if (existingProcess == null || !(await TestConnectionAsync(existingProcess)))
-            {
-                Console.WriteLine("DocumentDB Emulator is not running, attempting to start");
-
-                if (File.Exists(DocumentDbEmulatorExePath))
-                {
-                    var process = Process.Start(new ProcessStartInfo()
-                    {
-                        FileName = DocumentDbEmulatorExePath,
-                        CreateNoWindow = true
-                    });
-                }
-                else
-                {
-                    throw new Exception($"DocumentDB emulator is not installed at path {DocumentDbEmulatorExePath}");
-                }
-            }
-            else
-            {
-                Console.WriteLine("DocumentDB Emulator is already running");
-            }
-        }
-
-        private static async Task<bool> TestConnectionAsync(Process process)
-        {
-            using (var client = new DocumentClient(new Uri("https://localhost:8081"), "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="))
-            {
-                var id = Guid.NewGuid().ToString();
-                try
-                {
-                    var createDbTask = client.CreateDatabaseIfNotExistsAsync(new Database() { Id = id });
-                    if (await Task.WhenAny(createDbTask, Task.Delay(TimeSpan.FromSeconds(10))) != createDbTask)
-                    {
-                        throw new TimeoutException("DocumentDB test timed out after 10 seconds");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Failed to create DocumentDB database, killing process");
-                    Console.WriteLine(ex.Message);
-                    Console.WriteLine(ex.StackTrace);
-                    process.Kill();
-                    process.WaitForExit();
-                    return false;
-                }
-                await client.DeleteDatabaseAsync($"dbs/{id}");
-                return true;
-            }
         }
     }
 }

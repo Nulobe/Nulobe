@@ -10,26 +10,25 @@
   <ul class="footnotes">
     <li class="source" *ngFor="let source of citedSources; let i = index;">
       <span *ngIf="source.type === 1">
+        <span class="index">{{ i + 1 }}</span>
         <span *ngIf="source.description">
-          <span class="index">{{ i + 1 }}</span>
           <span>{{ source.description }}</span>
         </span>
         <a class="url" *ngIf="source.url" href="{{ source.url }}">{{ getUrl(source.url) }}</a>
       </span>
       <span *ngIf="source.type === 2" class="fact">
-        <a href="{{ factLinkResolver.resolve(source.factId) }}">
-          <span class="index">{{ i + 1 }}</span>
+        <span class="index">{{ i + 1 }}</span>
+        <a [href]="factLinkResolver.resolve(source.factId)">
           <span>{{ source.factTitle }}</span>
         </a>
         <span class="logo-container"><core-logo [widthPixels]="15"></core-logo></span>
       </span>
       <span *ngIf="source.type === 5 || source.type === 4" class="citation">
+        <span class="index">{{ i + 1 }}</span>
         <markdown *ngIf="source.type === 4">
-          <span class="index">{{ i + 1 }}</span>
           <span>{{ source.citation }}</span>
         </markdown>
         <a *ngIf="source.type === 5" [href]="'https://doi.org/' + source.doi">
-          <span class="index">{{ i + 1 }}</span>
           <span>{{ source.citationFromDoi }}</span>
         </a>
         <markdown class="notes" *ngIf="source.notesMarkdown">{{ source.notesMarkdown }}</markdown>
