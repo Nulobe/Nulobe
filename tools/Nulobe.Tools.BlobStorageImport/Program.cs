@@ -6,6 +6,7 @@ using Nulobe.CosmosDataMigration;
 using Nulobe.DocumentDb.Client;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,6 +40,12 @@ namespace Nulobe.Tools.BlobStorageImport
             var serviceProvider = services.BuildServiceProvider();
             var blobStorageBackup = ActivatorUtilities.CreateInstance<BlobStorageImportService>(serviceProvider);
             blobStorageBackup.RunAsync().Wait();
+
+            if (Debugger.IsAttached)
+            {
+                Console.Write("Press any key...");
+                Console.ReadLine();
+            }
         }
 
         private class MockHostingEnvironment : IHostingEnvironment

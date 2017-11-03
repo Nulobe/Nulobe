@@ -31,13 +31,13 @@ export class SourceFormComponent implements OnInit, OnDestroy {
   ngOnInit() {
     let { fb, source } = this;
 
-    this.sourceAuthorsFormArray = fb.array(source.authors.map(a => this.createAuthorControl(a)));
+    this.sourceAuthorsFormArray = fb.array((source.authors || []).map(a => this.createAuthorControl(a)));
     
     this.newAuthorFormControl = fb.control('');
     
     this.pagesFormGroup = fb.group({
-      pageStart: fb.control(source.pages.pageStart),
-      pageEnd: fb.control(source.pages.pageEnd)
+      pageStart: fb.control(source.pages ? source.pages.pageStart : null),
+      pageEnd: fb.control(source.pages ? source.pages.pageEnd : null)
     });
 
     this.sourceFormGroup = fb.group({
